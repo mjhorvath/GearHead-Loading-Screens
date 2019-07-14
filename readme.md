@@ -1,4 +1,4 @@
-# Spinner credits and dependencies
+# Colony ship credits and dependencies
 
 1. Chris Colefax for the CITY GENERATOR INCLUDE FILE which I have heavily modified.
 1. Rune's particle system

@@ -1,4 +1,7 @@
-ISSUES/TODO LIST
+DISCLAIMER
++ This scene is called "Spinner" because my orignal intent was to model one of the several O'Neill cylinders in the GearHead universe. (I didn't really know what an O'Neill cylinder was at the time, either.) It has since then turned into more of a colony ship meant to travel between very distant locations. These don't exist in GearHead's universe.
+
+ISSUES/TO DO LIST
 + smooth the street pavement texture
 + change the colors of the street decorations, including the street lamps
   - sort of, they're a darker gray now
