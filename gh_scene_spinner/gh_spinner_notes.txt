@@ -1,0 +1,82 @@
+ISSUES/TODO LIST
++ smooth the street pavement texture
++ change the colors of the street decorations, including the street lamps
+  - sort of, they're a darker gray now
+- add windows to the street cars
++ add glass windows to white ellipsoidal buildings
++ pedestrians are missing from the gaps between buildings
++ make sure to rotate the section labels so that a and e are not next to each other, or it might look like an advertisement for Electronic Arts
+- shorten the height of the spiral park sculpture
+  - can't, scaling the entire object makes the cylinder slices look weird too
+- make the buildings slightly taller, maybe 6 to 12 storeys instead of 4 to 8
++ add support for objects/buildings that get spawned once and only once
++ make the park sculptures less common
++ add the Eagle spacecraft model
+- find a sculpture of an astronaut to place next to the Eagle spacecraft
++ next time I render the scene, re-enable CSG shapes instead of meshes to see how much it impacts performance
+- add pond to one of the parks
+- add golf course to one of the parks
+- add a single, double-width and double-height building (a tower like the space needle?) near the middle of the scene
+- add some flying craft, maybe a dirigible or hangglider
+- add lens flare? would it even make sense in this environment?
+- sunrise with sun behind planet?
+- check the newsgroups, someone responded with a better way of positioning the trees around 2010-06
+- make the "bird's nest" park decoration spiral around instead of being just concentric rings, otherwise how does it stand in place?
++ I wanted some "spokes" in the endcaps, sort of like the window next to the Emporer in Star Wars, except curved
+- Replace the section letters with colored bands closer to the edge of the end cap
++ paint the street cars to match the city section, i.e. red, green, yellow, etc.
+- street traffic is not orderly, including transit routes, traffic lights, etc.
+- nighttime lights are not working any more
+- scale model of solar system as a park model?
+- flowering trees
+- spinner should be located at a Lagrange 5 point, the same distance as the moon
+- create an equiangular spiral track or elevator looping from the rotational axis of the habitiat down to the city floor, so that people can move between the different sections of the spaceship
+- make sure everything that needs to be bounded is bounded, including the maglev and cars
+- make sure I do not bound too much stuff, for instance unions should never be bounded
+- make sure that the habitat lamp is exactly the right length
+- end caps should have the same number of spokes as the city has sections, maybe write a script that does this automatically
+- or, redesign the habitat interior so that the number of blocks is divisble by 6 instead of 4, since the end cap sections have 3 spokes
+- several buildings still do not support the glass_thin option
+- deprecate the glass_hollow option maybe
+- replace #while statements with #for where possible
+- make sure to add #version 3.7 to the top of every #include file
+- pink box scatter needs to be scaled automatically like the other buildings. need to mess with it later
+- the central tube inside the spiral light might need emission as well, as it is currently entirely unlit and looks dark
+- maybe have hangliders flying around, or small airships
+- add another rail line that goes around the circumference of the habitat, splitting the blocks down the middle into 4x2 chunks instead of 4x4 chunks
++ rail support structure should be placed once every building gap [fixed 20170405]
++ the staggered cylindrical building should have a thicker middle column [fixed 20170405]
++ should be able to specify if a city block tiles in each of the four directions, instead of just on/off [fixed 20170407]
++ when turning on/off city block tiling, the on/off ramp for rails is sometimes missing for one of the two directions [fixed 20170405]
++ there are no people walking under the rails, or in the empty spaces where rails normally exist [fixed 20170405]
+- not every building type has pedestrians walking around the grounds, some are lacking people
+- storey height may be too small, especially the first storey
++ make doubly sure that poeple on the street and people around buidlings are the same sizes (I have my suspicions) [fixed 20170405]
+- there are no people standing at the rail stations
+- rail stations in general need work, as they currently are implausible and look unfinished
+- it would be nice to be able to join two or more buildings into larger properties
++ train cars look too small compared to people [fixed 20170405]
+- potted plants need to be placed using a macro, since they are all the same size right now, and are all facing the same direction
++ there should be a fixed number of rail cars on each track, and lengthwise tracks only require one car and one lane each instead of two [fixed 20170406]
++ cone-shaped park structures should all be the same height [fixed 20170408]
++ cone-shaped park structures are way too common [fixed 20170408]
+- maybe make cone-shaped park structure a unique object
+- maybe make radiosity sample scene object a unique object
++ cars are the correct height, but still too narrow maybe [fixed 20170406]
++ currently, each city section generates two rail cars in the x direction, this is too much, need a way to reduce this number [fixed 20170408]
++ no pedestals at intersections when "NoStation" flag is set [fixed 20170408]
+- maybe add markers on the end cap hubs showing the borders of the different sectors, e.g. sectors A, B, C, D, E and F
++ pedestals beneath railways were not aligning properly with the buildings [fixed 20170408]
++ habitats should rotate within a cage formed by the existing 6 rods going lengthwise down the body of the ship [fixed 20170409]
++ extra fuel tanks should be placed in the gaps formed by the docking hangars [fixed 20170409]
+- could maybe switch from a paraboloid to something else for the nose cone. Haack eries? Spherically blunted tangent ogive?
+- maybe too many blinky lights on solar panels [fixed 20170409]
+- ground level of the diamond shaped building maybe too tall
+- the rocket needs some sort of exhaust, maybe some blue flame
+- the rocket needs a name written on its side! Constellation?
+- starfield doesn't look so nice
+- tip of nose cone is slightly too big, and should go underneath the wires instead of above them
+- buildings heights should should be weighted toward their maximum value, so do (1 - random * random)
+- end caps of the two habitats are overlapping, need to increase the space between them a little
+- more gold windows look better
+- rail pedestals should be aligned with the middle of buildings, not the intersections between buildings

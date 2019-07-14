@@ -1,0 +1,17 @@
+// intersection, mesh, 3.7
+CPU time used: kernel 0.94 seconds, user 40.75 seconds, total 41.68 seconds.
+Elapsed time 80.35 seconds.
+Render averaged 3262.49 PPS (6288.92 PPS CPU time) over 262144 pixels.
+
+// intersection, csg, 3.7
+CPU time used: kernel 0.51 seconds, user 3.43 seconds, total 3.95 seconds.
+Elapsed time 7.52 seconds.
+Render averaged 34864.21 PPS (66418.94 PPS CPU time) over 262144 pixels.
+
+// intersection, mesh, 3.6.2
+CPU time used: kernel 0.50 seconds, user 44.99 seconds, total 45.49 seconds
+Render averaged 5762.69 PPS over 262144 pixels
+
+// intersection, csg, 3.6.2
+CPU time used: kernel 0.53 seconds, user 2.82 seconds, total 3.35 seconds
+Render averaged 78158.13 PPS over 262144 pixels
