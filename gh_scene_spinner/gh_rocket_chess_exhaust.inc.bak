@@ -101,7 +101,7 @@
 				density_map
 				{
 					[0.00 rgb 0]
-					//[0.50 Exhaust_GC]
+					[0.50 Exhaust_GC]
 					[0.75 Exhaust_GS]
 				}
 			}
@@ -116,7 +116,7 @@
 				density_map
 				{
 					[0.00 rgb 0]
-					//[0.50 Exhaust_GC]
+					[0.50 Exhaust_GC]
 					[0.75 Exhaust_GS]
 				}
 			}

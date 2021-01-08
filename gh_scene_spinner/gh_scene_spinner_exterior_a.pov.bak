@@ -63,7 +63,7 @@
 	// toggles
 	#declare NoRadiosity	= 1;//					// boolean, very slowwwww!!!
 	#declare NoColors	= 0;					// boolean, use grayscale colors for ships/mecha
-	#declare NoSky		= 0;					// boolean
+	#declare NoSky		= 1;					// boolean
 	#declare NoGalaxy	= 1;					// boolean, Chris Colefax's galaxy include
 	#declare NoPlanet	= 1;					// boolean, planet Jupiter
 	#declare NoLensFlare	= 1;//					// boolean, lens flare at sun position, usually not visible anyway
