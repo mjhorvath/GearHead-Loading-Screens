@@ -7,10 +7,11 @@
 
 #declare radius_mod = 1/2;
 
-#declare camera_location = <0, 200, -500>;
-#declare camera_look_at = <0, -100, 0>;
-#declare camera_angle = 40;
-#declare flare_position = <20, 30, -60>*100;
+//#declare camera_location	= <0, 200, -500>;
+#declare camera_location	= <0, -100, -500>;
+#declare camera_look_at		= <0, -100, 0>;
+#declare camera_angle		= 40;
+#declare flare_position		= <20, 30, -60>*100;
 
 #include "colors.inc"
 #include "textures.inc"
@@ -25,6 +26,7 @@
 	
 	global_settings { assumed_gamma 1.5 }
 	camera {
+		orthographic
 		location camera_location
 		look_at camera_look_at
 		angle camera_angle
@@ -122,7 +124,7 @@ union { //Habitat area
 
 #declare engine = union { //Engine and tanks
 	sphere { 0, 12.5
-		pigment { HuntersGreen }
+		pigment { color srgb 1 }
 		finish { specular .5 }
 	}
 	union {
@@ -130,7 +132,7 @@ union { //Habitat area
 		cylinder { 0, -y*50, 12.5 }
 		sphere { -y*50, 12.5 }
 		translate -y*25
-		pigment { Salmon }
+		pigment { color srgb 1 }
 		finish { specular .5 }
 	}
 
@@ -180,6 +182,7 @@ union {
 	pigment { bozo turbulence 2 scale <10, 300, 10> color_map { [0 Gray95][1 Gray75]}}
 }
 
+
 object { engine translate <35, -95, 0> }
 object { engine translate <35, -95, 0> rotate y*60 }
 object { engine translate <35, -95, 0> rotate y*120 }
@@ -193,3 +196,26 @@ object { connector rotate y*120 }
 object { connector rotate y*180 }
 object { connector rotate y*-60 }
 object { connector rotate y*-120 }
+
+
+//-------------------------------------------------------------------------
+
+#local exhaust_scale		= 10;
+
+#ifndef (Exhaust_Object)
+	#include "gh_rocket_chess_exhaust.inc"
+#end
+
+#local fixed_exhaust = object
+{
+	Exhaust_Object
+	rotate		-z * 90
+	scale		<5,4,5>
+}
+
+object { fixed_exhaust translate <35, -95*2, 0> rotate y*+000 }
+object { fixed_exhaust translate <35, -95*2, 0> rotate y*+060 }
+object { fixed_exhaust translate <35, -95*2, 0> rotate y*+120 }
+object { fixed_exhaust translate <35, -95*2, 0> rotate y*+180 }
+object { fixed_exhaust translate <35, -95*2, 0> rotate y*+240 }
+object { fixed_exhaust translate <35, -95*2, 0> rotate y*+300 }

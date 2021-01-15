@@ -381,7 +381,7 @@ verbose_include("Horus.inc", 0)
 						{
 							image_map
 							{
-								png		"jupiter.png"
+								jpeg	"jupiter2_6k.jpg"
 								map_type	1
 							}
 						}

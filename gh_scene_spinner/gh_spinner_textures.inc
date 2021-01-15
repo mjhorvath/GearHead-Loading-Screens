@@ -343,7 +343,7 @@
 }
 #declare nose_function_z = function (x,y,z)
 {
-	pow(z,1/2)*nose_para_multi*8
+	pow(z,1/2)*8/nose_wire_para_thick
 }
 #declare invisible_texture = texture
 {
@@ -606,14 +606,77 @@
 	{
 		image_map
 		{
-			png		"jupiter.png"
-			#if (version >= 3.7) file_gamma srgb #end
+			// http://planetpixelemporium.com/mars.html
+			#if (planet_name = "Mars")
+				jpeg	"mars_1k_color.jpg"
+			// http://planetpixelemporium.com/jupiter.html
+			#elseif (planet_name = "Jupiter")
+				jpeg	"jupiter2_6k.jpg"
+			#elseif (planet_name = "Earth")
+				png	"world.200406.3x21600x10800.png"
+			// https://www.deviantart.com/kvikki/art/Earth-like-Planet-Texture-466813840
+			#elseif (planet_name = "Alien")
+				jpeg	"alien_planet.jpg"
+			#end
+//			#if (version >= 3.7) file_gamma srgb #end
 			map_type	1
 		}
 	}
 	finish
 	{
 		ambient 0
+	}
+}
+
+#declare planet_atmosphere_1 = media
+{
+	scattering {4, rgb planet_atmos_scat/planet_radius}
+	intervals 5
+	samples 2, 20
+	confidence 0.9999
+	variance 1/1000
+	density
+	{
+		spherical
+		color_map
+		{
+			[0.000 rgbf <0,0,0,1>]
+			[1-planet_atmos_invert rgbf <1,1,1,1>]
+			[1.000 rgbf <1,1,1,1>]
+		}
+	}
+}
+
+#declare planet_atmosphere_2 = media
+{
+	absorption rgb planet_atmos_abso/planet_radius
+	intervals 5
+	samples 2, 20
+	confidence 0.9999
+	variance 1/1000
+	density
+	{
+		spherical
+		color_map
+		{
+			[0.000 rgbf <0,0,0,1>]
+			[1-planet_atmos_invert rgbf <1,1,1,1>]
+			[1.000 rgbf <1,1,1,1>]
+		}
+	}
+}
+
+#declare planet_atmosphere = material
+{
+	texture
+	{
+		pigment {rgbf 1}
+		finish {ambient 0}
+	}
+	interior
+	{
+		media {planet_atmosphere_1}
+		media {planet_atmosphere_2}
 	}
 }
 

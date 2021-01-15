@@ -598,10 +598,13 @@
 		#if (!NoAtmos)
 			object {atmos_object}
 		#end
-		rotate -z * city_rotate
+		#if (!NoHabRotate)
+			rotate -z * city_rotate
+		#end
 		translate -z * hab_section_offset
 	}
 #end
+
 union
 {
 	object {outer_shell_truss}
@@ -616,6 +619,8 @@ union
 	#if (!NoAtmos)
 		object {atmos_object}
 	#end
-	rotate +z * city_rotate
+	#if (!NoHabRotate)
+		rotate +z * city_rotate
+	#end
 	translate +z * hab_section_offset
 }

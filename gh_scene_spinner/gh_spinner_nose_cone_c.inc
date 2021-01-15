@@ -41,26 +41,41 @@
 	}
 }
 
-difference
-{
-	union
+
+//------------------------------------------------------------------------------solid glass cone
+
+// looks better but is too slow!!
+#if ((!NoNoseGrid) & (NoseMode = 0))
+	difference
 	{
-		// glass portion, looks better but is too slow!!
-		#if ((!NoNoseGrid) & (NoseMode = 0))
-			intersection
-			{
-				object {glass_cone}
-				plane {+z, nose_cone_radius/4 * pow(nose_cone_length, 2)}
-				texture {nose_shield_combined_texture scale nose_cone_radius/2}
-			}
+		intersection
+		{
+			object {glass_cone}
+			plane {+z, nose_cone_radius/4 * pow(nose_cone_length, 2)}
+			texture {nose_shield_combined_texture scale nose_cone_radius/2}
+			rotate +y * 180
+		}
+		#if (!ShowWhole)
+			object {cutaway_object1}
 		#end
-		// thick ribs
+		texture {white_metal_texture}
+		translate +z * (hab_total_length/2 + nose_cone_position)
+	}
+#end
+
+
+//------------------------------------------------------------------------------metal mesh cone
+
+#if ((!NoNoseGrid) & (NoseMode = 1))
+	difference
+	{
 		union
 		{
-			// radial tubes
+/*
+			// thick radial tubes
 			#local x_old = 0;
 			#local z_old = 0;
-			#for (i, 1/nose_para_multi, nose_cone_length, 1/nose_para_multi)
+			#for (i, nose_wire_para_thick, nose_cone_length, nose_wire_para_thick)
 				#local x_new = nose_cone_radius/4 * i * 2;
 				#local z_new = nose_cone_radius/4 * pow(i, 2);
 				#for (j, 1, 24)
@@ -73,8 +88,8 @@ difference
 				#local x_old = x_new;
 				#local z_old = z_new;
 			#end
-			// z axis tubes
-			#for (i, 1/nose_para_multi, nose_cone_length, 1/nose_para_multi)
+			// thick z axis tubes
+			#for (i, nose_wire_para_thick, nose_cone_length, nose_wire_para_thick)
 				#local x_new = nose_cone_radius/4 * i * 2;
 				#local z_new = nose_cone_radius/4 * pow(i, 2);
 				torus
@@ -84,23 +99,25 @@ difference
 					translate +z * z_new
 				}
 			#end
-		}
-		rotate +y * 180
-	}
-	#if (!ShowWhole)
-		object {cutaway_object1}
-	#end
-	texture {white_metal_texture}
-	translate +z * (hab_total_length/2 + nose_cone_position)
-}
-#if ((!NoNoseGrid) & (NoseMode = 1))
-	difference
-	{
-		// thin ribs
-		union
-		{
-			// z axis tubes
-			#for (i, 1/nose_para_multi/8, nose_cone_length, 1/nose_para_multi/8)
+*/
+			// thin radial tubes
+			#local x_old = 0;
+			#local z_old = 0;
+			#for (i, nose_wire_para_thin, nose_cone_length, nose_wire_para_thin)
+				#local x_new = nose_cone_radius/4 * i * 2;
+				#local z_new = nose_cone_radius/4 * pow(i, 2);
+				#for (j, 1, 24)
+					cylinder
+					{
+						<+x_old,0,z_old>, <+x_new,0,z_new>, nose_wire_radius_thin
+						rotate +z * j * 360/24
+					}
+				#end
+				#local x_old = x_new;
+				#local z_old = z_new;
+			#end
+			// thin z axis tubes
+			#for (i, nose_wire_para_thin, nose_cone_length, nose_wire_para_thin)
 				#local x_new = nose_cone_radius/4 * i * 2;
 				#local z_new = nose_cone_radius/4 * pow(i, 2);
 				torus
@@ -120,12 +137,14 @@ difference
 	}
 #end
 
-// metal tip
+
+//------------------------------------------------------------------------------metal tip
+
+#local i = 1/3;
+#local x_new = nose_cone_radius/4 * i * 2;
+#local z_new = nose_cone_radius/4 * pow(i, 2);
 intersection
 {
-	#local i = 1/3;
-	#local x_new = nose_cone_radius/4 * i * 2;
-	#local z_new = nose_cone_radius/4 * pow(i, 2);
 	object {metal_cone}
 	plane {+z, z_new}
 	rotate +y * 180
@@ -133,7 +152,72 @@ intersection
 	translate +z * (hab_total_length/2 + nose_cone_position - metal_thick)
 }
 
-// attachment to body of ship
+
+//------------------------------------------------------------------------------connector ring and spindle
+
+#local z_new = nose_cone_position - main_strut_width/2;
+#local i = sqrt(4 * z_new/nose_cone_radius);
+#local x_new = nose_cone_radius/4 * i * 2;
+#local j_max = 3;
+#local j_amt = 360/j_max;
+difference
+{
+	union
+	{
+		torus
+		{
+			x_new, metal_thick
+			rotate +x * 90
+		}
+		#for (j, 1, j_max)
+			cylinder
+			{
+				+x * outer_shell_radius1, +x * x_new, metal_thick
+				rotate +z * j * j_amt
+			}
+		#end
+	}
+	#if (!ShowWhole)
+		object {cutaway_object1}
+	#end
+	texture {white_metal_texture}
+//	rotate		+z * 360/6
+	translate	+z * (hab_total_length/2 + main_strut_width/2)
+}
+/*
+#local z_new = nose_cone_position + hab_section_length + main_strut_width/2;
+#local i = sqrt(4 * z_new/nose_cone_radius);
+#local x_new = nose_cone_radius/4 * i * 2;
+#local j_max = 3;
+#local j_amt = 360/j_max;
+difference
+{
+	union
+	{
+		torus
+		{
+			x_new, metal_thick
+			rotate +x * 90
+		}
+		#for (j, 1, j_max)
+			cylinder
+			{
+				+x * outer_shell_radius1, +x * x_new, metal_thick
+				rotate +z * j * j_amt
+			}
+		#end
+	}
+	#if (!ShowWhole)
+		object {cutaway_object1}
+	#end
+	texture {white_metal_texture}
+//	rotate		+z * 360/6
+	translate	+z * (hab_total_length/2 - hab_section_length - main_strut_width/2)
+}
+*/
+
+//------------------------------------------------------------------------------trumpet attachment to body of ship
+
 #local trumpet_radius = Meters * 32;
 #local trumpet_length = nose_cone_position - inner_shell_bulge - metal_thick * 3;
 #local nose_Fx2 = function(u,v) {v}
@@ -144,11 +228,12 @@ object
 	Parametric(nose_Fx2,nose_Fy2,nose_Fz2,<0,0>,<2*pi,trumpet_length>,30,30,"")
 	rotate -y * 90
 	texture {white_metal_texture}
-	translate +z*(hab_total_length/2 + inner_shell_bulge + metal_thick * 3)
+	translate +z * (hab_total_length/2 + inner_shell_bulge + metal_thick * 3)
 }
 
 
-// comms objects
+//------------------------------------------------------------------------------comms objects
+
 #declare truss_sides = 6;
 #declare truss_sections = 1;
 #declare truss_radius = Meters*16;
@@ -172,7 +257,7 @@ object
 	}
 	cylinder {<0,0,0>, <0,0,-Meters*8>, Meters/2}
 	scale 2
-	translate -z*Meters*16
+	translate -z * Meters * 16
 }
 #local comm_dome = sphere {-z*Meters*16, Meters*16}
 #local comm_anten = union

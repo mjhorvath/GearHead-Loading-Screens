@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------Sun, Sky & Planets
 
 #if (!NoSky)
+	// sun
 	#local sun_object = sphere
 	{
 		0, sun_radius
@@ -10,7 +11,7 @@
 			finish {emission sun_color}
 		}
 	}
-	// should I set a fade distance as well?
+	// should I set a fade distance and fade power as well?
 	light_source
 	{
 		sun_location
@@ -19,6 +20,7 @@
 		parallel
 		point_at 0
 	}
+	// lens flare
 	#if (!NoLensFlare)
 		#declare camera_location	= Camera_Location;
 		#declare camera_look_at		= Camera_LookAt;
@@ -28,9 +30,10 @@
 		#declare effect_scale		= 1/4;
 		verbose_include("LENS_MOD.INC", 0)
 	#end
+	// background and sky sphere
 	background {color srgb 0}
 	sky_sphere {pigment {starfield_pigment_0}}
-	// Galaxy variables, not very attractive
+	// galaxy variables, not very attractive
 	#if (!NoGalaxy)
 		#declare galaxy_bg		= 0;		// on or off
 		#declare galaxy_objects		= 0;		// on or off
@@ -48,11 +51,22 @@
 //		verbose_include("galaxy.inc", 0)
 	#end
 	#if (!NoPlanet)
-		sphere
+		union
 		{
-			0, planet_radius
-			texture {planet_texture}
-			translate	planet_location
+			sphere
+			{
+				0, planet_radius
+				texture {planet_texture}
+			}
+			difference
+			{
+				sphere {0, 1.00}
+				sphere {0, planet_atmos_invert}
+				hollow
+				material {planet_atmosphere}
+				scale planet_radius * 1.000001/planet_atmos_invert
+			}
+			translate planet_location
 		}
 	#end
 #else
@@ -60,7 +74,7 @@
 	{
 		<-15000, +15000, -15000> * <1/4,1,1/2>
 		color rgb sun_color
-		rotate +y * 090
+		rotate +y * 270
 		parallel
 		point_at 0
 	}

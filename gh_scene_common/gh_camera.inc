@@ -70,6 +70,7 @@
 		camera
 		{
 			perspective
+			//orthographic
 			up		Camera_Up
 			right		Camera_Right
 			location	Camera_Location

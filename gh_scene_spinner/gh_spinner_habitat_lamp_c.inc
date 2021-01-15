@@ -145,16 +145,17 @@
 			area_light
 			+z * lamp_length, +y, lamp_number, 1
 			area_illumination	on
-			fade_distance lamp_radius2
-			fade_power 2
+			fade_distance		lamp_radius2
+			fade_power			2
+			adaptive			1
 			looks_like {lamp_bulb}
 		}
 	#else
 		#declare lamp_object = light_source
 		{
 			0, lamp_color * (1 + pow(city_radius/lamp_radius2, 2))
-			fade_distance lamp_radius2
-			fade_power 2
+			fade_distance	lamp_radius2
+			fade_power		2
 			looks_like {lamp_bulb}
 		}
 	#end

@@ -1,6 +1,3 @@
-
-
-
 //------------------------------------------------------------------------------Central Axis and Main Struts
 
 #if (!NoStruts)
@@ -39,8 +36,8 @@
 					bounded_by {box {<+main_strut_radius,+main_strut_radius,+(hab_hub_length/2 + 0)>, <-main_strut_radius,-main_strut_radius,-(hab_hub_length/2 + 0)>}}
 				}
 */
-				translate +y * (main_body_radius - main_strut_radius)
-				rotate +z * 60 * i
+				translate	+y * (main_body_radius - main_strut_radius)
+				rotate		+z * 60 * i
 			}
 		#end
 		// around truss hub
@@ -276,7 +273,9 @@
 	// parabolic exhaust cone
 	#local z_position = pow(nozzle_radius,2)/nozzle_radius * 4;
 	#local exhaust_scale = nozzle_radius * 3/2;
-	verbose_include("gh_rocket_chess_exhaust.inc", 0)
+	#ifndef (Exhaust_Object)
+		verbose_include("gh_rocket_chess_exhaust.inc", 0)
+	#end
 	union
 	{
 		// spherical fuel tanks
@@ -491,49 +490,5 @@
 			object {thruster_group	rotate +z * 180}
 			object {thruster_group	rotate +z * 240}
 		#end
-	}
-#end
-
-
-//------------------------------------------------------------------------------Neighboring Craft
-
-#if (!NoOuterShips)
-/*
-	// http://skotan.deviantart.com/art/Aquila-Mk-I-spacecraft-185944452
-	union
-	{
-		verbose_include("Aquila-Mk_I.pov", 0)
-		scale		32
-		translate	+x * outer_shell_radius1
-		translate	-z * dock_start
-	}
-*/
-	// http://povrayinclude.wytraven.com/links.html
-	union
-	{
-		verbose_include("SPACESHP.POV", 0)
-		scale		2
-		rotate		+x * 090
-		translate	-y * 0
-		translate	+x * (outer_shell_radius1 + Meters * 128)
-		translate	-z * (city_length/2 + reactor_length)
-	}
-
-	// http://news.povray.org/povray.binaries.scene-files/thread/%3C4dfdbaad%40news.povray.org%3E/
-	union
-	{
-		verbose_include("Anastasia2bX_.pov", 0)
-		scale 1/2
-		translate -z*dock_start*5/4
-		translate +x*city_radius*5/4
-	}
-	union
-	{
-		verbose_include("Anastasia2bX_.pov", 0)
-		scale 1/2
-		translate -z*dock_start*5/4
-		translate +x*city_radius*5/4
-		translate -x*Meters*32
-		translate +z*Meters*32
 	}
 #end
