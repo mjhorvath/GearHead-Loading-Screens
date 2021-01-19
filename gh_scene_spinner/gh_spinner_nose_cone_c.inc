@@ -133,6 +133,7 @@
 			object {cutaway_object1}
 		#end
 		texture {nose_shield_metal_texture}
+//		texture {white_metal_texture}
 		translate +z * (hab_total_length/2 + nose_cone_position)
 	}
 #end
@@ -181,7 +182,7 @@ difference
 		object {cutaway_object1}
 	#end
 	texture {white_metal_texture}
-//	rotate		+z * 360/6
+//	rotate		+z * 360/12
 	translate	+z * (hab_total_length/2 + main_strut_width/2)
 }
 /*
@@ -211,7 +212,7 @@ difference
 		object {cutaway_object1}
 	#end
 	texture {white_metal_texture}
-//	rotate		+z * 360/6
+//	rotate		+z * 360/12
 	translate	+z * (hab_total_length/2 - hab_section_length - main_strut_width/2)
 }
 */

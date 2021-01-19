@@ -85,7 +85,7 @@
 #declare nose_wire_radius_thick	= Meters/1;				// float
 #declare nose_wire_radius_thin	= Meters/2;				// float
 #declare nose_wire_para_thick	= 0.1;					// float, t-value
-#declare nose_wire_para_thin	= nose_wire_para_thick/4;					// float, t-value
+#declare nose_wire_para_thin	= nose_wire_para_thick/2;					// float, t-value
 #declare window_radius			= outer_shell_radius1 * 2/9;		// float
 //#declare reactor_start		= trusshub_start + trusshub_length;	// float
 #declare reactor_start			= trusshub_start;			// float

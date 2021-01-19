@@ -613,7 +613,7 @@
 			#elseif (planet_name = "Jupiter")
 				jpeg	"jupiter2_6k.jpg"
 			#elseif (planet_name = "Earth")
-				png	"world.200406.3x21600x10800.png"
+				jpeg	"world.200406.3x21600x10800.jpg"
 			// https://www.deviantart.com/kvikki/art/Earth-like-Planet-Texture-466813840
 			#elseif (planet_name = "Alien")
 				jpeg	"alien_planet.jpg"
