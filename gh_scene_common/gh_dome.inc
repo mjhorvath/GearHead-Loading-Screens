@@ -8,12 +8,14 @@
 #include "textures.inc"
 #include "glass.inc"
 
+/*
 #local N = 2;
 #local Half = 1;
 #local Method = 1;
 #local Disc = 0;
 #local R_Ten = 0.01 / N;
 #local R_Hen = 0.01 / N;
+*/
 //#local RibTexture = material {texture {Aluminum};
 //#local PaneTexture = material {texture {T_Glass1};
 #local RibTexture = material {texture {pigment {gamma_color_adjust(<1,1,1>*3/4)}}}

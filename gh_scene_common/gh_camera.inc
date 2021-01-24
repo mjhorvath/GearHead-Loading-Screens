@@ -15,7 +15,7 @@
 	#case (1)
 		#declare Camera_Area		= Tiles * 2 * 64;
 		#declare Camera_Aspect		= 1/Camera_Aspect;
-		#declare Camera_Distance	= Camera_Diagonal * Width * Tiles * CameraScale;
+		#declare Camera_Distance	= Camera_Diagonal * Width * Tiles * Camera_Scale;
 		#declare Camera_Skewed		= sin(pi/4);
 		#declare Camera_Up		= -x * Camera_Area;
 		#declare Camera_Right		= +z * Camera_Area * Camera_Aspect;

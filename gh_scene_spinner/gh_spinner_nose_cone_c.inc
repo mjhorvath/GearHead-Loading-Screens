@@ -156,6 +156,7 @@ intersection
 
 //------------------------------------------------------------------------------connector ring and spindle
 
+#local ring_thick = metal_thick/2;
 #local z_new = nose_cone_position - main_strut_width/2;
 #local i = sqrt(4 * z_new/nose_cone_radius);
 #local x_new = nose_cone_radius/4 * i * 2;
@@ -167,13 +168,13 @@ difference
 	{
 		torus
 		{
-			x_new, metal_thick
+			x_new, ring_thick
 			rotate +x * 90
 		}
 		#for (j, 1, j_max)
 			cylinder
 			{
-				+x * outer_shell_radius1, +x * x_new, metal_thick
+				+x * outer_shell_radius1, +x * x_new, ring_thick
 				rotate +z * j * j_amt
 			}
 		#end
@@ -185,25 +186,34 @@ difference
 //	rotate		+z * 360/12
 	translate	+z * (hab_total_length/2 + main_strut_width/2)
 }
-/*
-#local z_new = nose_cone_position + hab_section_length + main_strut_width/2;
+
+#local z_new = nose_cone_position + hab_total_length/2 + engine_start + engine_length + main_strut_width/2;
+//#local z_new = nose_cone_position + hab_total_length/2 + engine_start;
 #local i = sqrt(4 * z_new/nose_cone_radius);
 #local x_new = nose_cone_radius/4 * i * 2;
 #local j_max = 3;
 #local j_amt = 360/j_max;
+#local x_dif = x_new - outer_shell_radius1;
 difference
 {
 	union
 	{
 		torus
 		{
-			x_new, metal_thick
+			x_new, ring_thick
 			rotate +x * 90
 		}
+/*
+		torus
+		{
+			outer_shell_radius1 + x_dif/2, ring_thick
+			rotate +x * 90
+		}
+*/
 		#for (j, 1, j_max)
 			cylinder
 			{
-				+x * outer_shell_radius1, +x * x_new, metal_thick
+				+x * outer_shell_radius1, +x * x_new, ring_thick
 				rotate +z * j * j_amt
 			}
 		#end
@@ -213,9 +223,10 @@ difference
 	#end
 	texture {white_metal_texture}
 //	rotate		+z * 360/12
-	translate	+z * (hab_total_length/2 - hab_section_length - main_strut_width/2)
+	translate	-z * (engine_start + engine_length - main_strut_width/2)
+//	translate	-z * (engine_start)
 }
-*/
+
 
 //------------------------------------------------------------------------------trumpet attachment to body of ship
 

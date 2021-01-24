@@ -1,6 +1,8 @@
-// Desc: Several GearHead mecha battling it out in a woodland/pastural setting.
-// Auth: Michael Horvath
-// Home Page: http://isometricland.com
+// Caption: Several GearHead mecha battling it out in a woodland/pastural setting.
+// Authors: Michael Horvath
+// Website: http://isometricland.net
+// Created: ???
+// Updated: 2021/01/24
 // This file is licensed under the terms of the Creative Commons Attribution-ShareAlike 3.0 Unported License.
 //
 // Dependencies:
@@ -70,6 +72,7 @@
 #declare light_lumens	= 3;					// float
 #declare light_temp	= Daylight(6100);			// float
 #declare light_color	= Light_Color(light_temp,light_lumens);
+#declare block_dist_x	= 640;
 
 #local NoColors		= 0;		//0		(can't remember what this is used for)
 #local NoGrid		= 1;		//1		(for debug purposes)
@@ -78,8 +81,8 @@
 #local NoLens		= 1;		//0
 #local NoRadiosity	= 0;		//0
 #local NoSun		= 0;		//0
-#local NoAtmos		= 0;		//0
-#local NoClouds		= 0;		//0
+#local NoAtmos		= 1;		//0
+#local NoClouds		= 1;		//0
 #local NoWater		= 0;		//0
 #local NoGround		= 0;		//0
 #local NoMecha		= 0;		//0		(depends on ground)
@@ -163,9 +166,10 @@ default {finish {ambient 0.1 diffuse 0.6}}
 //------------------------------------------------------------------------------Camera
 
 
-#declare Camera_Mode		= 6;			// 0 to 8
+#declare Camera_Mode		= 2;			// 0 to 8
+#declare Camera_Eye			= -1;
 #declare Camera_Diagonal	= cosd(45);
-#declare Camera_Vertical	= -135 + 22.5;		// 135 + 22.5
+#declare Camera_Vertical	= 135 + 22.5;		// 135 + 22.5
 #declare Camera_Horizontal	= 30;			// 30
 #declare Camera_Scale		= 2.5;
 #declare Camera_Aspect		= image_height/image_width;
@@ -579,6 +583,12 @@ default {finish {ambient 0.1 diffuse 0.6}}
 //------------------------------------------------------------------------------Geodesic dome
 
 #if (!NoDome)
+	#declare N = 2;			// 2
+	#declare Half = 1;
+	#declare Method = 1;
+	#declare Disc = 0;
+	#declare R_Ten = 0.01 / N;
+	#declare R_Hen = 0.01 / N;
 	#include "gh_dome.inc"
 	#local Dome_Position = <+00,+16,+00,> * Width;
 	#local Dome_Position = trace (Ground_a, Dome_Position, -y);

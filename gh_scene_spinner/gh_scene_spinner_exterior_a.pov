@@ -50,16 +50,16 @@
 #include "param.inc"			// http://www.econym.demon.co.uk/isotut/param.htm
 
 // inter-scene variables, may be obsolete at this time
-#declare pov_version		= 1;					// integer, 0 = 3.6; 1 = 3.7; 3.7 also has gamma adjustments in INI file
+#declare pov_version		= 1;					// integer, 0 = 3.6 or earlier; 1 = 3.7 or later; 3.7 also has gamma adjustments in INI file
 #declare Seed				= seed(8829464);		// seed for random number generator
 #declare Included			= 1;					// boolean, tells any included files that they are being included.
 #declare TexQual			= 2;					// integer, -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
-#declare Minimal			= 0;					// boolean, a minimal render with lots of features turned off
+#declare Minimal			= 1;					// boolean, a minimalist render with lots of features turned off
 #declare Meters				= 1;					// float, 1 meter
 #declare Subdivision		= 0;					// boolean, only needed for some mecha, and only works in an unofficial build of POV-Ray 3.6
 #declare Camera_Inside		= 0;					// boolean
-#declare Camera_CubeMap		= frame_number;			// integer, 0 = default orientation or off, 1 - 5 are the other cardinal directions
-// legacy code
+#declare Camera_CubeMap		= frame_number;			// integer, 0 = default orientation or off, 1 to 5 are the other cardinal directions
+// legacy code maybe obsolete
 #declare Tiles				= 1;					// integer, the default size of the scene, measured in tiles. Use this to zoom in/out.
 #declare Sprite_Height		= 128;					// float, still used? changes the camera's position. 0 for mecha, 1 for walls & terrain.
 #declare Width				= 8;					// float, the default width of a tile.
@@ -140,16 +140,16 @@
 	#declare NoNoseCone		= 0;					// boolean
 	#declare NoNoseGrid		= 0;					// boolean
 	#declare NoEngines		= 0;					// boolean
-	#declare NoArray		= 1;					// boolean
-	#declare NoPanels		= 1;					// boolean
+	#declare NoArray		= 0;					// boolean
+	#declare NoPanels		= 0;					// boolean
 	#declare NoDomes		= 1;					// boolean
-	#declare NoElse			= 1;					// boolean
-	#declare NoStruts		= 1;					// boolean, everything not already disabled
+	#declare NoElse			= 0;					// boolean
+	#declare NoStruts		= 0;					// boolean, everything not already disabled
 	#declare NoGreebles		= 1;					// boolean, blinkies, tanks, thrusters
 	#declare NoMeasure		= 0;//					// boolean, the distance measurement image map
 	#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
 	#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
-	#declare ShowWhole		= 0;					// boolean, show the entire outer shell, not finished
+	#declare ShowWhole		= 1;					// boolean, show the entire outer shell, not finished
 	#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
 	#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
 	#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
@@ -375,12 +375,14 @@ union
 			#debug "\n<<Finish everything else\n"
 		#end
 	#end
-/*
+
 	// Outer space ships
-	#debug "\n>>Start outer ships\n"
-	#include "gh_spinner_outerships_a.inc"
-	#debug "\n<<Finish outer ships\n"
-*/
+	#if (!NoOuterShips)
+		#debug "\n>>Start outer ships\n"
+		#include "gh_spinner_outerships_a.inc"
+		#debug "\n<<Finish outer ships\n"
+	#end
+
 	rotate		<0,-135,0>
 	rotate		<-30,0,0>
 }
