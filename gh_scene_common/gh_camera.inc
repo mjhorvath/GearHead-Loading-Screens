@@ -260,7 +260,7 @@
 		#declare Camera_Location	= vtransform(Camera_Location,Camera_Transform);
 		#declare Camera_LookAt		= vtransform(Camera_LookAt,Camera_Transform);
 	#break
-	// perspective, inside spinner habitat
+	// perspective (inside spinner habitat)
 	#case (9)
 		#declare Camera_Up			= +y * 420;
 		#declare Camera_Right		= +x * 420 * image_width/image_height;
@@ -289,7 +289,7 @@
 		#declare Camera_Location	= vtransform(Camera_Location,Camera_Transform);
 		#declare Camera_LookAt		= vtransform(Camera_LookAt,Camera_Transform);
 	#break
-	// cube map, inside spinner habitat, render using square aspect ratio only!
+	// cube map (inside spinner habitat, render using square aspect ratio only!)
 	#case (10)
 //		#declare Camera_Up		= +y * 420;
 //		#declare Camera_Right		= +x * 420;
@@ -341,7 +341,7 @@
 		#declare Camera_Location	= vtransform(Camera_Location,Camera_Transform);
 		#declare Camera_LookAt		= vtransform(Camera_LookAt,Camera_Transform);
 	#break
-	// spherical, inside spinner habitat, render using 2:1 aspect ratio
+	// spherical (inside spinner habitat, render using 2:1 aspect ratio)
 	#case (11)
 		#declare Camera_Up			= +y * 420;
 		#declare Camera_Right		= +x * 420;
@@ -369,9 +369,9 @@
 		#declare Camera_Location	= vtransform(Camera_Location,Camera_Transform);
 		#declare Camera_LookAt		= vtransform(Camera_LookAt,Camera_Transform);
 	#break
-	// orthographic (overhead), above spinner habitat
+	// orthographic (overhead, above spinner habitat, square aspect ratio)
 	#case (12)
-		#declare Camera_Up		= +y * 1000;
+		#declare Camera_Up			= +y * 1000;
 		#declare Camera_Right		= +x * 1000;
 		#declare Camera_Direction	= +z * 500;
 		#declare Camera_Location	= -z * 500;
@@ -385,7 +385,7 @@
 		camera
 		{
 			orthographic
-			up		Camera_Up
+			up			Camera_Up
 			right		Camera_Right
 			location	Camera_Location
 			direction	Camera_Direction
@@ -394,7 +394,7 @@
 		#declare Camera_Location	= vtransform(Camera_Location,Camera_Transform);
 		#declare Camera_LookAt		= vtransform(Camera_LookAt,Camera_Transform);
 	#break
-	// cube map, inside spinner habitat, dead center, render using square aspect ratio only!
+	// cube map (inside spinner habitat, dead center, render using square aspect ratio only!)
 	#case (13)
 //		#declare Camera_Up		= +y * 420;
 //		#declare Camera_Right		= +x * 420;

@@ -123,7 +123,7 @@
 			bounded_by {cylinder {-z * (main_strut_width+0), +z * 0, main_body_radius}}
 			translate +z * (hab_hub_length/2)
 		}
-	/*
+/*
 		#for (i, 0, 5)
 			cylinder
 			{
@@ -138,7 +138,7 @@
 				translate +z * (hab_hub_length/2 - main_strut_width/2)
 			}
 		#end
-	*/
+*/
 		// at ends of habitats
 		difference
 		{
@@ -272,7 +272,7 @@
 #if (!NoEngines)
 	// parabolic exhaust cone
 	#local z_position = pow(nozzle_radius,2)/nozzle_radius * 4;
-	#local exhaust_scale = nozzle_radius * 3/2;
+	#local exhaust_scale = nozzle_radius * 2/2;
 	#ifndef (Exhaust_Object)
 		verbose_include("gh_rocket_chess_exhaust.inc", 0)
 	#end

@@ -64,6 +64,8 @@
 #declare city_use_mesh	= 0;//					// boolean, replace some basic CSG shapes with meshes? may not work 100% of the time
 #declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
 
+#include "gh_spinner_variables_c.inc"
+
 // citygen variables (mostly)
 #declare city_rotate		= 0;					// float, degrees	22.5
 #declare city_night		= false;				// boolean, obsolete?

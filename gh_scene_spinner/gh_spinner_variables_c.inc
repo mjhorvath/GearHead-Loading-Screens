@@ -68,7 +68,8 @@
 #declare outer_shell_radius2	= outer_shell_radius1 - metal_thick;		// float
 #declare outer_shell_radius3	= outer_shell_radius2 - outer_rock_thick;	// float
 #declare outer_shell_radius4	= outer_shell_radius3 - metal_thick;		// float
-#declare hab_hub_length			= inner_shell_bulge * 2 + metal_thick * 4 + Meters * 4;				// float
+#declare hab_hub_gap			= Meters * 4;				// float
+#declare hab_hub_length			= inner_shell_bulge * 2 + metal_thick * 4 + hab_hub_gap;				// float
 #declare hab_section_length		= city_length + metal_thick * 2;	// float, needs to take bulging endcaps into account
 #declare hab_section_offset		= hab_section_length/2 + hab_hub_length/2;	// float
 #declare hab_total_length		= hab_section_length * 2 + hab_hub_length;	// float
@@ -77,15 +78,16 @@
 #declare main_strut_radius		= Meters * 4;				// float
 #declare main_strut_width		= Meters * 8;				// float
 #declare main_body_radius		= outer_shell_radius1 + main_strut_radius * 2;	// float
-#declare trusshub_start			= hab_total_length/2 + Meters * 64;	// float
+#declare trusshub_start			= hab_total_length/2 + Meters * 64;			// float
 #declare trusshub_length		= Meters * 128;				// float
-#declare nose_cone_radius		= outer_shell_radius1 * 4/3;		// float
-#declare nose_cone_position		= nose_cone_radius + Meters * 64;	// float
+#declare nose_cone_radius		= outer_shell_radius1 * 4/3;				// float
+#declare nose_cone_position		= nose_cone_radius + Meters * 64;			// float
 #declare nose_cone_length		= 5;					// float, t-value
 #declare nose_wire_radius_thick	= Meters/1;				// float
 #declare nose_wire_radius_thin	= Meters/4;				// float
 #declare nose_wire_para_thick	= 0.1;					// float, t-value
 #declare nose_wire_para_thin	= nose_wire_para_thick/1;					// float, t-value
+#declare nose_ring_radius		= Meters * 2;			// float
 #declare window_radius			= outer_shell_radius1 * 2/9;		// float
 //#declare reactor_start		= trusshub_start + trusshub_length;	// float
 #declare reactor_start			= trusshub_start;			// float
@@ -257,4 +259,35 @@
 	#if (debug_progress)
 		#debug in_string
 	#end
+#end
+#macro ped_macro(in_seed)
+	// need to create hair too
+	#local col1 = gamma_color_adjust(<rand(in_seed),rand(in_seed),rand(in_seed)>);
+	#local col2 = gamma_color_adjust(<rand(in_seed),rand(in_seed),rand(in_seed)>);
+//	#local col3 = gamma_color_adjust(<128,080,048>/255+rand(in_seed)*128/255);
+	#local col3 = gamma_color_adjust(<044,018,018>/255+rand(in_seed)*<192,192,170>/255);
+	union
+	{
+		sphere
+		{
+			y/2, 1/2
+			pigment {col1}
+			scale <1/4,1,1/4>
+		}
+		difference
+		{
+			sphere {y/2, 1/2}
+			plane {y, 1/2}
+			pigment {col2}
+			scale <1/3,1,1/3>
+		}
+		sphere
+		{
+			y, 1/12
+			pigment {col3}
+			scale <4/3,1,4/3>
+		}
+		scale <rand(in_seed) * 1/2 + 1/2,rand(in_seed) * 1/2 + 1/2,rand(in_seed) * 1/2 + 1/2>
+		scale people_max_height
+	}
 #end

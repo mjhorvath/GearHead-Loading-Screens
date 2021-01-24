@@ -32,6 +32,7 @@
 // +SR0.5 +SC0.6 +ER0.9 +EC0.9
 // +a0.0
 // +q0
+// +q11 +am2 +r4 +j
 
 
 //------------------------------------------------------------------------------Variables
@@ -54,7 +55,7 @@
 #declare Seed				= seed(8829464);		// seed for random number generator
 #declare Included			= 1;					// boolean, tells any included files that they are being included.
 #declare TexQual			= 2;					// integer, -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
-#declare Minimal			= 1;					// boolean, a minimalist render with lots of features turned off
+#declare Minimal			= 0;					// boolean, a minimalist render with lots of features turned off
 #declare Meters				= 1;					// float, 1 meter
 #declare Subdivision		= 0;					// boolean, only needed for some mecha, and only works in an unofficial build of POV-Ray 3.6
 #declare Camera_Inside		= 0;					// boolean
@@ -136,7 +137,7 @@
 	#declare NoPedestrians	= 1;					// boolean
 	#declare NoReactor		= 0;					// boolean
 	#declare NoDock			= 0;					// boolean
-	#declare NoDockShips	= 1;					// boolean
+	#declare NoDockShips	= 0;					// boolean
 	#declare NoNoseCone		= 0;					// boolean
 	#declare NoNoseGrid		= 0;					// boolean
 	#declare NoEngines		= 0;					// boolean
@@ -149,7 +150,7 @@
 	#declare NoMeasure		= 0;//					// boolean, the distance measurement image map
 	#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
 	#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
-	#declare ShowWhole		= 1;					// boolean, show the entire outer shell, not finished
+	#declare ShowWhole		= 0;					// boolean, show the entire outer shell, not finished
 	#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
 	#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
 	#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
@@ -383,8 +384,11 @@ union
 		#debug "\n<<Finish outer ships\n"
 	#end
 
-	rotate		<0,-135,0>
-	rotate		<-30,0,0>
+	// Rotate the entire ship by these amounts
+	#if (!Camera_Inside)
+		rotate		<0,-135,0>
+		rotate		<-30,0,0>
+	#end
 }
 
 // Outer space environment

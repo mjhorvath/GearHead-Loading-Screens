@@ -1,21 +1,21 @@
 // grass setup
 verbose_include("grasspatch.inc", 0)
-#local someseed			= seed(2345);
-#local xseed			= seed(422);
-#local zseed			= seed(369);
+#local someseed				= seed(2345);
+#local xseed				= seed(422);
+#local zseed				= seed(369);
 #local Patch_Tranlation		= <0,0,0>;		// typo?
-#local PlotPoints		= false;
+#local PlotPoints			= false;
 #local Blade_Density		= 8;		// per unit length. Square this to know how many will be in each unit squared of landscape
-#local Patch_Shape		= 0;		// Circular
+#local Patch_Shape			= 0;		// Circular
 #local Spread_Correction	= 0.9;
 #local Blade_Height_Minimum	= 1/2;		// Blade_Heights are in standard POV units
 #local Blade_Height_Maximum	= 1;
 #local Use_Blade_Distance	= true;
-#local Blade_Detail		= 4;
+#local Blade_Detail			= 4;
 #local Max_Blade_Angle		= 0;
 #local Min_Blade_Angle		= 0;
-#local Blade_Scale		= 0.5;
-#local Blade_Width		= 0.1;
+#local Blade_Scale			= 0.5;
+#local Blade_Width			= 0.1;
 #local Use_Blade_Distance	= true;
 #local Max_Blade_Detail		= 20;
 #local Min_Blade_Detail		= 5;
@@ -27,17 +27,17 @@ verbose_include("grasspatch.inc", 0)
 }
 
 // dome setup
-#local N			= 2;
-#local Half			= 1;
+#local N				= 2;		// 2
+#local Half				= 1;
 #local Method			= 1;
-#local Disc			= 0;
-#local R_Ten		= 0.01 / N;
-#local R_Hen		= 0.01 / N;
-#local Thickness	= R_Hen / 2;
+#local Disc				= 0;
+#local R_Ten			= 0.01 / N;
+#local R_Hen			= 0.01 / N;
+#local Thickness		= R_Hen / 2;
 verbose_include("sphere.inc", 0)
-#local ring_radius = agridome_ringrad/agridome_radius;
-#local ring_circum = 2 * pi * agridome_ringrad;
-#local small_angle = agridome_radius/ring_circum * 360;
+#local ring_radius		= agridome_ringrad/agridome_radius;
+#local ring_circum		= 2 * pi * agridome_ringrad;
+#local small_angle		= agridome_radius/ring_circum * 360;
 #local RibTexture		= texture {white_metal_texture}
 #local PaneTexture		= material {dome_material}				// should be a material with an ior!!!
 #local DirtTexture		= texture
