@@ -290,7 +290,7 @@
 		{
 			0, -z * engine_chamber_length, engine_chamber_radius
 			texture {engine_nozzle_texture}
-			translate -z * (engine_sphere_radius1)
+			translate -z * (engine_chamber_start)
 		}
 		// parabolic rocket engine cone
 		intersection
@@ -316,7 +316,7 @@
 			plane {-z, nozzle_length}
 			bounded_by {cylinder {0, -z * nozzle_length, nozzle_radius}}
 			texture {engine_nozzle_texture}
-			translate -z * (engine_sphere_radius1 + engine_chamber_length)
+			translate -z * (engine_chamber_start + engine_chamber_length)
 		}
 		// exhaust gas/flame
 		#ifndef (Exhaust_Object)
@@ -328,7 +328,7 @@
 			rotate		<0,90,0>
 			scale		exhaust_radius
 			scale		+z * 2
-			translate	-z * (engine_sphere_radius1 + engine_chamber_length + exhaust_radius)
+			translate	-z * (engine_chamber_start + engine_chamber_length + exhaust_radius)
 		}
 /*
 		// engine connector hub
