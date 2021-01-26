@@ -1,5 +1,5 @@
 DISCLAIMER
-+ This scene is called "Spinner" because my orignal intent was to model one of the several O'Neill cylinders in the GearHead universe. (I didn't really know what an O'Neill cylinder was at the time, either.) It has since then turned into more of a colony ship meant to travel between very distant locations. These don't exist in GearHead's universe.
++ This scene is called "Spinner" because my orignal intent was to model one of the several O'Neill cylinders in the GearHead universe. (I didn't really know what an O'Neill cylinder was at the time, either.) It has since then turned into more of a colony ark or transport meant to travel between very distant locations for many months. These don't exist in GearHead's universe AFAIK.
 
 ISSUES/TO DO LIST
 + smooth the street pavement texture
@@ -83,3 +83,5 @@ ISSUES/TO DO LIST
 - end caps of the two habitats are overlapping, need to increase the space between them a little
 - more gold windows look better
 - rail pedestals should be aligned with the middle of buildings, not the intersections between buildings
+- Engine need pipes and tubing to direct the fuel from the tanks to the engine.
+- Need to decide what type of engine the ship uses.

@@ -142,7 +142,7 @@
 	#declare NoNoseGrid		= 0;					// boolean
 	#declare NoEngines		= 0;					// boolean
 	#declare NoArray		= 0;					// boolean
-	#declare NoPanels		= 0;					// boolean
+	#declare NoPanels		= 1;					// boolean
 	#declare NoDomes		= 1;					// boolean
 	#declare NoElse			= 0;					// boolean
 	#declare NoStruts		= 0;					// boolean, everything not already disabled

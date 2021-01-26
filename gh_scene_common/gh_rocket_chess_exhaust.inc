@@ -94,7 +94,7 @@
 		media
 		{
 			samples 15
-			emission 1.5/exhaust_scale
+			emission 1.5/exhaust_radius
 			density
 			{
 				function {abs(Exhaust_X(x))}
@@ -109,7 +109,7 @@
 		media
 		{
 			samples 15
-			absorption 0.5/exhaust_scale
+			absorption 0.5/exhaust_radius
 			density
 			{
 				function {abs(Exhaust_X(x))}

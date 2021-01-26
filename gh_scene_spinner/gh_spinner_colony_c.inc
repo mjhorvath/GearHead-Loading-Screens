@@ -268,28 +268,18 @@
 
 
 //------------------------------------------------------------------------------Engines
+// should put little torus rings along the length of the nozzle
 
 #if (!NoEngines)
-	// parabolic exhaust cone
-	#local z_position = pow(nozzle_radius,2)/nozzle_radius * 4;
-	#local exhaust_scale = nozzle_radius * 2/2;
-	#ifndef (Exhaust_Object)
-		verbose_include("gh_rocket_chess_exhaust.inc", 0)
-	#end
 	union
 	{
-		// spherical fuel tanks
-		union
+		// combustion chamber
+		cylinder
 		{
-			#for (i, 0, 5)
-				sphere
-				{
-					-x * engine_sphere_distance, engine_sphere_radius
-					rotate +z * i * 60
-				}
-			#end
-			texture {white_metal_texture}
+			0, -z * engine_chamber_length, engine_chamber_radius
+			texture {engine_nozzle_texture}
 		}
+		// parabolic rocket engine cone
 		intersection
 		{
 			difference
@@ -298,28 +288,34 @@
 				{
 					Paraboloid_Z
 					scale nozzle_radius
-					translate -z * Meters
+					scale +z * nozzle_z_scale_factor
+					translate -z * Meters/2
 				}
 				object
 				{
 					Paraboloid_Z
 					scale nozzle_radius
-					translate +z * Meters
+					scale +z * nozzle_z_scale_factor
+					translate +z * Meters/2
 				}
 				rotate y * 180
 			}
-			plane {-z, z_position}
-			// incorrect
-//			bounded_by {cylinder {0, -z * z_position, nozzle_radius}}
+			plane {-z, nozzle_length}
+			bounded_by {cylinder {0, -z * nozzle_length, nozzle_radius}}
 			texture {engine_nozzle_texture}
-			translate -z * (engine_sphere_radius)
+			translate -z * (engine_chamber_length)
 		}
+		// exhaust gas/flame
+		#ifndef (Exhaust_Object)
+			verbose_include("gh_rocket_chess_exhaust.inc", 0)
+		#end
 		object
 		{
 			Exhaust_Object
-			rotate <0,90,0>
-			scale exhaust_scale
-			translate -z * (engine_sphere_radius + Meters * 128)
+			rotate		<0,90,0>
+			scale		exhaust_radius
+			scale		+z * 2
+			translate	-z * (engine_chamber_length + exhaust_radius)
 		}
 /*
 		// engine connector hub
@@ -358,7 +354,7 @@
 			texture {white_metal_texture}
 		}
 */
-		translate -z * (engine_start + engine_length/2)
+		translate -z * (engine_start)
 	}
 	// big tanks
 	union
