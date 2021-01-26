@@ -6,8 +6,8 @@
 		// central axis
 //		difference
 //		{
-//			cylinder {+z * (hab_total_length/2 + nose_cone_position + 0), -z * (engine_start + engine_length + 0), central_axis_radius}
-//			cylinder {+z * (hab_total_length/2 + nose_cone_position + 1), -z * (engine_start + engine_length + 1), central_axis_radius - metal_thick}
+//			cylinder {+z * (hab_total_length/2 + nose_cone_position + 0), -z * (engine_start+engine_chamber_begin + 0), central_axis_radius}
+//			cylinder {+z * (hab_total_length/2 + nose_cone_position + 1), -z * (engine_start+engine_chamber_begin + 1), central_axis_radius - metal_thick}
 //		}
 		// main struts
 		#for (i, 0, 5)
@@ -16,9 +16,9 @@
 				// large struts around remainder of the ship
 				difference
 				{
-					cylinder {-z * (hab_total_length/2 - 0), -z * (engine_start + engine_length + 0), main_strut_radius}
-					cylinder {-z * (hab_total_length/2 - 1), -z * (engine_start + engine_length + 1), main_strut_radius - metal_thick}
-					bounded_by {box {<-main_strut_radius,-main_strut_radius,-(hab_total_length/2 - 0)>, <+main_strut_radius,+main_strut_radius,-(engine_start + engine_length + 0)>}}
+					cylinder {-z * (hab_total_length/2 - 0), -z * (engine_start+engine_chamber_begin + 0), main_strut_radius}
+					cylinder {-z * (hab_total_length/2 - 1), -z * (engine_start+engine_chamber_begin + 1), main_strut_radius - metal_thick}
+					bounded_by {box {<-main_strut_radius,-main_strut_radius,-(hab_total_length/2 - 0)>, <+main_strut_radius,+main_strut_radius,-(engine_start+engine_chamber_begin + 0)>}}
 				}
 				// long struts around habitats
 				difference
@@ -90,14 +90,14 @@
 			cylinder {-z * 0, +z * (main_strut_width+0), main_body_radius}
 			cylinder {-z * 1, +z * (main_strut_width+1), main_body_radius - main_strut_radius * 2}
 			bounded_by {cylinder {-z * 0, +z * (main_strut_width+0), main_body_radius}}
-			translate -z * (engine_start + engine_length)
+			translate -z * (engine_start+engine_chamber_begin)
 		}
 		#for (i, 0, 5)
 			cylinder
 			{
 				0, +y * main_body_radius - main_strut_radius, main_strut_radius
 				rotate +z * 60 * i
-				translate -z * (engine_start + engine_length - main_strut_width/2)
+				translate -z * (engine_start+engine_chamber_begin - main_strut_width/2)
 			}
 		#end
 		// at reactor
@@ -286,13 +286,15 @@
 			texture {white_metal_texture}
 		}
 		// combustion chamber
+		// not quite the correct shape
 		cylinder
 		{
 			0, -z * engine_chamber_length, engine_chamber_radius
 			texture {engine_nozzle_texture}
-			translate -z * (engine_chamber_start)
+			translate -z * (engine_chamber_begin)
 		}
 		// parabolic rocket engine cone
+		// should really be a parallel surface
 		intersection
 		{
 			difference
@@ -302,21 +304,20 @@
 					Paraboloid_Z
 					scale nozzle_radius
 					scale +z * nozzle_z_scale_factor
-					translate -z * Meters/2
 				}
 				object
 				{
 					Paraboloid_Z
 					scale nozzle_radius
 					scale +z * nozzle_z_scale_factor
-					translate +z * Meters/2
+					translate +z * Meters
 				}
 				rotate y * 180
 			}
 			plane {-z, nozzle_length}
 			bounded_by {cylinder {0, -z * nozzle_length, nozzle_radius}}
 			texture {engine_nozzle_texture}
-			translate -z * (engine_chamber_start + engine_chamber_length)
+			translate -z * (engine_chamber_begin + engine_chamber_length)
 		}
 		// exhaust gas/flame
 		#ifndef (Exhaust_Object)
@@ -327,8 +328,8 @@
 			Exhaust_Object
 			rotate		<0,90,0>
 			scale		exhaust_radius
-			scale		+z * 2
-			translate	-z * (engine_chamber_start + engine_chamber_length + exhaust_radius)
+			scale		+z * nozzle_z_scale_factor
+			translate	-z * (engine_chamber_begin + engine_chamber_length + Meters * 12 * nozzle_z_scale_factor)
 		}
 /*
 		// engine connector hub
@@ -428,7 +429,7 @@
 		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(dock_start+dock_length)>}
 		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(dock_start)>}
 		// engine blinkies
-		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(engine_start+engine_length)>}
+		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(engine_start+engine_chamber_begin)>}
 	}
 	union
 	{
@@ -483,7 +484,7 @@
 	}
 	#local thruster_group = union
 	{
-		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),-1*(engine_start+engine_length/2)>}
+		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),-1*(engine_start+engine_chamber_begin/2)>}
 		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),-1*(reactor_start+reactor_length/2)>}
 		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),-1*(hab_section_offset)>}
 		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),+1*(hab_section_offset)>}

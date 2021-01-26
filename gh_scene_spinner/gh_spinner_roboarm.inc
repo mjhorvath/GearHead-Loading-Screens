@@ -1,48 +1,54 @@
 // robo-arm
+// need to add some knuckles and joints in the fingers
+#local robo_radius = 4;
+#local robo_length = 256;
 union
 {
 	// base
-	cylinder {0, <0,4,0>, 16}
+	cylinder {0, +y*robo_radius/2, robo_radius*2}
 	// nub
-	cylinder {0, y*8, 8}
-	sphere {y*8, 8}
+	cylinder {0, +y*robo_radius, robo_radius}
+	sphere {+y*robo_radius, robo_radius}
 	// arm
 	union
 	{
-		cylinder {<0,0,0>, <256,0,0>, 8}
-		cylinder {<256,0,0>, <256,16,0>, 8}
-		sphere {<256,0,0>, 8}
-		sphere {<256,16,0>, 8}
+		cylinder {0, +x*robo_length, robo_radius}
+		cylinder {+x*robo_length, <+robo_length,+robo_radius*2,0>, robo_radius}
+		sphere {+x*robo_length, robo_radius}
+		sphere {<+robo_length,+robo_radius*2,0>, robo_radius}
 		union
 		{
-			cylinder {<-256,0,0>, <0,0,0>, 8}
-			cylinder {<-256,0,0>, <-256,16,0>, 8}
-			sphere {<-256,0,0>, 8}
-			sphere {<-256,16,0>, 8}
+			cylinder {-x*robo_length, 0, robo_radius}
+			cylinder {-x*robo_length, <-robo_length,+robo_radius*2,0>, robo_radius}
+			sphere {-x*robo_length, robo_radius}
+			sphere {<-robo_length,+robo_radius*2,0>, robo_radius}
 			union
 			{
-				cylinder {<64,0,0>, <0,0,0>, 8}
-				cylinder {<64,0,0>, <64,16,0>, 8}
-				sphere {<64,0,0>, 8}
+				cylinder {+x*robo_length/4, 0, robo_radius}
+				cylinder {+x*robo_length/4, <+robo_length/4,+robo_radius*2,0>, robo_radius}
+				sphere {+x*robo_length/4, robo_radius}
 				union
 				{
-					sphere {<0,0,0>, 8}
+					sphere {0, robo_radius}
+					sphere {y*4,2 translate z*4 rotate x * 15 rotate y * 000}
+					sphere {y*4,2 translate z*4 rotate x * 15 rotate y * 120}
+					sphere {y*4,2 translate z*4 rotate x * 15 rotate y * 240}
 					cone {y*4, 2, y*16, 0 translate z*4 rotate x * 15 rotate y * 000}
 					cone {y*4, 2, y*16, 0 translate z*4 rotate x * 15 rotate y * 120}
 					cone {y*4, 2, y*16, 0 translate z*4 rotate x * 15 rotate y * 240}
-					translate y * 16
-					translate x * 64
+					translate	+y*robo_radius*2
+					translate	+x*robo_length/4
 				}
-				translate y * 16
-				rotate -y * 30
-				translate x * -256
+				translate	+y*robo_radius*2
+				rotate		-y*30
+				translate	-x*robo_length
 			}
-			translate y * 16
-			rotate -y * 15
-			translate x * 256
+			translate	+y*robo_radius*2
+			rotate		-y*15
+			translate	+x*robo_length
 		}
-		translate y * 8
-		rotate +y * 15
+		translate	+y*robo_radius
+		rotate		+y*15
 	}
 	#ifndef (Included)
 		pigment {color rgb 1}
