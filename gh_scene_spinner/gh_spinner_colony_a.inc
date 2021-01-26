@@ -1162,19 +1162,19 @@ background {color srgb 0}
 						superellipsoid
 						{
 							<0.001, 0.1>
-							scale <dock_depth + dock_thick,dock_radius1*2,dock_length/2>
+							scale <dock_depth + dock_thick,dock_radius_outer*2,dock_length/2>
 							translate -z * dock_length/2
 							rotate z * (dock_cnt * 60 + 30)
 						}
 						superellipsoid
 						{
 							<0.001, 0.1>
-							scale <dock_depth,dock_radius1*2,dock_length/2 - dock_thick>
+							scale <dock_depth,dock_radius_outer*2,dock_length/2 - dock_thick>
 							translate -z * dock_length/2
 							rotate z * (dock_cnt * 60 + 30)
 						}
-						cylinder {<0,0,+1>, <0,0,-dock_length-1>, dock_radius1 inverse}
-						cylinder {<0,0,+1>, <0,0,-dock_length-1>, dock_radius2}
+						cylinder {<0,0,+1>, <0,0,-dock_length-1>, dock_radius_outer inverse}
+						cylinder {<0,0,+1>, <0,0,-dock_length-1>, dock_radius_inner}
 						translate -z * (dock_start)
 					}
 					#local dock_cnt = dock_cnt + 1;
@@ -1205,8 +1205,8 @@ background {color srgb 0}
 							#local dock_cnt = dock_cnt + 1;
 						#end
 					}
-					cylinder {<0,0,-dock_length/2>, <0,0,+dock_length/2>, dock_radius2}
-					cylinder {<0,0,-dock_length/2>, <0,0,+dock_length/2>, dock_radius1 inverse}
+					cylinder {<0,0,-dock_length/2>, <0,0,+dock_length/2>, dock_radius_inner}
+					cylinder {<0,0,-dock_length/2>, <0,0,+dock_length/2>, dock_radius_outer inverse}
 					translate -z * (dock_start + dock_length/2)
 				}
 			}
@@ -1387,7 +1387,7 @@ background {color srgb 0}
 			translate -z * (dock_start+dock_length*3/12)
 			translate -y * dock_depth
 			translate +y * city_units
-			translate +x * dock_radius1*9/12
+			translate +x * dock_radius_outer*9/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 		new_random_color()
@@ -1409,7 +1409,7 @@ background {color srgb 0}
 			translate -z * (dock_start+dock_length*3/12)
 			translate -y * dock_depth
 			translate +y * city_units
-			translate -x * dock_radius1*9/12
+			translate -x * dock_radius_outer*9/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 
@@ -1439,7 +1439,7 @@ background {color srgb 0}
 			translate -z * (dock_start+dock_length*9/12)
 			translate -y * dock_depth
 			translate +y * city_units
-			translate -x * dock_radius1*8/12
+			translate -x * dock_radius_outer*8/12
 		}
 
 		// cargo containers
@@ -1478,7 +1478,7 @@ background {color srgb 0}
 				}
 				rotate y * 360 * rand(Seed)
 				translate -z * (dock_start + dock_length/6 + dock_length/3 * rand(Seed))
-				translate -x * ((dock_radius1 * 3/4 - dock_radius2) * rand(Seed) + dock_radius2)
+				translate -x * ((dock_radius_outer * 3/4 - dock_radius_inner) * rand(Seed) + dock_radius_inner)
 				translate -y * (dock_depth)
 				translate +y * (city_units)
 			}
@@ -1494,7 +1494,7 @@ background {color srgb 0}
 				ped_macro(Seed)
 				translate -z * (dock_start + dock_length/6 + dock_length/3*rand(Seed))
 				translate -x * (dock_length/3*rand(Seed))
-				translate -y * (dock_radius1*1/4)
+				translate -y * (dock_radius_outer*1/4)
 				translate +y * (city_units)
 			}
 			#local people_cnt = people_cnt + 1;
@@ -1508,7 +1508,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate -x*(dock_radius1/2+city_units*16)
+				translate -x*(dock_radius_outer/2+city_units*16)
 				translate -z*(dock_start+dock_thick+city_units*8)
 			}
 			object
@@ -1516,7 +1516,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate -x*(dock_radius1/2+city_units*24)
+				translate -x*(dock_radius_outer/2+city_units*24)
 				translate -z*(dock_start+dock_thick+city_units*8)
 			}
 			object
@@ -1524,7 +1524,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate +x*(dock_radius1/2+city_units*16)
+				translate +x*(dock_radius_outer/2+city_units*16)
 				translate -z*(dock_start+dock_thick+city_units*8)
 			}
 			object
@@ -1532,7 +1532,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate +x*(dock_radius1/2+city_units*24)
+				translate +x*(dock_radius_outer/2+city_units*24)
 				translate -z*(dock_start+dock_thick+city_units*8)
 			}
 
@@ -1541,7 +1541,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate -x*(dock_radius1/2+city_units*16)
+				translate -x*(dock_radius_outer/2+city_units*16)
 				translate -z*(dock_start+dock_length-dock_thick-city_units*8)
 			}
 			object
@@ -1549,7 +1549,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate -x*(dock_radius1/2+city_units*24)
+				translate -x*(dock_radius_outer/2+city_units*24)
 				translate -z*(dock_start+dock_length-dock_thick-city_units*8)
 			}
 			object
@@ -1557,7 +1557,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate +x*(dock_radius1/2+city_units*16)
+				translate +x*(dock_radius_outer/2+city_units*16)
 				translate -z*(dock_start+dock_length-dock_thick-city_units*8)
 			}
 			object
@@ -1565,7 +1565,7 @@ background {color srgb 0}
 				fuel_tank(city_units*8,city_units*4)
 				rotate x * 90
 				translate +y*city_units*8
-				translate +x*(dock_radius1/2+city_units*24)
+				translate +x*(dock_radius_outer/2+city_units*24)
 				translate -z*(dock_start+dock_length-dock_thick-city_units*8)
 			}
 			translate -y*dock_depth
@@ -1589,8 +1589,8 @@ background {color srgb 0}
 			#declare truss_sections = 8;
 			#declare truss_radius = city_units*8;
 			#declare truss_thickness = city_units;
-			#declare truss_point1 = <dock_radius2-truss_radius-truss_thickness,0,-dock_start - dock_length*15/16>;
-			#declare truss_point2 = <dock_radius2-truss_radius-truss_thickness,0,-dock_start - dock_length*01/16>;
+			#declare truss_point1 = <dock_radius_inner-truss_radius-truss_thickness,0,-dock_start - dock_length*15/16>;
+			#declare truss_point2 = <dock_radius_inner-truss_radius-truss_thickness,0,-dock_start - dock_length*01/16>;
 			#declare truss_rotate = 180;
 			object
 			{
@@ -1638,7 +1638,7 @@ background {color srgb 0}
 			rotate y*15
 			translate -y*(dock_depth-city_units)
 			translate -z*(city_length/2+ring_length+dock_length*1/4)
-			translate +x*(dock_radius1*3/4)
+			translate +x*(dock_radius_outer*3/4)
 			texture {yellow_metal_texture}
 		}
 	#end
@@ -1726,7 +1726,7 @@ background {color srgb 0}
 				object {Paraboloid_Z	scale 0.999}
 				plane {-z,-0.05}
 				rotate y * 180
-				scale		dock_radius1/4
+				scale		dock_radius_outer/4
 			}
 			cylinder {<0,0,0>, <0,0,-city_units*8>, city_units/2}
 			scale 2
@@ -1764,31 +1764,31 @@ background {color srgb 0}
 			object
 			{
 				comm_dome
-				translate	-y*dock_radius1 * 5/6
+				translate	-y*dock_radius_outer * 5/6
 				rotate		+z * 000
 			}
 			object
 			{
 				comm_truss
-				translate	-y*dock_radius1 * 5/6
+				translate	-y*dock_radius_outer * 5/6
 				rotate		+z * 000
 			}
 			object
 			{
 				comm_dish
-				translate	-y*dock_radius1 * 5/6
+				translate	-y*dock_radius_outer * 5/6
 				rotate		+z * 040
 			}
 			object
 			{
 				comm_truss
-				translate	-y*dock_radius1 * 5/6
+				translate	-y*dock_radius_outer * 5/6
 				rotate		+z * 040
 			}
 			object
 			{
 				comm_anten
-				translate	-y*dock_radius1 * 5/6
+				translate	-y*dock_radius_outer * 5/6
 				rotate		+z * 330
 			}
 			translate	-z*(habitat_length/2)
@@ -1809,7 +1809,7 @@ background {color srgb 0}
 
 	#local blinky_group = union
 	{
-		object {blinky_sphere	translate <0,-dock_radius1-blinky_radius,-habitat_length/2-ring_length-dock_length>}
+		object {blinky_sphere	translate <0,-dock_radius_outer-blinky_radius,-habitat_length/2-ring_length-dock_length>}
 		object {blinky_sphere	translate <0,-outer_shell_radius1-blinky_radius,-habitat_length/2>}
 		object {blinky_sphere	translate <0,-outer_shell_radius1-blinky_radius,+habitat_length/2>}
 	}
@@ -1833,7 +1833,7 @@ background {color srgb 0}
 	}
 	#local thruster_group = union
 	{
-//		object {thruster_aggregate	translate <0,-dock_radius1-thruster_tank_radius,-habitat_length/2-ring_length-dock_length>}
+//		object {thruster_aggregate	translate <0,-dock_radius_outer-thruster_tank_radius,-habitat_length/2-ring_length-dock_length>}
 		object {thruster_aggregate	translate <0,-(outer_shell_radius1+thruster_tank_radius*2),-habitat_length/2>}
 		object {thruster_aggregate	translate <0,-(outer_shell_radius1+thruster_tank_radius*2),+habitat_length/2-ring_length>}
 		texture {white_metal_texture}

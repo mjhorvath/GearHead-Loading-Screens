@@ -105,7 +105,7 @@ intersection
 		object {Paraboloid_Z	scale 0.999}
 		plane {-z,-0.05}
 		rotate y * 180
-		scale		dock_radius1/4
+		scale		dock_radius_outer/4
 	}
 	cylinder {<0,0,0>, <0,0,-Meters*8>, Meters/2}
 	scale 2

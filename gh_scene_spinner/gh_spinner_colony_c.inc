@@ -273,11 +273,24 @@
 #if (!NoEngines)
 	union
 	{
+		// spherical fuel tanks
+		union
+		{
+			#for (i, 0, 5)
+				sphere
+				{
+					-x * engine_sphere_radius2, engine_sphere_radius1
+					rotate +z * i * 60
+				}
+			#end
+			texture {white_metal_texture}
+		}
 		// combustion chamber
 		cylinder
 		{
 			0, -z * engine_chamber_length, engine_chamber_radius
 			texture {engine_nozzle_texture}
+			translate -z * (engine_sphere_radius1)
 		}
 		// parabolic rocket engine cone
 		intersection
@@ -303,7 +316,7 @@
 			plane {-z, nozzle_length}
 			bounded_by {cylinder {0, -z * nozzle_length, nozzle_radius}}
 			texture {engine_nozzle_texture}
-			translate -z * (engine_chamber_length)
+			translate -z * (engine_sphere_radius1 + engine_chamber_length)
 		}
 		// exhaust gas/flame
 		#ifndef (Exhaust_Object)
@@ -315,7 +328,7 @@
 			rotate		<0,90,0>
 			scale		exhaust_radius
 			scale		+z * 2
-			translate	-z * (engine_chamber_length + exhaust_radius)
+			translate	-z * (engine_sphere_radius1 + engine_chamber_length + exhaust_radius)
 		}
 /*
 		// engine connector hub
@@ -412,10 +425,10 @@
 		object {blinky_sphere(blinky_radius)	translate <0,-(outer_shell_radius1+blinky_radius),-(hab_section_length/2-hab_section_offset)>}
 		object {blinky_sphere(blinky_radius)	translate <0,-(outer_shell_radius1+blinky_radius),+(hab_section_length/2-hab_section_offset)>}
 		// docking bay blinkies
-		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius1+blinky_radius),-(dock_start+dock_length)>}
-		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius1+blinky_radius),-(dock_start)>}
+		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(dock_start+dock_length)>}
+		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(dock_start)>}
 		// engine blinkies
-		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius1+blinky_radius),-(engine_start+engine_length)>}
+		object {blinky_sphere(blinky_radius)	translate <0,-(dock_radius_outer+blinky_radius),-(engine_start+engine_length)>}
 	}
 	union
 	{

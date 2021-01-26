@@ -59,8 +59,8 @@
 #declare reactor_radius			= outer_shell_radius1;		// float
 #declare dock_length			= Meters * 256;				// float
 #declare dock_start				= habitat_length/2 + trusshub_length + reactor_radius * 2;		// float
-#declare dock_radius1			= outer_shell_radius1;		// float
-#declare dock_radius2			= outer_shell_radius1 * 1/4;		// float
+#declare dock_radius_outer			= outer_shell_radius1;		// float
+#declare dock_radius_inner			= outer_shell_radius1 * 1/4;		// float
 #declare dock_depth				= Meters * 48;				// float
 #declare dock_thick				= Meters * 4;			// float
 #declare total_length			= habitat_length + trusshub_length + reactor_radius * 2 + dock_length;		// float

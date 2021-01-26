@@ -17,7 +17,7 @@ difference
 				}
 			}
 			translate <-1/2,-1/2,0>
-			scale <dock_length*7/8,dock_radius1*2,1>
+			scale <dock_length*7/8,dock_radius_outer*2,1>
 			rotate y * 90
 		}
 		#for (i, 1, 3)
@@ -26,18 +26,18 @@ difference
 				superellipsoid
 				{
 					<0.001, 0.1>
-					scale <dock_depth + dock_thick,dock_radius1*2,dock_length/2>
+					scale <dock_depth + dock_thick,dock_radius_outer*2,dock_length/2>
 					rotate +z * (i * 60 + 30)
 				}
 				superellipsoid
 				{
 					<0.001, 0.1>
-					scale <dock_depth,dock_radius1*2,dock_length/2 - dock_thick>
+					scale <dock_depth,dock_radius_outer*2,dock_length/2 - dock_thick>
 					rotate +z * (i * 60 + 30)
 				}
-				cylinder {<0,0,+dock_length/2+1>, <0,0,-dock_length/2-1>, dock_radius1 inverse}
-				cylinder {<0,0,+dock_length/2+1>, <0,0,-dock_length/2-1>, dock_radius2}
-				bounded_by {cylinder {<0,0,+dock_length/2+1>, <0,0,-dock_length/2-1>, dock_radius1}}
+				cylinder {<0,0,+dock_length/2+1>, <0,0,-dock_length/2-1>, dock_radius_outer inverse}
+				cylinder {<0,0,+dock_length/2+1>, <0,0,-dock_length/2-1>, dock_radius_inner}
+				bounded_by {cylinder {<0,0,+dock_length/2+1>, <0,0,-dock_length/2-1>, dock_radius_outer}}
 			}
 			difference
 			{
@@ -56,16 +56,16 @@ difference
 						rotate +z * (i * 60 + 30)
 					}
 				}
-				cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius1 inverse}
-				cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius2}
-				bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius1}}
+				cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_outer inverse}
+				cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_inner}
+				bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_outer}}
 			}
 		#end
 	}
 	#if (!ShowWhole)
 		object {cutaway_object1}
 	#end
-	bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius1}}
+	bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_outer}}
 	texture {white_metal_texture}
 	translate -z * (dock_start + dock_length/2)
 }
@@ -84,7 +84,7 @@ difference
 		#local truss_thickness = med_truss_thick;
 		#local truss_radius = med_truss_radius - med_truss_thick;
 		#local truss_point1 = 0;
-		#local truss_point2 = +y * dock_radius2;
+		#local truss_point2 = +y * dock_radius_inner;
 		#local truss_arms_max = 3;
 		#local truss_arms_cnt = 0;
 		#while (truss_arms_cnt < truss_arms_max)
@@ -115,14 +115,14 @@ difference
 			object
 			{
 				#include "truss.inc"
-				translate +y * dock_radius2
+				translate +y * dock_radius_inner
 				rotate +z * 360/truss_arms_max * truss_arms_cnt
 			}
 			#local truss_arms_cnt = truss_arms_cnt + 1;
 		#end
 		// outermost ring
 		#local segment_number = 12;
-		#local segment_distance = sind(360/segment_number/2) * dock_radius2;
+		#local segment_distance = sind(360/segment_number/2) * dock_radius_inner;
 		#local truss_sides = 4;
 		#local truss_sections = 1;
 		#local truss_thickness = med_truss_thick;
@@ -144,7 +144,7 @@ difference
 					#include "truss.inc"
 					translate -z * dock_length/2
 				}
-				translate +x * dock_radius2
+				translate +x * dock_radius_inner
 				rotate +z * 360/truss_arms_max * truss_arms_cnt
 				rotate +z * 30
 			}
@@ -154,7 +154,7 @@ difference
 	#if (!ShowWhole)
 		object {cutaway_object1}
 	#end
-	bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius1}}
+	bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_outer}}
 	texture {white_metal_texture}
 	translate -z * (dock_start + dock_length/2)
 }
@@ -165,8 +165,8 @@ difference
 #if (!NoDockShips)
 	#local dock_front = dock_start + dock_thick + Meters*2;
 	#local dock_back  = dock_start + dock_length - dock_thick - Meters*2;
-	#local dock_outer = dock_radius1 - Meters*2;
-	#local dock_inner = dock_radius2 + Meters*2;
+	#local dock_outer = dock_radius_outer - Meters*2;
+	#local dock_inner = dock_radius_inner + Meters*2;
 	union
 	{
 		// large yellow spaceship
@@ -196,7 +196,7 @@ difference
 			translate -z * (dock_start+dock_length*1/2)
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
-			translate -x * dock_radius1*10/12
+			translate -x * dock_radius_outer*10/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 		// mecha
@@ -212,7 +212,7 @@ difference
 			translate -z * (dock_start+dock_length*7/12)
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
-			translate +x * dock_radius1*9/12
+			translate +x * dock_radius_outer*9/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 		// mecha
@@ -235,7 +235,7 @@ difference
 			translate -z * (dock_start+dock_length*6/12)
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
-			translate +x * dock_radius1*8/12
+			translate +x * dock_radius_outer*8/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 		// mecha
@@ -258,7 +258,7 @@ difference
 			translate -z * (dock_start+dock_length*2/12)
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
-			translate -x * dock_radius1*8/12
+			translate -x * dock_radius_outer*8/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 		// small double pointed spaceship
@@ -287,7 +287,7 @@ difference
 			translate -z * (dock_start+dock_length*9/12)
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
-			translate -x * dock_radius1*11/12
+			translate -x * dock_radius_outer*11/12
 			#if (TexQual < 1)	no_reflection 	#end	// for sanity's sake!!!
 		}
 		// gantry
@@ -318,7 +318,7 @@ difference
 			translate -z * (dock_start + dock_length*1/4)
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
-			translate -x * dock_radius1*9/12
+			translate -x * dock_radius_outer*9/12
 			texture {yellow_metal_texture}
 		}
 		// each of the six docking areas needs these
@@ -397,7 +397,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					object
@@ -406,7 +406,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					// side 1b bottom
@@ -416,7 +416,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					object
@@ -425,7 +425,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					// side 2a bottom
@@ -435,7 +435,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					object
@@ -444,7 +444,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					// side 2b bottom
@@ -454,7 +454,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					object
@@ -463,7 +463,7 @@ difference
 						rotate +x * 90
 						translate -y*dock_depth
 						translate +y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					// side 1a top
@@ -473,7 +473,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					object
@@ -482,7 +482,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					// side 1b top
@@ -492,7 +492,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					object
@@ -501,7 +501,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_thick+tank_radius*2)
 					}
 					// side 2a top
@@ -511,7 +511,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					object
@@ -520,7 +520,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*1/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*1/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					// side 2b top
@@ -530,7 +530,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2-tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner-tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					object
@@ -539,7 +539,7 @@ difference
 						rotate +x * 90
 						translate +y*dock_depth
 						translate -y*tank_height/2
-						translate -x*((dock_radius1-dock_radius2)*3/4+dock_radius2+tank_radius)
+						translate -x*((dock_radius_outer-dock_radius_inner)*3/4+dock_radius_inner+tank_radius)
 						translate -z*(dock_start+dock_length-dock_thick-tank_radius*2)
 					}
 					// robo arms
@@ -549,7 +549,7 @@ difference
 						scale Meters/4
 						rotate +x * 90
 						rotate +z * 180
-						translate -x*((dock_radius1-dock_radius2)/2 + dock_radius2)
+						translate -x*((dock_radius_outer-dock_radius_inner)/2 + dock_radius_inner)
 						translate -z*(dock_start+dock_length-dock_thick)
 					}
 					object
@@ -558,7 +558,7 @@ difference
 						scale Meters/4
 						rotate -x * 90
 						rotate +z * 180
-						translate -x*((dock_radius1-dock_radius2)/2 + dock_radius2)
+						translate -x*((dock_radius_outer-dock_radius_inner)/2 + dock_radius_inner)
 						translate -z*(dock_start+dock_thick)
 					}
 					texture {yellow_metal_texture}
