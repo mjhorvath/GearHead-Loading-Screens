@@ -55,7 +55,7 @@
 #declare Seed				= seed(8829464);		// seed for random number generator
 #declare Included			= 1;					// boolean, tells any included files that they are being included.
 #declare TexQual			= 2;					// integer, -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
-#declare Minimal			= 1;					// boolean, a minimalist render with lots of features turned off
+#declare Minimal			= 0;					// boolean, a minimalist render with lots of features turned off
 #declare Meters				= 1;					// float, 1 meter
 #declare Subdivision		= 0;					// boolean, only needed for some mecha, and only works in an unofficial build of POV-Ray 3.6
 #declare Camera_Inside		= 0;					// boolean
