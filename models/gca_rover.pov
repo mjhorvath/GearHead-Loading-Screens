@@ -10,37 +10,7 @@
 // LDRAWDIR: c:\Lego\Ldraw
 // Commandline: C:\Lego\L3P\L3P.exe C:\Lego\LDraw\MODELS\Rover\BUGGY_b.mpd C:\Working\Povray\LDraw -cg45,45,0 -lg45,0,0 -lg30,120,0 -lg60,-120,0 -b0.004,0.004,0.004 -fg0 -bu -sw0.5 -q3 -o
 
-#ifndef (Included)
-	#include "colors.inc"
-	#include "metals.inc"
-	#include "glass.inc"
-	#include "GearHead.inc"
-
-	#declare NoColors = 0;
-	#declare Seed = seed(8829464);
-#end
-
-#if (NoColors = 1)
-	#declare Main_Texture =		material { texture { pigment { color rgb 2/2 } finish { F_MetalA  } } }
-	#declare Complement_Texture =	material { texture { pigment { color rgb 0/2 } finish { F_MetalA  } } }
-	#declare Highlight_Texture =	material { texture { pigment { color rgb 1/2 } finish { F_MetalA  } } }
-#else
-	#declare Main_Texture =		material { texture { pigment { color rgb <rand(Seed),rand(Seed),rand(Seed),> } finish { F_MetalA  } } }
-	#declare Complement_Texture =	material { texture { pigment { color rgb <rand(Seed),rand(Seed),rand(Seed),> } finish { F_MetalA  } } }
-	#declare Highlight_Texture =	material { texture { pigment { color rgb <rand(Seed),rand(Seed),rand(Seed),> } finish { F_MetalA  } } }
-#end
-#declare Plain_Gray =		material { texture { pigment { color rgb 2/4 } finish { F_MetalA  } } }
-#declare Plain_LightGray =	material { texture { pigment { color rgb 3/4 } finish { F_MetalA  } } }
-#declare Plain_DarkGray =	material { texture { pigment { color rgb 1/4 } finish { F_MetalA  } } }
-#declare Plain_Black =		material { texture { pigment { color rgb 0/4 } finish { F_MetalA  } } }
-#declare Gun_Texture =		Plain_Gray;
-#declare Wheel_Texture =	Plain_Black;
-#declare MTX =			Main_Texture;
-#declare CTX =			Complement_Texture;
-#declare HTX =			Highlight_Texture;
-#declare GTX =			Gun_Texture;
-#declare WTX =			Wheel_Texture;
-
+#version 3
 #declare QUAL = 1;  // Quality level, 0=BBox, 1=no refr, 2=normal, 3=studlogo
 #declare SW = 0;  // Width of seam between two bricks
 #declare STUDS = 0;  // 1=on 0=off
@@ -11213,3 +11183,4 @@ object
 	rotate y * clock * 360
 }
 #end
+#version 3.8;

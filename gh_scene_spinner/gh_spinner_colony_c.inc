@@ -304,22 +304,23 @@
 					Paraboloid_Z
 					scale nozzle_radius
 					scale +z * nozzle_z_scale_factor
+					translate -z * Meters/2
 				}
 				object
 				{
 					Paraboloid_Z
 					scale nozzle_radius
 					scale +z * nozzle_z_scale_factor
-					translate +z * Meters
+					translate +z * Meters/2
 				}
-				rotate y * 180
+				rotate +y * 180
 			}
 			plane {-z, nozzle_length}
 			bounded_by {cylinder {0, -z * nozzle_length, nozzle_radius}}
 			texture {engine_nozzle_texture}
 			translate -z * (engine_chamber_begin + engine_chamber_length)
 		}
-		// exhaust gas/flame
+		// exhaust plume
 		#ifndef (Exhaust_Object)
 			verbose_include("gh_rocket_chess_exhaust.inc", 0)
 		#end
@@ -328,8 +329,8 @@
 			Exhaust_Object
 			rotate		<0,90,0>
 			scale		exhaust_radius
-			scale		+z * nozzle_z_scale_factor
-			translate	-z * (engine_chamber_begin + engine_chamber_length + Meters * 12 * nozzle_z_scale_factor)
+			scale		+z * exhaust_z_scale_factor
+			translate	-z * (engine_chamber_begin + engine_chamber_length + Meters * 16 * exhaust_z_scale_factor)
 		}
 /*
 		// engine connector hub
