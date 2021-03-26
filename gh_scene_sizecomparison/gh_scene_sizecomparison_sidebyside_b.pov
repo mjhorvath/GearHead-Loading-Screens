@@ -19,6 +19,7 @@
 #declare ImgScale	= 4;
 #declare Meters		= 4;
 #declare GridScale	= 2;
+#declare GridFontScale = 1;
 #declare NoColors	= 1;
 #declare NoWeapons	= 1;
 #declare YRotate	= 30;
@@ -35,7 +36,7 @@
 #declare GridColor = 5/8;
 #declare FontColor = 0;
 #declare BackColor = 6/8;
-#declare FontSize = 2.5 * Meters;
+#declare LabelFontSize = 2.5 * Meters;
 
 
 //------------------------------------------------------------------------------
@@ -158,7 +159,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -192,7 +193,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -227,7 +228,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -256,7 +257,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -291,7 +292,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -320,7 +321,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -354,7 +355,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -389,7 +390,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -419,7 +420,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -449,7 +450,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -479,7 +480,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -512,7 +513,7 @@ new_random_color()
 	pigment {color srgb FontColor}
 	finish {emission 1 diffuse 0}
 	rotate y * 180
-	scale FontSize
+	scale LabelFontSize
 	translate y * (-Meters * 2 + GridScale * ImgScale * Meters/32)
 }
 union
@@ -538,12 +539,13 @@ union
 				ttf Font3Name str(iCount * GridScale * ImgScale / Meters,0,0) 0.1, 0
 				pigment {color srgb GridColor}
 				finish {emission 1 diffuse 0}
+				no_shadow
+				scale GridFontScale
 				rotate y * 180
 				translate y * (iCount + Meters/32)
 				scale GridScale
 				translate x * (Width / 2 - Meters/32)
 				scale ImgScale
-				no_shadow
 				translate y * (Height * jCount)
 			}
 			#local iCount = iCount + 1;
