@@ -288,30 +288,28 @@ verbose_include("Horus.inc", 0)
 			#break
 			#case (3)
 				// "armadillo"
-				union
+				intersection
 				{
-					#local arch_radis	= 8;
-					#local arch_total	= 12;
-					#local arch_thick	= 1/16;
-					#for (arch_count, 0, arch_total)
-						#local arch_dista = arch_count/arch_total * 24 - 12;
-						#local arch_rotat = arch_count/arch_total * 60 - 30;
-						intersection
-						{
+					union
+					{
+						#local arch_radis	= 8;
+						#local arch_total	= 12;
+						#local arch_thick	= 1/16;
+						#for (arch_count, 0, arch_total)
+							#local arch_dista = arch_count/arch_total * 24 - 12;
+							#local arch_rotat = arch_count/arch_total * 60 - 30;
 							difference
 							{
 								object {cyl_macro(<0,0,arch_dista-arch_thick*1>, <0,0,arch_dista+arch_thick*1>, arch_radis - 0)}
 								object {cyl_macro(<0,0,arch_dista-arch_thick*2>, <0,0,arch_dista+arch_thick*2>, arch_radis - 1)}
 								bounded_by {cylinder {<0,0,arch_dista-arch_thick*1>, <0,0,arch_dista+arch_thick*1>, arch_radis - 0}}
+								rotate x * arch_rotat
 							}
-							// should be cyl_box
-							plane {-y,0}
-							rotate x * arch_rotat
-							bounded_by {box {<-16,0,-16>, <+16,+arch_radis,+16>}}
-						}
-					#end
-					translate <0,base_height,0>
-					scale Scale
+						#end
+						translate <0,base_height,0>
+						scale Scale
+					}
+					object {cyl_box(<-16,0,-16> * Scale, <+16,+arch_radis,+16> * Scale)}
 					texture {metal_texture}
 				}
 			#break
@@ -629,6 +627,7 @@ verbose_include("Horus.inc", 0)
 					rotate y * Radial_Count * 360/Radial_Total
 					scale Scale
 				}
+				object {cyl_box(<-16,0,-16> * Scale, <+16,+16,+16> * Scale)}
 //				bounded_by
 //				{
 //					box

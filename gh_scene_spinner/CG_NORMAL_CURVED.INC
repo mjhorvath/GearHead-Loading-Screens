@@ -325,7 +325,7 @@
 		{
 			union
 			{
-				#local floor_thick = 0.1;
+				#local floor_thick = Meters * 0.1;
 				// floors
 				#for (Level_Count, 0, Level_Total - 1)
 					#local y_adjust = y * Level_Count * city_storey_height;
@@ -337,11 +337,17 @@
 				// radial walls
 				#local Section_Total = 6;
 				#for (Section_Count, 0, Section_Total-1)
-					box
+					intersection
 					{
-						<-0.1,  -0,  -0>, <+0.1, +16, +16>
-						rotate y * Section_Count * 360/Section_Total
-						scale Scale
+						box
+						{
+							<-0.1,  -0,  -0>, <+0.1, +16, +16>
+							rotate y * Section_Count * 360/Section_Total
+							scale Scale
+						}
+						object {cyl_box(<-16,0,-16> * Scale, <+16,+16,+16> * Scale)}
+						// bounding may not help here
+						bounded_by {cyl_box_bound(<-16,0,-16> * Scale, <+16,+16,+16> * Scale)}
 					}
 				#end
 			}
@@ -353,7 +359,7 @@
 		// cylindrical inner glass shells
 		union
 		{
-			#local floor_thick = 0.1;
+			#local floor_thick = Meters * 0.1;
 			#local fudge_factor = 0.95;
 			#for (Level_Count, 0, Level_Total - 2)
 				intersection
@@ -383,6 +389,8 @@
 					#local s_star = <-32, 0, -32> * Scale + y_adjust;
 					#local s_stop = <+32, 0, +32> * Scale + y_adjust + y_plus;
 					object {cyl_box(s_star, s_stop)}
+					// bounding may not help here
+//					bounded_by {cyl_box_bound()}
 				}
 			#end
 			material {inner_glass_mat}
@@ -413,11 +421,10 @@
 		// grass
 		difference
 		{
-			cyl_box(<-16,0,-16> * Scale, <+16,city_grass_height,+16> * Scale)
-			con_macro(y * city_radius, 0, -0.001, 18 * Scale.x)
+			cyl_box(<-16,+0,-16> * Scale, <+16,city_grass_height,+16> * Scale)
+			con_macro(y * city_radius, 0, y * -Meters, 18 * Scale.x)
 			texture {grass_tex}
-			// bounding may not help here
-//			bounded_by {cyl_box_bound(<-16,0,-16> * Scale, <+16,city_grass_height,+16> * Scale)}
+//			bounded_by {}
 		}
 	}
 	// building and grass
@@ -1017,9 +1024,11 @@
 //------------------------------------------------------------------------------5
 
 // OFFICE BUILDING #5 - pink box scatter
+// I think this building may need to be scaled, not sure
 #macro Office_Building_5(Size, Direction, Translate)
 	debug_detail("CG...............Adding Office_Building_5.\n")
 	#local Level_Total		= ceil(Size.y/city_storey_height);
+//	#local building_size	= <32, 4, 32>;
 	#local building_size	= <32, Level_Total*city_storey_height, 32>;
 	#local Scale		= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
 	#local grass_pigment_1 = pigment
@@ -1159,31 +1168,40 @@
 				#local floor_start = vfloor_def(floor_start/mod_factor + 1/2) * mod_factor;
 				#local floor_final = floor_start + floor_width;
 				#if (vgreat_def(floor_final, floor_start))
-					cyl_box((floor_start - <16,0,16>), (floor_final - <16,0,16>))
+					cyl_box(floor_start - <16,0,16>, floor_final - <16,0,16>)
 					#local box_cnt = box_cnt + 1;
 				#end
 			#end
 			cyl_box(<-1/4,-0,-1/4> * building_size,<+1/4,+1/2,+1/4> * building_size)
-//			scale Scale			// I think this building needs to be scaled. need to mess with it later
 //			hollow
 			material {glass_mat}
 		}
 		// grass
 		union
 		{
-			object {cyl_box(<-15,0,-15,> * Scale, <-09,2,-09,> * Scale)}
-			object {cyl_box(<-15,0,+09,> * Scale, <-09,2,+15,> * Scale)}
-			object {cyl_box(<+09,0,+09,> * Scale, <+15,2,+15,> * Scale)}
-			object {cyl_box(<+09,0,-15,> * Scale, <+15,2,-09,> * Scale)}
+			object {cyl_box(<-15,0,-15,> * Scale, <-09,city_grass_height,-09,> * Scale)}
+			object {cyl_box(<-15,0,+09,> * Scale, <-09,city_grass_height,+15,> * Scale)}
+			object {cyl_box(<+09,0,+09,> * Scale, <+15,city_grass_height,+15,> * Scale)}
+			object {cyl_box(<+09,0,-15,> * Scale, <+15,city_grass_height,-09,> * Scale)}
 			texture {grass_texture}
 		}
 		// white border around grass
-		union
+		difference
 		{
-			object {cyl_box(<-16,0,-16,> * Scale, <-08,1.999,-08,> * Scale)}
-			object {cyl_box(<-16,0,+08,> * Scale, <-08,1.999,+16,> * Scale)}
-			object {cyl_box(<+08,0,+08,> * Scale, <+16,1.999,+16,> * Scale)}
-			object {cyl_box(<+08,0,-16,> * Scale, <+16,1.999,-08,> * Scale)}
+			union
+			{
+				object {cyl_box(<-16,0,-16,> * Scale, <-08,city_grass_height,-08,> * Scale)}
+				object {cyl_box(<-16,0,+08,> * Scale, <-08,city_grass_height,+16,> * Scale)}
+				object {cyl_box(<+08,0,+08,> * Scale, <+16,city_grass_height,+16,> * Scale)}
+				object {cyl_box(<+08,0,-16,> * Scale, <+16,city_grass_height,-08,> * Scale)}
+			}
+			union
+			{
+				object {cyl_box(<-15,-1,-15,> * Scale, <-09,city_grass_height+1,-09,> * Scale)}
+				object {cyl_box(<-15,-1,+09,> * Scale, <-09,city_grass_height+1,+15,> * Scale)}
+				object {cyl_box(<+09,-1,+09,> * Scale, <+15,city_grass_height+1,+15,> * Scale)}
+				object {cyl_box(<+09,-1,-15,> * Scale, <+15,city_grass_height+1,-09,> * Scale)}
+			}
 			texture {stone_texture}
 		}
 	}
@@ -1364,7 +1382,7 @@
 		difference
 		{
 			cyl_box(<-16,+0,-16> * Scale, <+16,city_grass_height,+16> * Scale)
-			con_macro(y * city_radius, 0, -0.001, 18 * Scale.x)
+			con_macro(y * city_radius, 0, y * -Meters, 18 * Scale.x)
 			texture {grass_tex}
 //			bounded_by {}
 		}
@@ -1390,11 +1408,14 @@
 //------------------------------------------------------------------------------7
 
 // OFFICE BUILDING #7 - tapered helix
+// Doesn't work when flat.
 #macro Office_Building_7(Size, Direction, Translate)
 	debug_detail("CG...............Adding Office_Building_7.\n")
+
 	#local Level_Total		= ceil(Size.y/city_storey_height);
+//	#debug concat("Level_Total = ", str(Level_Total, 0, -1), "\n")
 	#local building_size	= <32, 4, 32>;
-	#local Scale		= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
+	#local Scale			= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
 	#local grass_pigment_1 = pigment
 	{
 		image_map {png "olivepink_marble.png"}
@@ -1495,7 +1516,6 @@
 	#local Side_B1 = sind(45) * Size.x / 2;
 	#local Side_C1 = sqrt(pow(Side_A1,2) + pow(Side_B1,2));
 	#local Theta = acos(Side_A1/Side_C1);
-
 	// floors
 	#local floor_mesh = mesh
 	{
@@ -1519,6 +1539,10 @@
 			#local Corner_BBot_2 = vrotate(<-Side_B1, (Level_Count-2) * city_storey_height, +Side_B1>, y * (2 * (Level_Count-2) + Building_Rotate));
 			#local Corner_BBot_3 = vrotate(<+Side_B1, (Level_Count-2) * city_storey_height, +Side_B1>, y * (2 * (Level_Count-2) + Building_Rotate));
 			#local Corner_BBot_4 = vrotate(<+Side_B1, (Level_Count-2) * city_storey_height, -Side_B1>, y * (2 * (Level_Count-2) + Building_Rotate));
+//			#debug concat("Corner_Top_1 = ", VStr(Corner_Top_1, 0, -1), "\n")
+//			#debug concat("Corner_Top_2 = ", VStr(Corner_Top_2, 0, -1), "\n")
+//			#debug concat("Corner_Top_3 = ", VStr(Corner_Top_3, 0, -1), "\n")
+//			#debug concat("Corner_Top_4 = ", VStr(Corner_Top_4, 0, -1), "\n")
 			triangle
 			{
 				Corner_Top_3,
@@ -1803,7 +1827,7 @@
 	{
 		difference
 		{
-			cyl_box(<-16,  0,-16> * Scale, <+16,city_grass_height,+16> * Scale)
+			cyl_box(<-16, 0.0001,-16> * Scale, <+16,city_grass_height,+16> * Scale)
 			cyl_box(< -2, -1,-17> * Scale, < +2, +2,+17> * Scale)
 			cyl_box(<-17, -1, -2> * Scale, <+17, +2, +2> * Scale)
 			clip_obj
@@ -1834,7 +1858,8 @@
 	debug_detail("CG...............Adding Office_Building_8.\n")
 	#local Level_Total		= ceil(Size.y/city_storey_height);
 	#local building_size	= <32, 4, 32>;
-	#local Scale		= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
+	#local Scale			= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
+	#local ScaleRad			= min(Scale.x,Scale.z);
 	#local grass_pigment_1 = pigment
 	{
 		image_map {png "olivepink_marble.png"}
@@ -1890,7 +1915,7 @@
 			#local wall_texture = texture
 			{
 				pigment {gamma_color_adjust(<0/16,1/16,1/16>)}
-				normal {bumps 0.01 scale 0.01}
+				normal {bumps 0.01 		scale 0.01}
 				finish {specular 0.01	roughness 0.01	reflection 0.01	metallic}
 				scale Meters
 			}
@@ -1899,7 +1924,7 @@
 				texture
 				{
 					pigment {gamma_color_adjust(<0,4/16,4/16,0,12/16>)}
-					normal {bumps 0.01	scale 0.01}
+					normal {bumps 0.01		scale 0.01}
 					finish {specular 0.1	roughness 0.1	reflection 0.1}
 				}
 				scale Meters
@@ -1915,7 +1940,7 @@
 			#local wall_texture = texture
 			{
 				pigment {gamma_color_adjust(<0/16,1/16,1/16>)}
-				normal {bumps 0.01 scale 0.01}
+				normal {bumps 0.01 		scale 0.01}
 				finish {specular 0.01	roughness 0.01	reflection 0.01	metallic}
 				scale Meters
 			}
@@ -1925,7 +1950,7 @@
 				texture
 				{
 					pigment {gamma_color_adjust(<0,4/16,4/16,0,12/16>)}
-					normal {bumps 0.01	scale 0.01}
+					normal {bumps 0.01		scale 0.01}
 					finish {specular 0.1	roughness 0.1	reflection 0.1}
 				}
 				scale Meters
@@ -1938,10 +1963,10 @@
 		#local Building_Direction = -1;
 	#end
 	#local Building_Rotate = rand(_CT_rand3) * 360 * Building_Direction;
-	#local Outer_Shell	= con_macro(+y * (city_radius), 0, +y * 0, 16 * Scale.x)
-	#local Inner_Shell1	= con_macro(+y * (city_radius - 1/16 * Scale.x), 0, +y * 1/16 * Scale.x, 16 * Scale.x - 1/16 * Scale.x)
-	#local Inner_Shell2	= con_macro(+y * (city_radius - 2/16 * Scale.x), 0, +y * 2/16 * Scale.x, 16 * Scale.x - 2/16 * Scale.x)
-	#local Post_Shell	= con_macro(+y * (city_radius), 0, +y * 0, 4 * Scale.x)
+	#local Outer_Shell	= con_macro(+y * (city_radius), 0, +y * 0, 16 * ScaleRad)
+	#local Inner_Shell1	= con_macro(+y * (city_radius - 1/16 * ScaleRad), 0, +y * 1/16 * ScaleRad, 16 * ScaleRad - 1/16 * ScaleRad)
+	#local Inner_Shell2	= con_macro(+y * (city_radius - 2/16 * ScaleRad), 0, +y * 2/16 * ScaleRad, 16 * ScaleRad - 2/16 * ScaleRad)
+	#local Post_Shell	= con_macro(+y * (city_radius), 0, +y * 0, 4 * ScaleRad)
 	#local final_object = union
 	{
 		// glass
@@ -1957,22 +1982,22 @@
 							intersection
 							{
 								object {Inner_Shell1}
-								plane {-x, -1/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 000) * Building_Direction}
-								plane {+x, -1/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 120) * Building_Direction}
+								plane {-x,-1/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 000) * Building_Direction}
+								plane {+x,-1/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 120) * Building_Direction}
 	//							bounded_by {}
 							}
 							intersection
 							{
 								object {Inner_Shell1}
-								plane {-x, -1/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 000) * Building_Direction}
-								plane {+x, -1/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 120) * Building_Direction}
+								plane {-x,-1/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 000) * Building_Direction}
+								plane {+x,-1/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 120) * Building_Direction}
 	//							bounded_by {}
 							}
 						}
 						difference
 						{
-							cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - (Level_Count - 1) * city_storey_height)
-							cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - (Level_Count - 0) * city_storey_height)
+							cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - (Level_Count - 1) * city_storey_height)
+							cyl_macro(<0,city_radius,-33 * ScaleRad>, <0,city_radius,+33 * ScaleRad>, city_radius - (Level_Count - 0) * city_storey_height)
 	//						bounded_by {}
 						}
 	//					bounded_by {}
@@ -1990,22 +2015,22 @@
 								intersection
 								{
 									object {Inner_Shell2}
-									plane {-x, -2/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 000) * Building_Direction}
-									plane {+x, -2/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 120) * Building_Direction}
+									plane {-x, -2/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 000) * Building_Direction}
+									plane {+x, -2/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 000 + 120) * Building_Direction}
 		//							bounded_by {}
 								}
 								intersection
 								{
 									object {Inner_Shell2}
-									plane {-x, -2/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 000) * Building_Direction}
-									plane {+x, -2/16 * Scale.x	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 120) * Building_Direction}
+									plane {-x, -2/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 000) * Building_Direction}
+									plane {+x, -2/16 * ScaleRad	rotate +y * (360/36 * Level_Count + Building_Rotate + 180 + 120) * Building_Direction}
 		//							bounded_by {}
 								}
 							}
 							difference
 							{
-								cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - (Level_Count - 1.1) * city_storey_height)
-								cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - (Level_Count + 0.1) * city_storey_height)
+								cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - (Level_Count - 1.1) * city_storey_height)
+								cyl_macro(<0,city_radius,-33 * ScaleRad>, <0,city_radius,+33 * ScaleRad>, city_radius - (Level_Count + 0.1) * city_storey_height)
 		//						bounded_by {}
 							}
 		//					bounded_by {}
@@ -2043,14 +2068,14 @@
 					{
 						difference
 						{
-							cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - (Level_Count - 1) * city_storey_height + 1/32 * Scale.x)
-							cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - (Level_Count - 1) * city_storey_height - 1/32 * Scale.x)
+							cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - (Level_Count - 1) * city_storey_height + 1/32 * ScaleRad)
+							cyl_macro(<0,city_radius,-33 * ScaleRad>, <0,city_radius,+33 * ScaleRad>, city_radius - (Level_Count - 1) * city_storey_height - 1/32 * ScaleRad)
 //							bounded_by {}
 						}
 						difference
 						{
-							cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - (Level_Count - 0) * city_storey_height + 1/32 * Scale.x)
-							cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - (Level_Count - 0) * city_storey_height - 1/32 * Scale.x)
+							cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - (Level_Count - 0) * city_storey_height + 1/32 * ScaleRad)
+							cyl_macro(<0,city_radius,-33 * ScaleRad>, <0,city_radius,+33 * ScaleRad>, city_radius - (Level_Count - 0) * city_storey_height - 1/32 * ScaleRad)
 //							bounded_by {}
 						}
 					}
@@ -2080,8 +2105,8 @@
 					}
 					difference
 					{
-						cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - (Level_Count - 1) * city_storey_height)
-						cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - (Level_Count - 0) * city_storey_height)
+						cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - (Level_Count - 1) * city_storey_height)
+						cyl_macro(<0,city_radius,-33 * ScaleRad>, <0,city_radius,+33 * ScaleRad>, city_radius - (Level_Count - 0) * city_storey_height)
 //						bounded_by {}
 					}
 					union
@@ -2089,8 +2114,8 @@
 						#for (Wall_Count, 1, 2, 1)
 							intersection
 							{
-								plane {+x, +1/16 * Scale.x rotate +y * (360/36 * Level_Count + 360/9 * Wall_Count + Building_Rotate) * Building_Direction}
-								plane {-x, +1/16 * Scale.x rotate +y * (360/36 * Level_Count + 360/9 * Wall_Count + Building_Rotate) * Building_Direction}
+								plane {+x, +1/16 * ScaleRad rotate +y * (360/36 * Level_Count + 360/9 * Wall_Count + Building_Rotate) * Building_Direction}
+								plane {-x, +1/16 * ScaleRad rotate +y * (360/36 * Level_Count + 360/9 * Wall_Count + Building_Rotate) * Building_Direction}
 //								bounded_by {}
 							}
 						#end
@@ -2111,8 +2136,8 @@
 								#for (Wall_Count, 4, 12, 4)
 									difference
 									{
-										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count+1/16) * Scale.x)}
-										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count-1/16) * Scale.x)}
+										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count+1/16) * ScaleRad)}
+										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count-1/16) * ScaleRad)}
 //										bounded_by {}
 									}
 								#end
@@ -2128,8 +2153,8 @@
 								#for (Wall_Count, 4, 12, 4)
 									difference
 									{
-										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count+1/16) * Scale.x)}
-										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count-1/16) * Scale.x)}
+										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count+1/16) * ScaleRad)}
+										object {con_macro(+y * (city_radius), 0, +y * 0, (16-Wall_Count-1/16) * ScaleRad)}
 //										bounded_by {}
 									}
 								#end
@@ -2141,8 +2166,8 @@
 					}
 					difference
 					{
-						cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - (Level_Count - 1) * city_storey_height)
-						cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - (Level_Count - 0) * city_storey_height)
+						cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - (Level_Count - 1) * city_storey_height)
+						cyl_macro(<0,city_radius,-33 * ScaleRad>, <0,city_radius,+33 * ScaleRad>, city_radius - (Level_Count - 0) * city_storey_height)
 //						bounded_by {}
 					}
 //					bounded_by {}
@@ -2151,10 +2176,10 @@
 			texture {wall_texture}
 		}
 		// center post
-		difference
+		intersection
 		{
 			object {Post_Shell}
-			cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - Level_Total * city_storey_height - 1/32 * Scale.x)
+			cyl_box(<-32 * Scale.x,0,-32 * Scale.z>, <+32 * Scale.x,Level_Total * city_storey_height - 1/32,+32 * Scale.z>)
 			texture {wall_texture}
 //			bounded_by {}
 		}
@@ -2162,7 +2187,7 @@
 		difference
 		{
 			cyl_box(<-16,+0,-16> * Scale, <+16,city_grass_height,+16> * Scale)
-			con_macro(y * city_radius, 0, -0.001, 18 * Scale.x)
+			con_macro(y * city_radius, 0, y * -1, 18 * ScaleRad)
 			texture {grass_tex}
 //			bounded_by {}
 		}
@@ -2171,7 +2196,7 @@
 	object {pos_object(final_object, Translate)}
 /*
 	// support posts
-	#local cut_object = cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - Level_Total * city_storey_height + Meters/4)
+	#local cut_object = cyl_macro(<0,city_radius,-32 * ScaleRad>, <0,city_radius,+32 * ScaleRad>, city_radius - Level_Total * city_storey_height + Meters/4)
 	difference
 	{
 		union
@@ -2182,7 +2207,7 @@
 				#local support_point = <16*cos(support_theta),0,16*sin(support_theta)> * Scale;
 				cylinder
 				{
-					pos_point(support_point + Translate), +y * 0, 1/4 * Scale.x
+					pos_point(support_point + Translate), +y * 0, 1/4 * ScaleRad
 					texture {wall_texture}
 				}
 			#end

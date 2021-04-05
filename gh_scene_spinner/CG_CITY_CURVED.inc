@@ -32,14 +32,16 @@ See City.htm for more information.
 	#end
 
 	#declare block_size = nominal_building_width * buildings_per_block;
-	#declare city_corner1 = (blocks_per_section * block_size + (blocks_per_section - <1, 0, 1>) * street_width) * <-0.5, 0, -0.5> - <!NoStreetX1, 0, !NoStreetZ1> * street_width;
-	#declare city_corner2 = (blocks_per_section * block_size + (blocks_per_section - <1, 0, 1>) * street_width) * <+0.5, 0, +0.5> + <!NoStreetX2, 0, !NoStreetZ2> * street_width;
+	#declare city_corner1 = (blocks_per_section * block_size + (blocks_per_section - <1, 0, 1>) * street_width) * <-1/2, 0, -1/2> - <!NoStreetX1, 0, !NoStreetZ1> * street_width;
+	#declare city_corner2 = (blocks_per_section * block_size + (blocks_per_section - <1, 0, 1>) * street_width) * <+1/2, 0, +1/2> + <!NoStreetX2, 0, !NoStreetZ2> * street_width;
+	#declare _CT_extents = (abs(city_corner1.x) + abs(city_corner1.z))/2;
 
 	union
 	{
 		debug_detail(concat("CG...Creating city base from ", VStr(city_corner1, 0, 2), " to ", VStr(city_corner2, 0, 2), ".\n"))
 
-		city_base(city_corner1, city_corner2)
+		// dark street layer (not working currently, dunno why)
+//		city_base(city_corner1, city_corner2)
 
 		// CREATE CITY STREETS & TRAFFIC
 		// need separate regular and elevated transport

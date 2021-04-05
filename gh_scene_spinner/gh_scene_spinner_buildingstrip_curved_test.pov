@@ -1,7 +1,9 @@
-// Title: Minimal citygen test scene
+// Caption: Minimal citygen test scene
+// Version: ?
 // Authors: Michael Horvath
 // Website: http://isometricland.net
-// Updated: 2017-04-05
+// Created: ????-??-??
+// Updated: 2021-03-30
 // This file is licensed under the terms of the CC-LGPL.
 // http://www.gnu.org/licenses/lgpl-2.1.html
 //
@@ -12,13 +14,13 @@
 // need to migrate all includes to the GearHead directory
 // raumschiff needs a bounding box
 
-//+KFI0 +KFF5 +KC +KI0 +KF0
-//+KFI5 +KFF5 +KC
-//+K0 +KC
+//+KFI0 +KFF59
+//+KFI5 +KFF5 +KI1 +KF1
+//+K0.5 +KC
 
-#version 3.7;
+#version 3.8;
 
-#include "CIE.inc"		// http://www.ignorancia.org/en/index.php?page=Lightsys
+#include "CIE.inc"			// http://www.ignorancia.org/en/index.php?page=Lightsys
 #include "lightsys.inc"		// http://www.ignorancia.org/en/index.php?page=Lightsys
 #include "math.inc"
 #include "shapes.inc"
@@ -27,112 +29,122 @@
 #include "colors.inc"
 
 // inter-scene variables
-#declare pov_version		= 1;				// 0 = 3.6; 1 = 3.7; 3.7 also has gamma adjustments in INI file
+#declare pov_version	= 1;				// 0 = 3.6; 1 = 3.7; 3.7 also has gamma adjustments in INI file
 #declare Seed			= seed(72464);
 #declare Tiles			= 1;				// the default size of the scene, measured in tiles. Use this to zoom in/out.
-#declare Sprite_Height		= 128;				// changes the camera's position. 0 for mecha, 1 for walls & terrain.
+#declare Sprite_Height	= 128;				// changes the camera's position. 0 for mecha, 1 for walls & terrain.
 #declare Width			= 8;				// the default width of a tile.
-#declare Subdivision		= 0;				// turn on/off mesh subdivision. This requires a special exe available on the Net.
+#declare Subdivision	= 0;				// turn on/off mesh subdivision. This requires a special exe available on the Net.
 #declare Included		= 1;				// tells any included files that they are being included.
 #declare TexQual		= 2;
-#declare Meters			= 1;
+#declare Meters			= 1;				// changing this is going to mess a ton of stuff up; for instance wall, glass and floor thicknesses are not always described in terms of meters when they should be
 #declare city_seed		= 929843;
 
 // toggles
 #declare NoColors		= 0;
 #declare NoCity			= 0;
-#declare NoRadiosity		= 1;
+#declare NoRadiosity	= 1;
 #declare NoLights		= 0;				// not used
 #declare NoSky			= 0;				// not used
 #declare NoLamp			= 0;
 #declare NoStreet		= 0;
-#declare NoBuildings		= 0;
+#declare NoBuildings	= 0;
 #declare NewTrain		= 1;				// boolean, use maglev instead of streetcars
 #declare NoCars			= 0;				// boolean
-#declare AlwaysReflect		= 0;				// ???
-#declare debug_progress		= 1;				// boolean, see CityGen docs
+#declare AlwaysReflect	= 0;				// ???
+#declare debug_progress	= 1;				// boolean, see CityGen docs
 #declare NoStation		= 0;				// boolean
-#declare NoStreetDeco		= 0;				// boolean
-#declare NoPedestrians		= 0;				// boolean
+#declare NoStreetDeco	= 0;				// boolean
+#declare NoPedestrians	= 0;				// boolean
 #declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
-#declare glass_thin	= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
-#declare bound_fit	= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
+#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
+#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
 #declare debug_progress	= 0;//					// boolean, used by CityGen, see CityGen docs
-#declare GlassColor	= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
-#declare NoseMode	= 0;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower)
-#declare SimpleLamp	= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
+#declare GlassColor		= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
+#declare NoseMode		= 0;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower)
+#declare SimpleLamp		= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
 #declare city_use_mesh	= 0;//					// boolean, replace some basic CSG shapes with meshes? may not work 100% of the time
 #declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
 
 #include "gh_spinner_variables_c.inc"
 
 // citygen variables (mostly)
-#declare city_rotate		= 0;					// float, degrees	22.5
-#declare city_night		= false;				// boolean, obsolete?
-#declare city_right_hand_drive	= false;				// boolean
-#declare city_default_objects	= false;				// boolean
-#declare city_use_mesh		= false;				// boolean
-#declare city_all_mesh		= false;				// boolean
-#declare city_tileable		= "dummy text";					// boolean, turning this off has weird side-effects!!
-#declare city_storey_height	= Meters * 3.5;				// float, for reference, people are between 1.0 and 2.0 meters tall
-#declare city_ped_density	= 1/64/Meters;				// float, so far this is just used for sidewalks along streets, it should be used everywhere there are pedestrians
-#declare city_grass_height	= Meters / 4;				// too thin and it gets clipped by the pavement
-#declare city_tree_height	= Meters * 12;				// float
+#declare city_rotate			= 0;						// float, degrees	22.5
+#declare city_night				= false;					// boolean, obsolete?
+#declare city_right_hand_drive	= false;					// boolean
+#declare city_default_objects	= false;					// boolean
+#declare city_is_flat			= false;					// boolean, don't change this manually
+#declare city_use_mesh			= false;					// boolean
+#declare city_all_mesh			= false;					// boolean
+#declare city_tileable			= "dummy text";				// boolean, turning this off has weird side-effects!!
+#declare city_storey_height		= Meters * 3.5;				// float, for reference, people are between 1.0 and 2.0 meters tall
+#declare city_ped_density		= 1/64/Meters;				// float, so far this is just used for sidewalks along streets, it should be used everywhere there are pedestrians
+#declare city_grass_height		= Meters / 4;				// too thin and it gets clipped by the pavement
+#declare city_tree_height		= Meters * 12;				// float
 #declare city_hide_buildings	= NoBuildings;				// boolean
-#declare total_lanes		= (NewTrain ? 2 : 2);			// integer, in both directions, including half lanes for bikes (minimum 2)
+#declare city_base_thick		= Meters * 1;
+#declare total_lanes			= (NewTrain ? 2 : 2);		// integer, in both directions, including half lanes for bikes (minimum 2)
 #declare nominal_traffic_width	= Meters * (NewTrain ? 8 : 8);		// float
 #declare nominal_building_width	= Meters * 64;				// float
-#declare traffic_spacing	= Meters * 256;				// float
-#declare traffic_width		= nominal_traffic_width/total_lanes;	// float
-#declare traffic_lanes		= floor(total_lanes/2);			// integer, in each direction...
-#declare pavement_width		= Meters * 4;				// float
-#declare building_width		= nominal_building_width - pavement_width * 2;			// float
-#declare min_building_height	= city_storey_height * 6;		// float
-#declare max_building_height	= city_storey_height * 12;		// float
-#declare building_height_turb	= 1;					// float, between 0 and 1
-#declare street_height		= 0;					// to do, may conflict with citygen...
-#declare street_width		= nominal_traffic_width;		// float
-#declare rail_ped_thick		= Meters;				// float, rail pedestal leg
-#declare rail_width		= street_width/2;			// float
-#declare rail_height		= Meters * 5;				// float
-#declare rail_thick		= Meters/2;				// float
-#declare rail_plat_thick	= Meters/2;				// float
-#declare rail_plat_radius	= street_width;				// float
-#declare rail_ramp_width	= Meters * 2;				// float
-#declare rail_cars_number	= 3;					// integer, odd values only
-#declare rail_cars_height	= Meters * 3;				// float
-#declare rail_buffer		= Meters * 22;
-#declare big_block_length	= nominal_traffic_width + nominal_building_width * 4;		// float
-#declare sml_block_length	= nominal_traffic_width + nominal_building_width * 1;		// float
-#declare city_sections		= <2,0,1>;				// vector of integers
-#declare city_circum		= (big_block_length * 2 + sml_block_length * 2) * city_sections.x;		// float, the inner circumference of the spinner colony
-#declare city_length		= (big_block_length * 1 + sml_block_length * 2 + nominal_traffic_width) * city_sections.z;		// float, the length of the city along the long axis
-#declare city_radius		= city_circum/2/pi;			// float, the radius of the spinner colony's ground surface
-#declare big_block_angle	= big_block_length/city_circum * 360;
-#declare sml_block_angle	= sml_block_length/city_circum * 360;
-#declare street_angle		= street_width/city_circum * 360;
-#declare streetlamp_number	= 4;					// integer, the number present on each side of a building
-#declare trashcan_number	= 3;					// integer, the number present on each side of a building
-#declare pottedplant_number	= 5;					// integer, the number present on each side of a building
-#declare people_max_height	= Meters * 2;				// float
+#declare traffic_spacing		= Meters * 256;				// float
+#declare traffic_width			= nominal_traffic_width/total_lanes;	// float
+#declare traffic_lanes			= floor(total_lanes/2);		// integer, in each direction...
+#declare pavement_width			= Meters * 4;				// float
+#declare pavement_height		= Meters / 5;				// float
+#declare building_width			= nominal_building_width - pavement_width * 2;			// float
+#declare min_building_height	= city_storey_height * 6;	// float
+#declare max_building_height	= city_storey_height * 12;	// float
+#declare building_height_turb	= 1;						// float, between 0 and 1
+#declare street_height			= 0;						// to do, may conflict with citygen...
+#declare street_width			= nominal_traffic_width;	// float
+#declare rail_ped_thick			= Meters;					// float, rail pedestal leg
+#declare rail_width				= street_width/2;			// float
+#declare rail_height			= Meters * 5;				// float
+#declare rail_thick				= Meters/2;					// float
+#declare rail_plat_thick		= Meters/2;					// float
+#declare rail_plat_radius		= street_width;				// float
+#declare rail_ramp_width		= Meters * 2;				// float
+#declare rail_cars_number		= 3;						// integer, odd values only
+#declare rail_cars_height		= Meters * 3;				// float
+#declare rail_buffer			= Meters * 22;
+#declare big_block_length		= nominal_traffic_width + nominal_building_width * 4;		// float
+#declare sml_block_length		= nominal_traffic_width + nominal_building_width * 1;		// float
+#declare sections_x				= 1 + tan(clock * (pi/2 - atan(1)) + atan(1));
+#debug concat("\ndoobeedoo = ", str(sections_x, 0, -1),"\n\n")
+#if (sections_x > 1e5)
+	#declare sections_x		= 1e5;		// ideally this line should not be necessary
+	#declare city_is_flat	= true;
+#end
+#declare city_sections			= <sections_x,0,2>;							// vector of integers
+#declare city_circum			= (big_block_length * 1 + sml_block_length * 0) * city_sections.x;		// float, the inner circumference of the spinner colony
+#declare city_length			= (big_block_length * 1 + sml_block_length * 0) * city_sections.z;		// float, the length of the city along the long axis
+#declare city_radius			= city_circum/2/pi;			// float, the radius of the spinner colony's ground surface
+#declare big_block_angle		= big_block_length/city_circum * 360;
+#declare sml_block_angle		= sml_block_length/city_circum * 360;
+#declare street_angle			= street_width/city_circum * 360;
+#declare streetlamp_number		= 4;						// integer, the number present on each side of a building
+#declare trashcan_number		= 3;						// integer, the number present on each side of a building
+#declare pottedplant_number		= 5;						// integer, the number present on each side of a building
+#declare people_max_height		= Meters * 2;				// float
 
 
 
 // scene variables (mostly)
-#declare light_lumens			= 2.3;				// float
-#declare light_temp			= Daylight(6500);		// float?
-#declare light_color			= Light_Color(Daylight(6500),2.3);
+#declare light_lumens			= 2;						// float
+#declare light_temp				= Daylight(6500);			// float?
+#declare light_color			= Light_Color(light_temp,light_lumens);
 
-#declare Camera_Mode		= 3;					// 0 to 8; 0 = orthographic; 1 = oblique; 2 = perspective
-#declare Camera_Diagonal	= cosd(45);
-#declare Camera_Vertical	= 45;					//45;
-#declare Camera_Horizontal	= 30;					//30;
-//#declare Camera_Vertical	= 00;					//45;
-//#declare Camera_Horizontal	= 90;					//30;
-#declare Camera_Aspect		= image_height/image_width;
-#declare Camera_Distance	= 128;
-#declare Camera_Translate	= <0,-city_radius,0,>;			//<0,0,-city_size_total.y,>
-#declare Camera_Scale		= 64;					//32 is good for a 4x4 city block
+#declare Camera_Mode			= 3;						// 0 to 8; 0 = orthographic; 1 = oblique; 2 = perspective
+#declare Camera_Diagonal		= cosd(45);					// needed to fit in frame
+//#declare Camera_Diagonal		= 1;					// needed to fit in frame
+#declare Camera_Vertical		= 45;						// 45;
+#declare Camera_Horizontal		= 30;						// 30;
+//#declare Camera_Vertical		= 00;						// 45;
+//#declare Camera_Horizontal	= 90;						// 30;
+#declare Camera_Aspect			= image_height/image_width;
+#declare Camera_Distance		= 128;
+#declare Camera_Translate		= <0,-city_radius,0,>;		// <0,0,-city_size_total.y,>
+#declare Camera_Scale			= 64;						// 32 is good for a 4x4 city block
 #include "gh_camera.inc"
 
 
@@ -186,8 +198,11 @@ global_settings
 	charset utf8
 	assumed_gamma	1.0
 	#if (!NoRadiosity)
-		verbose_include("rad_def.inc")
+		verbose_include("rad_def.inc", 0)
 		radiosity {Rad_Settings(Radiosity_OutdoorLight, off, off)}
+		ambient_light 0
+	#else
+		ambient_light 0.3
 	#end
 	#switch (TexQual)
 		#case (-1)
@@ -276,10 +291,10 @@ light_source
 {
 	<-15000, +15000, -15000> * <1/4,1,1/2>
 	light_color					// don't adjust gamma here
-	translate -y * city_radius
 	parallel
 	point_at 0
 //	shadowless
+	translate -y * city_radius
 }
 /*
 light_source
@@ -299,52 +314,54 @@ sky_sphere {pigment {gamma_color_adjust(<223/255,230/255,255/255>)}}
 #if (!NoCity)
 	//------------------------------------------------------------------------------Main City
 
+	// city_sections is ignored here
 	#declare buildings_per_block	= <4,0,4,>;
-	#declare blocks_per_section	= <2,0,2,>;
+	#declare blocks_per_section		= <2,0,2,>;
 	#declare NoRailX1		= 0;
 	#declare NoRailZ1		= 0;
 	#declare NoRailX2		= 1;
-	#declare NoRailZ2		= 0;
+	#declare NoRailZ2		= 1;
 	#declare NoStreetX1		= 0;
 	#declare NoStreetZ1		= 0;
 	#declare NoStreetX2		= 1;
-	#declare NoStreetZ2		= 0;
+	#declare NoStreetZ2		= 1;
 	#declare NoStation		= 0;
 	#declare NoCarsX		= 0;
 	#declare NoCarsZ		= 0;
 	verbose_include("CG_INIT_CURVED.INC", 0)
 	verbose_include("CG_VEHICLES_CURVED.INC", 0)
 	verbose_include("CG_PAVEMENT_CURVED.INC", 0)
-//	init_building_types()
-//	verbose_include("CG_SQUARE_CURVED.INC", 0)
 	init_building_types()
-	verbose_include("CG_PARK_CURVED.INC", 0)
+	verbose_include("CG_SQUARE_CURVED.INC", 0)	// decorative public squares
 //	init_building_types()
-//	verbose_include("CG_NORMAL_CURVED.INC", 0)
-	object
-	{
-		verbose_include("CG_CITY_CURVED.inc", 0)
-	}
+	verbose_include("CG_PARK_CURVED.INC", 0)	// decorative public greenery
+//	init_building_types()
+	verbose_include("CG_NORMAL_CURVED.INC", 0)	// regular city buildings
+	object {verbose_include("CG_CITY_CURVED.inc", 0)}
 #end
 
 
 //------------------------------------------------------------------------------Alignment
-
+/*
 cylinder
 {
 	0,+x*256, 1/2
 	pigment {color rgb x}
+	finish {diffuse 0 emission 1}
 	translate -y * city_radius
 }
 cylinder
 {
 	0,+y*256, 1/2
 	pigment {color rgb y}
+	finish {diffuse 0 emission 1}
 	translate -y * city_radius
 }
 cylinder
 {
 	0,+z*256, 1/2
 	pigment {color rgb z}
+	finish {diffuse 0 emission 1}
 	translate -y * city_radius
 }
+*/

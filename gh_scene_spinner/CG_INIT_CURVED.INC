@@ -15,35 +15,35 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 #include "param.inc"		// Meshmerizing Mesh Maker Macros
 
 // CHECK OPTIONS AND ASSIGN DEFAULTS
-#ifndef (city_seed)			#declare city_seed			= 0;			#end
-#ifndef (building_width)		#declare building_width			= 25;			#end
+#ifndef (city_seed)					#declare city_seed				= 0;			#end
+#ifndef (building_width)			#declare building_width			= 25;			#end
 #ifndef (min_building_height)		#declare min_building_height		= building_width * 1/2;	#end
 #ifndef (max_building_height)		#declare max_building_height		= building_width * 2;	#end
-#ifndef (building_height_falloff)	#declare building_height_falloff	= 2;			#end
-#ifndef (building_height_turb)		#declare building_height_turb		= 1/2;			#end
-#ifndef (pavement_height)		#declare pavement_height		= 0.15;			#end
-#ifndef (traffic_spacing)		#declare traffic_spacing		= 10;			#end
-#ifndef (traffic_lanes)			#declare traffic_lanes			= 1;			#end
-#ifndef (traffic_width)			#declare traffic_width			= 3;			#end
-#ifndef (building_types)		#declare building_types			= 0;			#end
-#ifndef (city_default_objects)		#declare city_default_objects		= false;		#end
-#ifndef (park_deco_max)			#declare park_deco_max			= 5;			#end
-#ifndef (square_deco_max)		#declare square_deco_max		= 9;			#end
-#ifndef (park_deco_number)		#declare park_deco_number		= 5;			#end
+#ifndef (building_height_falloff)	#declare building_height_falloff	= 2;		#end
+#ifndef (building_height_turb)		#declare building_height_turb	= 1/2;			#end
+#ifndef (pavement_height)			#declare pavement_height		= 0.15;			#end
+#ifndef (traffic_spacing)			#declare traffic_spacing		= 10;			#end
+#ifndef (traffic_lanes)				#declare traffic_lanes			= 1;			#end
+#ifndef (traffic_width)				#declare traffic_width			= 3;			#end
+#ifndef (building_types)			#declare building_types			= 0;			#end
+#ifndef (city_default_objects)		#declare city_default_objects	= false;		#end
+#ifndef (park_deco_max)				#declare park_deco_max			= 5;			#end
+#ifndef (square_deco_max)			#declare square_deco_max		= 9;			#end
+#ifndef (park_deco_number)			#declare park_deco_number		= 5;			#end
 #ifndef (square_deco_number)		#declare square_deco_number		= 9;			#end
-#ifndef (street_width)			#declare street_width			= 10;			#end
-#ifndef (pavement_width)		#declare pavement_width			= 4;			#end
-#ifndef (building_width)		#declare building_width			= 25;			#end
-#ifndef (city_tileable)			#declare city_tileable			= false;		#end
-#ifndef (city_default_objects)		#declare city_default_objects		= false;		#end
-#ifndef (city_night)			#declare city_night			= false;		#end
-#ifndef (traffic_night)			#declare traffic_night			= false;		#end
-#ifndef (windows_lit)			#declare windows_lit			= 0.33;			#end
-#ifndef (windows_blend)			#declare windows_blend			= 0.25;			#end
-#if (city_night = false)		#declare windows_lit			= false;		#end
-#ifndef (city_right_hand_drive)		#declare city_right_hand_drive		= false;		#end
+#ifndef (street_width)				#declare street_width			= 10;			#end
+#ifndef (pavement_width)			#declare pavement_width			= 4;			#end
+#ifndef (building_width)			#declare building_width			= 25;			#end
+#ifndef (city_tileable)				#declare city_tileable			= false;		#end
+#ifndef (city_default_objects)		#declare city_default_objects	= false;		#end
+#ifndef (city_night)				#declare city_night				= false;		#end
+#ifndef (traffic_night)				#declare traffic_night			= false;		#end
+#ifndef (windows_lit)				#declare windows_lit			= 0.33;			#end
+#ifndef (windows_blend)				#declare windows_blend			= 0.25;			#end
+#if (city_night = false)			#declare windows_lit			= false;		#end
+#ifndef (city_right_hand_drive)		#declare city_right_hand_drive	= false;		#end
 
-#ifndef (_CT_rand1)	#declare _CT_rand1	= seed(43566);			#end // For traffic
+#ifndef (_CT_rand1)	#declare _CT_rand1	= seed(43566);				#end // For traffic
 #ifndef (_CT_rand2)	#declare _CT_rand2	= seed(city_seed);			#end // For pavement objects
 #ifndef (_CT_rand3)	#declare _CT_rand3	= seed(city_seed);			#end // For buildings
 #ifndef (_CT_rand4)	#declare _CT_rand4	= seed(city_seed);			#end // For building levels
@@ -63,16 +63,19 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 // CITY CREATION MACROS
 #macro city_base(Corner1, Corner2)
 	debug_detail(concat("CG......Calling city_base().\n"))
-	#declare _CT_extents = (abs(city_corner1.x) + abs(city_corner1.z))/2;
 	#local PSize = Corner2 - Corner1;
 	object
 	{
-		#if (city_all_mesh)
-			pos_object(cyl_box_mesh(<Corner1.x, -0.1, Corner1.z>, <Corner2.x, -0.0, Corner2.z>, prim_base_sections), <0,0,0>)
+		#if	(city_is_flat)
+			pos_object(box {Corner1 - y * city_base_thick, Corner2}, <0,0,0>)
+		#elseif (city_all_mesh)
+			pos_object(cyl_box_mesh(Corner1 - y * city_base_thick, Corner2, prim_base_sections), <0,0,0>)
 		#else
-			pos_object(cyl_box_csg(<Corner1.x, -0.1, Corner1.z>, <Corner2.x, -0.0, Corner2.z>), <0,0,0>)
+			pos_object(cyl_box_csg(Corner1 - y * city_base_thick, Corner2), <0,0,0>)
 		#end
 		texture {street_texture}
+		// bounding may not help here
+//		bounded_by {cyl_box_bound()}
 	}
 #end
 
@@ -106,7 +109,9 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 	#local PSize = Corner2 - Corner1;
 	object
 	{
-		#if (city_all_mesh)
+		#if	(city_is_flat)
+			pos_object(box {Corner1, Corner2 + y * pavement_height}, <0,0,0>)
+		#elseif (city_all_mesh)
 			pos_object(cyl_box_mesh(Corner1, Corner2 + y * pavement_height, prim_base_sections), <0,0,0>)
 		#else
 			pos_object(cyl_box_csg(Corner1, Corner2 + y * pavement_height), <0,0,0>)
@@ -116,7 +121,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 //		bounded_by {cyl_box_bound(Corner1, Corner2 + y * pavement_height)}
 	}
 /*
-	// obsolete
+	// obsolete road stuff
 	#ifdef (pavement_object)
 		#local V = 0;
 		#while (V < dimension_size(pavement_object, 1))
@@ -258,7 +263,9 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 		#end
 		object
 		{
-			#if (city_all_mesh)
+			#if	(city_is_flat)
+				box {v1, v2}
+			#elseif (city_all_mesh)
 				cyl_box_mesh(v1, v2, prim_base_sections)
 			#else
 				cyl_box_csg (v1, v2)
@@ -337,7 +344,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 		#if (!Direction)
 			#local height_mod = rail_height*2;
 			// pedestal support
-			#local c1 = From + <-(street_width/4),0,-(street_width/2)>;
+			#local c1 = From + <-(street_width/4),pavement_height,-(street_width/2)>;
 			#local c2 = From + <+(street_width/4),height_mod,+(street_width/2)>;
 			// pedestal cutout
 			#local d1 = From + <-street_width/2,-rail_ped_thick,-(-rail_ped_thick+street_width/2)>;
@@ -345,7 +352,8 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 			// pedestal
 			difference
 			{
-				pos_object(cyl_pyr(c1, c2), <0,0,0>)
+//				pos_object(cyl_pyr(c1, c2), <0,0,0>)		// weird clipping issues when city curvature is high
+				pos_object(cyl_box(c1, c2), <0,0,0>)
 				pos_object(cyl_box(d1, d2), <0,0,0>)
 				bounded_by {pos_object(cyl_box_bound(c1, c2), <0,0,0>)}
 				texture {city_rail_texture}
@@ -353,7 +361,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 		#else
 			#local height_mod = rail_height*1;
 			// pedestal support
-			#local c1 = From + <-(street_width/2),0,-(street_width/4)>;
+			#local c1 = From + <-(street_width/2),pavement_height,-(street_width/4)>;
 			#local c2 = From + <+(street_width/2),height_mod,+(street_width/4)>;
 			// pedestal cutout
 			#local d1 = From + <-(-rail_ped_thick+street_width/2),-rail_ped_thick,-street_width/2>;
@@ -361,7 +369,8 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 			// pedestal
 			difference
 			{
-				pos_object(cyl_pyr(c1, c2), <0,0,0>)
+//				pos_object(cyl_pyr(c1, c2), <0,0,0>)		// weird clipping issues when city curvature is high
+				pos_object(cyl_box(c1, c2), <0,0,0>)
 				pos_object(cyl_box(d1, d2), <0,0,0>)
 				bounded_by {pos_object(cyl_box_bound(c1, c2), <0,0,0>)}
 				texture {city_rail_texture}
@@ -629,7 +638,9 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 //------------------------------------------------------------------------------cyl_box
 
 #macro cyl_box(in1_pos, in2_pos)
-	#if (city_use_mesh)
+	#if	(city_is_flat)
+		box {in1_pos, in2_pos}
+	#elseif (city_use_mesh)
 		cyl_box_mesh(in1_pos, in2_pos, prim_cylarc_sections)
 	#else
 		cyl_box_csg(in1_pos, in2_pos)
@@ -907,6 +918,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 
 
 //-----------------------------------------------------------------------------cyl_pyr
+// needs a flat option
 
 #macro cyl_pyr(in1_pos, in2_pos)
 	#if (city_use_mesh)
@@ -1020,7 +1032,9 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 //------------------------------------------------------------------------------cyl_tiltA
 
 #macro cyl_tiltA(in_radius, in_height, tweak)
-//	#if (city_use_mesh)
+//	#if (city_is_flat)
+//		cyl_tiltA_mesh(in_radius, in_height, tweak, 24)		// why is this commented out?
+//	#elseif (city_use_mesh)
 //		cyl_tiltA_mesh(in_radius, in_height, tweak, 24)		// why is this commented out?
 //	#else
 		cyl_tiltA_csg(in_radius, in_height, tweak)
@@ -1080,7 +1094,9 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 //------------------------------------------------------------------------------cyl_tiltB
 
 #macro cyl_tiltB(in_radius, in_height, tweak, Scale)
-	#if (city_use_mesh)
+	#if (city_is_flat)
+		cyl_tiltB_mesh(in_radius, in_height, tweak, Scale)
+	#elseif (city_use_mesh)
 		cyl_tiltB_mesh(in_radius, in_height, tweak, Scale)
 	#else
 		cyl_tiltB_csg(in_radius, in_height, tweak, Scale)
