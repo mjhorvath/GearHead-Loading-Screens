@@ -295,9 +295,9 @@
 //		#declare Camera_Right		= +x * 420;
 //		#declare Camera_Direction	= +z * 210;
 //		#declare Camera_Location	= <0,-140,-210>;
-		#declare Camera_Up		= +y * city_radius*2;
-		#declare Camera_Right		= +x * city_radius*2;
-		#declare Camera_Direction	= +z * city_radius*1;
+		#declare Camera_Up			= +y*2;
+		#declare Camera_Right		= +x*2;
+		#declare Camera_Direction	= +z*1;
 		#declare Camera_Location	= <0,-city_radius*2/3,-city_length*2/4>;
 		#declare Camera_LookAt		= Camera_Location + Camera_Direction;
 		#switch (Camera_CubeMap)

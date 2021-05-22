@@ -3,6 +3,7 @@
 #declare city_night				= false;					// boolean, obsolete?
 #declare city_right_hand_drive	= false;					// boolean
 #declare city_default_objects	= false;					// boolean
+#declare city_is_flat			= false;					// boolean, don't change this manually
 #declare city_use_mesh			= false;					// boolean
 #declare city_all_mesh			= false;					// boolean
 #declare city_tileable			= "dummy text";				// boolean, turning this off has weird side-effects!!
