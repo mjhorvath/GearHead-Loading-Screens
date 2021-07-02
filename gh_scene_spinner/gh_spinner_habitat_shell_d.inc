@@ -33,7 +33,7 @@
 			object {cutaway_object1}
 		#end
 		bounded_by {outer_shell_1}
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 	// outermost rock ring
 	difference
@@ -44,7 +44,7 @@
 			object {cutaway_object1}
 		#end
 		bounded_by {outer_shell_2}
-		texture {steel_filling_texture}
+		steel_filling_texture()
 	}
 	// second metal ring
 	difference
@@ -55,7 +55,7 @@
 			object {cutaway_object1}
 		#end
 		bounded_by {outer_shell_4}
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 }
 
@@ -324,7 +324,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 		bounded_by {bevel_shell_1}
 	}
 	// blue metal endcap #1
@@ -340,7 +340,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {sky_texture_a}
+		sky_texture_a()
 		bounded_by {bevel_shell_2}
 	}
 	// glass endcap #1
@@ -354,7 +354,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		material {dome_material}
+		dome_material()
 		bounded_by {glass_shell_1}
 	}
 	// white metal endcap #2
@@ -368,7 +368,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 		bounded_by {bevel_shell_1		rotate y * 180}
 	}
 	// blue metal endcap #2
@@ -384,7 +384,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {sky_texture_a}
+		sky_texture_a()
 		bounded_by {bevel_shell_2		rotate y * 180}
 	}
 	// glass endcap #2
@@ -398,7 +398,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		material {dome_material}
+		dome_material()
 		bounded_by {glass_shell_1		rotate y * 180}
 	}
 	// inner shell
@@ -409,7 +409,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 		bounded_by {inner_shell_1}
 	}
 	// inner rock layer
@@ -420,7 +420,7 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {rock_filling_texture}
+		rock_filling_texture()
 		bounded_by {inner_shell_3}
 	}
 	// end gear
@@ -429,13 +429,13 @@
 		object
 		{
 			cap_hub_r1_hlf
-			texture {sky_texture_a}
+			sky_texture_a()
 		}
 		object
 		{
 			cap_hub_r1_hlf
 			rotate +y * 180
-			texture {white_metal_texture}
+			white_metal_texture()
 		}
 		translate -z*(city_length/2+inner_shell_bulge+inner_rock_thick)
 	}
@@ -445,12 +445,12 @@
 		{
 			cap_hub_r1_hlf
 			rotate +y * 180
-			texture {sky_texture_a}
+			sky_texture_a()
 		}
 		object
 		{
 			cap_hub_r1_hlf
-			texture {white_metal_texture}
+			white_metal_texture()
 		}
 		translate +z*(city_length/2+inner_shell_bulge+inner_rock_thick)
 	}
@@ -493,26 +493,28 @@
 */
 
 // would be nice if the density were slightly less in the middle too
-#declare atmos_material = material
-{
-	texture {pigment {color rgbt 1}}
-	interior
+#macro atmos_material()
+	material
 	{
-		media
+		texture {pigment {color rgbt 1}}
+		interior
 		{
-			scattering
+			media
 			{
-				#if (SimpleLamp = true)
-					4, rgb <0.2,0.4,1.0>/20000		// works well with single point light
-				#else
-					4, rgb <0.2,0.4,1.0>/20000000		// needed for when using an area light for whatever reason
-				#end
-				extinction	1
+				scattering
+				{
+					#if (SimpleLamp = true)
+						4, rgb <0.2,0.4,1.0>/20000		// works well with single point light
+					#else
+						4, rgb <0.2,0.4,1.0>/20000000		// needed for when using an area light for whatever reason
+					#end
+					extinction	1
+				}
+				samples	10
 			}
-			samples	10
 		}
 	}
-}
+#end
 
 #local atmos_object = difference
 {
@@ -527,7 +529,7 @@
 		object {cutaway_object1}
 	#end
 	hollow
-	material {atmos_material}
+	atmos_material()
 	bounded_by {cylinder {+z*(city_length/2+inner_shell_bulge), -z*(city_length/2+inner_shell_bulge), city_radius}}
 	scale 1.001
 }
@@ -563,7 +565,7 @@
 		rotate x * 90
 	}
 	rotate +z * 045
-	texture {white_metal_texture}
+	white_metal_texture()
 }
 
 
@@ -582,7 +584,7 @@
 	#if (!ShowWhole)
 		object {cutaway_object1}
 	#end
-	texture {white_metal_texture}
+	white_metal_texture()
 	bounded_by {cylinder {-z*(hab_section_length/2 + truss_thickness), +z*(hab_section_length/2 + truss_thickness), outer_shell_radius1 * sqrt(pow(tand(360/2/truss_sides),2) + 1)}}
 }
 

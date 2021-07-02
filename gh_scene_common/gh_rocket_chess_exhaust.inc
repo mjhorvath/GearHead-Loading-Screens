@@ -83,45 +83,47 @@
 #declare Exhaust_Object = sphere
 {
 	0, 1
-	scale <0.5,1,1>
+	scale <0.5,1.0,1.0>
 	translate -0.5*x
-	pigment
-	{
-		color rgbt 1
-	}
-	interior
-	{
-		media
+	#if (TexQual > -2)
+		material
 		{
-			samples 15
-			emission 1.5/exhaust_radius
-			density
+			texture {pigment {color rgbt 1}}
+			interior
 			{
-				function {abs(Exhaust_X(x))}
-				density_map
+				media
 				{
-					[0.00 rgb 0]
-					//[0.50 Exhaust_GC]
-					[0.75 Exhaust_GS]
+					samples 15
+					emission 1.5/exhaust_radius
+					density
+					{
+						function {abs(Exhaust_X(x))}
+						density_map
+						{
+							[0.00 rgb 0]
+							//[0.50 Exhaust_GC]
+							[0.75 Exhaust_GS]
+						}
+					}
+				}
+				media
+				{
+					samples 15
+					absorption 0.5/exhaust_radius
+					density
+					{
+						function {abs(Exhaust_X(x))}
+						density_map
+						{
+							[0.00 rgb 0]
+							//[0.50 Exhaust_GC]
+							[0.75 Exhaust_GS]
+						}
+					}
 				}
 			}
 		}
-		media
-		{
-			samples 15
-			absorption 0.5/exhaust_radius
-			density
-			{
-				function {abs(Exhaust_X(x))}
-				density_map
-				{
-					[0.00 rgb 0]
-					//[0.50 Exhaust_GC]
-					[0.75 Exhaust_GS]
-				}
-			}
-		}
-	}
-	scale <12,1.5+1.5*clock,1.5+1.5*clock> translate <11.2+0.4*clock,0,0>
+	#end
+	scale <12,1.5,1.5> translate <12,0,0>
 	hollow
 }

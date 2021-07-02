@@ -60,6 +60,139 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 #declare build_roof		= 128;
 
 
+// CITY TEXTURES
+#switch (TexQual)
+	#case (-2)
+	#case (-1)
+		#declare street_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
+		#declare pavement_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
+	#break
+	#case (0)
+		#declare street_texture		= texture {pigment {gamma_color_adjust(<0.2,0.2,0.2>)}};
+		#declare pavement_texture	= texture {pigment {gamma_color_adjust(<0.5,0.5,0.5>)}};
+	#break
+	#case (1)
+	#case (2)
+		#declare street_texture = texture
+		{
+			pigment
+			{
+				bozo
+				color_map
+				{
+					[0 gamma_color_adjust(<0.2,0.2,0.2>)]
+					[1 gamma_color_adjust(<0.4,0.4,0.4>)]
+				}
+				scale 10
+			}
+			scale Meters
+		}
+		#declare pavement_texture = texture
+		{
+			pigment
+			{
+				wrinkles
+				color_map
+				{
+					[0 gamma_color_adjust(<0.5,0.5,0.5>)]
+					[1 gamma_color_adjust(<0.6,0.6,0.6>)]
+				}
+				scale 1.5
+			}
+			scale Meters
+		}
+	#break
+#end
+// CITY TEXTURES
+// need street lamp texture and potted plant texture too
+#switch (TexQual)
+	#case (-2)
+	#case (-1)
+		#declare metal_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
+		#declare lamp_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
+		#declare trash_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
+		#declare plant_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
+	#break
+	#case (0)
+		#declare metal_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
+		}
+		#declare lamp_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
+		}
+		#declare trash_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.0,0.0,0.8>)}
+		}
+		#declare plant_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.0,0.8,0.0>)}
+		}
+	#break
+	#case (1)
+	#case (2)
+		#declare metal_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
+			finish {metallic}
+		}
+		#declare lamp_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
+			finish {metallic}
+		}
+		#declare trash_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.0,0.0,0.8>)}
+			finish {metallic}
+		}
+		#declare plant_texture = texture
+		{
+			pigment {gamma_color_adjust(<0.0,0.8,0.0>)}
+			finish {metallic}
+		}
+	#break
+#end
+
+// Should measure 2x2 in x-z plane, travelling along the x-axis
+// slightly too elevated
+#declare street_overlay = texture
+{
+	pigment
+	{
+		planar
+		pigment_map
+		{
+			[
+				1/2
+				gradient y
+				pigment_map
+				{
+					[0.02 checker gamma_color_adjust(<1,1,1>), gamma_color_adjust(<1,1,1,0,1>) scale .1]
+					[0.02 gamma_color_adjust(<1,1,1,0,1>)]
+				}
+				ramp_wave
+			]
+			[
+				1/2
+				gradient y
+				color_map
+				{
+					[0.01 gamma_color_adjust(<1,1,1,0,1>)]
+					[0.01 gamma_color_adjust(<1,1,1,0,0>)]
+					[0.03 gamma_color_adjust(<1,1,1,0,0>)]
+					[0.03 gamma_color_adjust(<1,1,1,0,1>)]
+				}
+				ramp_wave
+			]
+		}
+		rotate x*90
+	}
+	scale Meters
+}
+
 // CITY CREATION MACROS
 #macro city_base(Corner1, Corner2)
 	debug_detail(concat("CG......Calling city_base().\n"))
@@ -332,7 +465,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 			{
 				pos_object(cyl_box(b1, b2), <0,0,0>)
 			}
-			texture {city_rail_texture}
+			city_rail_texture()
 		}
 	#end
 #end
@@ -356,7 +489,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 				pos_object(cyl_box(c1, c2), <0,0,0>)
 				pos_object(cyl_box(d1, d2), <0,0,0>)
 				bounded_by {pos_object(cyl_box_bound(c1, c2), <0,0,0>)}
-				texture {city_rail_texture}
+				city_rail_texture()
 			}
 		#else
 			#local height_mod = rail_height*1;
@@ -373,7 +506,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 				pos_object(cyl_box(c1, c2), <0,0,0>)
 				pos_object(cyl_box(d1, d2), <0,0,0>)
 				bounded_by {pos_object(cyl_box_bound(c1, c2), <0,0,0>)}
-				texture {city_rail_texture}
+				city_rail_texture()
 			}
 		#end
 	#end
@@ -491,7 +624,7 @@ NOTE: This file is designed for use with City.inc; see City.htm for
 			// station platform surfaces
 			pos_object(platform_plat_1, From)
 			pos_object(platform_plat_2, From)
-			texture {city_rail_texture}
+			city_rail_texture()
 		}
 	#end
 #end
@@ -1522,134 +1655,3 @@ verbose_include("gh_deciduous_tree.inc", defined(TREE))
 	#declare building_unique		= array[max_building_types];
 	#declare building_types			= 0;
 #end
-
-// CITY TEXTURES
-#switch (TexQual)
-	#case (-1)
-		#declare street_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
-		#declare pavement_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
-	#break
-	#case (0)
-		#declare street_texture		= texture {pigment {gamma_color_adjust(<0.2,0.2,0.2>)}};
-		#declare pavement_texture	= texture {pigment {gamma_color_adjust(<0.5,0.5,0.5>)}};
-	#break
-	#case (1)
-	#case (2)
-		#declare street_texture = texture
-		{
-			pigment
-			{
-				bozo
-				color_map
-				{
-					[0 gamma_color_adjust(<0.2,0.2,0.2>)]
-					[1 gamma_color_adjust(<0.4,0.4,0.4>)]
-				}
-				scale 10
-			}
-			scale Meters
-		}
-		#declare pavement_texture = texture
-		{
-			pigment
-			{
-				wrinkles
-				color_map
-				{
-					[0 gamma_color_adjust(<0.5,0.5,0.5>)]
-					[1 gamma_color_adjust(<0.6,0.6,0.6>)]
-				}
-				scale 1.5
-			}
-			scale Meters
-		}
-	#break
-#end
-// CITY TEXTURES
-// need street lamp texture and potted plant texture too
-#switch (TexQual)
-	#case (-1)
-		#declare metal_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
-		#declare lamp_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
-		#declare trash_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
-		#declare plant_texture		= texture {pigment {lowqual_pig(_CT_rand5)}};
-	#break
-	#case (0)
-		#declare metal_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
-		}
-		#declare lamp_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
-		}
-		#declare trash_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.0,0.0,0.8>)}
-		}
-		#declare plant_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.0,0.8,0.0>)}
-		}
-	#break
-	#case (1)
-	#case (2)
-		#declare metal_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
-			finish {metallic}
-		}
-		#declare lamp_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.4,0.4,0.4>)}
-			finish {metallic}
-		}
-		#declare trash_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.0,0.0,0.8>)}
-			finish {metallic}
-		}
-		#declare plant_texture = texture
-		{
-			pigment {gamma_color_adjust(<0.0,0.8,0.0>)}
-			finish {metallic}
-		}
-	#break
-#end
-
-// Should measure 2x2 in x-z plane, travelling along the x-axis
-// slightly too elevated
-#declare street_overlay = texture
-{
-	pigment
-	{
-		planar
-		pigment_map
-		{
-			[
-				1/2
-				gradient y
-				pigment_map
-				{
-					[0.02 checker gamma_color_adjust(<1,1,1>), gamma_color_adjust(<1,1,1,0,1>) scale .1]
-					[0.02 gamma_color_adjust(<1,1,1,0,1>)]
-				}
-				ramp_wave
-			]
-			[
-				1/2
-				gradient y
-				color_map
-				{
-					[0.01 gamma_color_adjust(<1,1,1,0,1>)]
-					[0.01 gamma_color_adjust(<1,1,1,0,0>)]
-					[0.03 gamma_color_adjust(<1,1,1,0,0>)]
-					[0.03 gamma_color_adjust(<1,1,1,0,1>)]
-				}
-				ramp_wave
-			]
-		}
-		rotate x*90
-	}
-	scale Meters
-}

@@ -132,8 +132,8 @@
 		#if (!ShowWhole)
 			object {cutaway_object1}
 		#end
-		texture {nose_shield_metal_texture}
-//		texture {white_metal_texture}
+		nose_shield_metal_texture()
+//		white_metal_texture()
 		translate +z * (hab_total_length/2 + nose_cone_position)
 	}
 #end
@@ -149,7 +149,7 @@ intersection
 	object {metal_cone}
 	plane {+z, z_new}
 	rotate +y * 180
-	texture {white_metal_texture}
+	white_metal_texture()
 	translate +z * (hab_total_length/2 + nose_cone_position - metal_thick)
 }
 
@@ -181,7 +181,7 @@ difference
 	#if (!ShowWhole)
 		object {cutaway_object1}
 	#end
-	texture {white_metal_texture}
+	white_metal_texture()
 //	rotate		+z * 360/12
 	translate	+z * (hab_total_length/2 + main_strut_width/2)
 }
@@ -213,7 +213,7 @@ difference
 	#if (!ShowWhole)
 		object {cutaway_object1}
 	#end
-	texture {white_metal_texture}
+	white_metal_texture()
 //	rotate		+z * 360/12
 	translate	-z * (engine_start + engine_length - main_strut_width/2)
 //	translate	-z * (engine_start)
@@ -231,7 +231,7 @@ object
 {
 	Parametric(nose_Fx2,nose_Fy2,nose_Fz2,<0,0>,<2*pi,trumpet_length>,30,30,"")
 	rotate -y * 90
-	texture {white_metal_texture}
+	white_metal_texture()
 	translate +z * (hab_total_length/2 + inner_shell_bulge + metal_thick * 3)
 }
 
@@ -247,7 +247,7 @@ object
 #local comm_truss = object
 {
 	verbose_include("truss.inc", 0)
-	texture {white_metal_texture}
+	white_metal_texture()
 }
 #local comm_dish = union
 {
@@ -304,6 +304,6 @@ union
 		comm_anten
 	}
 	rotate		+y * 180
-	texture {white_metal_texture}
+	white_metal_texture()
 	translate 	+z * (hab_total_length/2 + nose_cone_position - Meters * 8)
 }

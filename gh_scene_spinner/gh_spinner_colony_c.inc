@@ -154,7 +154,7 @@
 			bounded_by {cylinder {-z * 0, +z * (main_strut_width+0), main_body_radius}}
 			translate +z * (hab_total_length/2)
 		}
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 #end
 
@@ -198,7 +198,7 @@
 				object {cutaway_object1}
 			#end
 			bounded_by {sphere {0,reactor_radius*5/5		scale <0.99,0.99,1>}}
-			texture {white_metal_texture}
+			white_metal_texture()
 		}
 		// liquid/gas ball
 		difference
@@ -209,7 +209,7 @@
 				object {cutaway_object1}
 			#end
 			bounded_by {sphere {0,reactor_radius*5/5		scale <0.99,0.99,1>}}
-			material {water_material}
+			water_material()
 		}
 		// reactor
 		#local trumpet_radius = Meters * 16;
@@ -261,7 +261,7 @@
 			#end
 			bounded_by {sphere {0, (reactor_radius + big_truss_thick) * 1.01}}
 		}
-		texture {white_metal_texture}
+		white_metal_texture()
 		translate -z * (reactor_start + reactor_length/2)
 	}
 #end
@@ -283,14 +283,14 @@
 					rotate +z * i * 60
 				}
 			#end
-			texture {white_metal_texture}
+			white_metal_texture()
 		}
 		// combustion chamber
 		// not quite the correct shape
 		cylinder
 		{
 			0, -z * engine_chamber_length, engine_chamber_radius
-			texture {engine_nozzle_texture}
+			engine_nozzle_texture()
 			translate -z * (engine_chamber_begin)
 		}
 		// parabolic rocket engine cone
@@ -317,7 +317,7 @@
 			}
 			plane {-z, nozzle_length}
 			bounded_by {cylinder {0, -z * nozzle_length, nozzle_radius}}
-			texture {engine_nozzle_texture}
+			engine_nozzle_texture()
 			translate -z * (engine_chamber_begin + engine_chamber_length)
 		}
 		// exhaust plume
@@ -343,7 +343,7 @@
 		//	#if (!ShowWhole)
 		//		object {cutaway_object1}
 		//	#end
-			texture {white_metal_texture}
+			white_metal_texture()
 		}
 		// large arms connecting each fuel pod to the axle
 	//	#local truss_rotate = 45;
@@ -366,7 +366,7 @@
 				}
 				#local truss_arms_cnt = truss_arms_cnt + 1;
 			#end
-			texture {white_metal_texture}
+			white_metal_texture()
 		}
 */
 		translate -z * (engine_start)
@@ -388,7 +388,7 @@
 				rotate +z * (60 * i + 30)
 			}
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 		translate -z * (dock_start + dock_length/2)
 	}
 #end
@@ -416,7 +416,7 @@
 			object {tank_object	rotate -z * 270}
 		#end
 		object {tank_object		rotate -z * 330}
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 */
 	#local blinky_group_1 = union
@@ -489,7 +489,7 @@
 		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),-1*(reactor_start+reactor_length/2)>}
 		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),-1*(hab_section_offset)>}
 		object {thruster_aggregate	translate <0,-1*(main_body_radius+thruster_tank_radius),+1*(hab_section_offset)>}
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 	union
 	{

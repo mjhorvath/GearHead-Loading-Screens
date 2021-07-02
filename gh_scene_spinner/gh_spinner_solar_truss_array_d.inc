@@ -24,7 +24,7 @@ union
 			}
 			#local truss_arms_cnt = truss_arms_cnt + 1;
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 
 	// small short horizontal rods connecting the two outer rings
@@ -47,7 +47,7 @@ union
 			}
 			#local truss_arms_cnt = truss_arms_cnt + 1;
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 
 	// outermost ring
@@ -81,7 +81,7 @@ union
 			}
 			#local truss_arms_cnt = truss_arms_cnt + 1;
 		#end
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 	#debug "\n<<<<Finish truss array trusses\n"
 
@@ -119,7 +119,7 @@ union
 				}
 	//			translate -y * agridome_ringrad
 				rotate +z * 360/dome_max * dome_cnt
-				texture {white_metal_texture}
+				white_metal_texture()
 			}
 			#local dome_cnt = dome_cnt + 1;
 		#end
@@ -135,78 +135,7 @@ union
 		#local panel_circum = panel_radius * 2 * pi;
 		#local panel_length_angle = panel_length/panel_circum * 360;
 		#local panel_gap_angle = panel_gap/2/panel_circum * 360;
-		#local solar_panel_pigment_1 = pigment
-		{
-			radial
-			color_map
-			{
-				[00/32 gamma_color_adjust(0/4*<1,1,1>)]
-				[01/32 gamma_color_adjust(0/4*<1,1,1>)]
-				[01/32 gamma_color_adjust(1/4*<1,1,1>)]
-				[31/32 gamma_color_adjust(1/4*<1,1,1>)]
-				[31/32 gamma_color_adjust(0/4*<1,1,1>)]
-				[32/32 gamma_color_adjust(0/4*<1,1,1>)]
-			}
-			rotate x * 90
-			frequency 360/panel_length_angle * 8
-			rotate -z * panel_gap_angle
-			scale 8/panel_width
-		}
-		#local solar_panel_Pigment_3 = pigment {gamma_color_adjust(0/4*<1,1,1>)}
-		#local solar_panel_pigment_2 = pigment
-		{
-			gradient z
-			pigment_map
-			{
-				[00/32 solar_panel_Pigment_3]
-				[01/32 solar_panel_Pigment_3]
-				[01/32 solar_panel_pigment_1]
-				[31/32 solar_panel_pigment_1]
-				[31/32 solar_panel_Pigment_3]
-				[32/32 solar_panel_Pigment_3]
-			}
-			scale panel_width/8
-		}
-		#local solar_panel_texture = texture
-		{
-			#switch (TexQual)
-				#case (-1)
-					pigment {lowqual_pig(Seed)}
-				#break
-				#case (0)
-					pigment {solar_panel_pigment_2}
-					translate +y * panel_width/16
-					translate +z * panel_width/8
-				#break
-				#case (1)
-				#case (2)
-					pigment {solar_panel_pigment_2}
-	//				finish {Glossy}
-					finish
-					{
-						ambient     srgb <0.100,0.100,0.100>
-						brilliance  1.000
-						crand       0.000
-						diffuse     0.600
-						metallic    1.000
-						phong       0.000
-						phong_size  40.000
-						specular    0.000
-						roughness   0.050
-						reflection
-						{
-							srgb <0.481,0.301,0.133>, srgb <0.722,0.451,0.200>
-							fresnel   0
-							falloff   0.000
-							exponent  1.000
-							metallic  0.000
-						}
-					} 
-					translate +y * panel_width/16
-					translate +z * panel_width/8
-				#break
-			#end
-		}
+
 		#local solar_blinky = object
 		{
 			blinky_sphere(blinky_radius)
@@ -227,7 +156,7 @@ union
 //			object {solar_blinky    translate -z*panel_width/2    rotate -z * (panel_gap_angle + panel_length_angle)}
 //			object {solar_blinky    translate +z*panel_width/2    rotate -z * (panel_gap_angle)}
 //			object {solar_blinky    translate +z*panel_width/2    rotate -z * (panel_gap_angle + panel_length_angle)}
-			texture {solar_panel_texture}
+			solar_panel_texture(panel_length_angle, panel_gap_angle)
 		}
 		#local solar_group = union
 		{
@@ -252,7 +181,7 @@ union
 			{
 				#include "truss.inc"
 				translate +y * panel_radius
-				texture {white_metal_texture}
+				white_metal_texture()
 			}
 			object {solar_blinky    translate truss_point1}
 			object {solar_blinky    translate truss_point2}
@@ -289,7 +218,7 @@ union
 			bounded_by {box {<+main_body_radius,+main_body_radius,+Meters * 16>, <-main_body_radius,-main_body_radius,-Meters * 16>}}
 
 		}
-		texture {white_metal_texture}
+		white_metal_texture()
 	}
 	#debug "\n<<<<Finish truss array central hub\n"
 

@@ -23,6 +23,12 @@ object/building files you want to use.
 #macro TrainMacro(in_color, Direction)
 	#local adjusted_height = rail_cars_height/1.8;	// normalized so that the top of a train car is 1 * rail_cars_height units high
 	#switch (TexQual)
+		#case (-2)
+			#local brake_light_tex	= texture {};
+			#local head_light_tex	= texture {};
+			#local train_texture	= texture {};
+			#local train_texture	= texture {};
+		#break
 		#case (-1)
 			#local brake_light_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local head_light_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};

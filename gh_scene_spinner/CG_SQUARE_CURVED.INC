@@ -48,6 +48,11 @@ verbose_include("platonic_solids.inc", defined(Platonic_icosahedron_edges))
 	#local building_size	= <32, 32, 32>;
 	#local Scale		= <Size.x/building_size.x,Size.x/building_size.y,Size.z/building_size.z>;
 	#switch (TexQual)
+		#case (-2)
+			#local Tex_1 = texture {};
+			#local Tex_2 = texture {};
+			#local Mat_1 = material {};
+		#break
 		#case (-1)
 			#local Tex_1 = texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local Tex_2 = texture {pigment {lowqual_pig(_CT_rand5)}};
@@ -279,6 +284,9 @@ verbose_include("platonic_solids.inc", defined(Platonic_icosahedron_edges))
 	#local Scale		= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
 	#local door_radius	= 4/4*city_storey_height;
 	#switch (TexQual)
+		#case (-2)
+			#local Tex_1 = texture {};
+		#break
 		#case (-1)
 			#local Tex_1 = texture {pigment {lowqual_pig(_CT_rand5)}};
 		#break

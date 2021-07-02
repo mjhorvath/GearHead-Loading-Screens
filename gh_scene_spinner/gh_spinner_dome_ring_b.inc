@@ -38,20 +38,6 @@ verbose_include("sphere.inc", 0)
 #local ring_radius		= agridome_ringrad/agridome_radius;
 #local ring_circum		= 2 * pi * agridome_ringrad;
 #local small_angle		= agridome_radius/ring_circum * 360;
-#local RibTexture		= texture {white_metal_texture}
-#local PaneTexture		= material {dome_material}				// should be a material with an ior!!!
-#local DirtTexture		= texture
-{
-	pigment
-	{
-		wrinkles
-		color_map
-		{
-			[0 gamma_color_adjust(1/4*<1,1,1>)]
-			[1 gamma_color_adjust(0/4*<1,1,1>)]
-		}
-	}
-}
 // better shape
 #local dome_base = intersection
 {
@@ -65,12 +51,12 @@ verbose_include("sphere.inc", 0)
 }
 #local dome_object = union
 {
-	object {Ten			texture {RibTexture}}
-	object {Hen			texture {RibTexture}}
-	object {Men			material {PaneTexture}}
-	object {dome_base	texture {RibTexture}}
-//	cylinder {0,+y/128,1	texture {DirtTexture}}
-//	cylinder {-y/8,0,1	texture {RibTexture}}
+	object {Ten			white_metal_texture()}
+	object {Hen			white_metal_texture()}
+	object {Men			dome_material()}
+	object {dome_base	white_metal_texture()}
+//	cylinder {0,+y/128,1	dirt_texture()}
+//	cylinder {-y/8,0,1	white_metal_texture()}
 }
 #local dome_plants = union
 {

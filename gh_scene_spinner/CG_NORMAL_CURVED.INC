@@ -45,6 +45,10 @@
 	#local building_size	= <2, .5, 2>;	//<2, .5, 2>
 	#local Scale		= <Size.x/building_size.x,city_storey_height/building_size.y,Size.z/building_size.z>;
 	#switch (TexQual)
+		#case (-2)
+			#local main_tex		= texture {};
+			#local glass_mat	= material {};
+		#break
 		#case (-1)
 			#local main_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
@@ -180,9 +184,15 @@
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local main_tex			= texture {};
+			#local grass_tex		= texture {};
+			#local outer_glass_mat	= material {};
+			#local inner_glass_mat	= material {};
+		#break
 		#case (-1)
-			#local main_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
-			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local main_tex			= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local grass_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local outer_glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
 			#local inner_glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
 		#break
@@ -477,13 +487,18 @@
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local wall_tex		= texture {};
+			#local grass_tex	= texture {};
+			#local glass_mat	= material {};
+		#break
 		#case (-1)
-			#local wall_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local wall_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
 		#break
 		#case (0)
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<.2,.2,.2>)}
 			}
@@ -500,7 +515,7 @@
 			}
 		#break
 		#case (1)
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<.2,.2,.2>)}
 				normal {bumps .01 scale .01}
@@ -525,7 +540,7 @@
 			}
 		#break
 		#case (2)
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<.2,.2,.2>)}
 				normal {bumps .01 scale .01}
@@ -628,7 +643,7 @@
 					}
 				#end
 			#end
-			texture {wall_texture}
+			texture {wall_tex}
 			// bounding may not help here
 			bounded_by {cone_obj1}
 		}
@@ -735,18 +750,24 @@
         	           + ((A_GoldF.red+A_GoldF.green+A_GoldF.blue)/3));
 	#declare D_GoldF = max(D_GoldF, 0);
 	#switch (TexQual)
+		#case (-2)
+			#local wall_tex		= texture {};
+			#local grass_tex	= texture {};
+			#local glass_mat	= material {};
+			#local base_mat		= material {};
+		#break
 		#case (-1)
-			#local wall_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
-			#local grass_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local wall_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
-			#local base_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
+			#local base_mat		= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
 		#break
 		#case (0)
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<1/2,1/2,1/2>)}
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 			}
@@ -766,12 +787,12 @@
 			}
 		#break
 		#case (1)
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(1/2)}
 				scale Meters
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 				normal	{wrinkles}
@@ -817,12 +838,12 @@
 			}
 		#break
 		#case (2)
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(1/2)}
 				scale Meters
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 				normal	{wrinkles}
@@ -921,7 +942,7 @@
 				#end
 */
 			}
-			texture {wall_texture}
+			texture {wall_tex}
 		}
 		union
 		{
@@ -990,7 +1011,7 @@
 				object {grass_clip translate <+16,0,+16> * Scale}
 				object {grass_clip translate <+16,0,-16> * Scale}
 			}
-			texture {grass_texture}
+			texture {grass_tex}
 			// bounding may not help here
 			bounded_by {cyl_box_bound(<-16,0,-16> * Scale, <+16,0,+16> * Scale + <0,city_grass_height,0>)}
 		}
@@ -1054,11 +1075,17 @@
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local main_tex		= texture {};
+			#local glass_mat	= material {};
+			#local stone_tex	= texture {};
+			#local grass_tex	= texture {};
+		#break
 		#case (-1)
 			#local main_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
-			#local stone_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
-			#local grass_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local stone_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
 		#break
 		#case (0)
 			#local main_tex = texture
@@ -1072,11 +1099,11 @@
 					pigment {gamma_color_adjust(<1/2, 1/2, 1/2>)}
 				}
 			}
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 			}
@@ -1098,7 +1125,7 @@
 				}
 				scale Meters
 			}
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 				finish
@@ -1109,7 +1136,7 @@
 				}
 				scale Meters
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 				normal	{wrinkles}
@@ -1133,7 +1160,7 @@
 				}
 				scale Meters
 			}
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 				finish
@@ -1144,7 +1171,7 @@
 				}
 				scale Meters
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 				normal	{wrinkles}
@@ -1183,7 +1210,7 @@
 			object {cyl_box(<-15,0,+09,> * Scale, <-09,city_grass_height,+15,> * Scale)}
 			object {cyl_box(<+09,0,+09,> * Scale, <+15,city_grass_height,+15,> * Scale)}
 			object {cyl_box(<+09,0,-15,> * Scale, <+15,city_grass_height,-09,> * Scale)}
-			texture {grass_texture}
+			texture {grass_tex}
 		}
 		// white border around grass
 		difference
@@ -1202,7 +1229,7 @@
 				object {cyl_box(<+09,-1,+09,> * Scale, <+15,city_grass_height+1,+15,> * Scale)}
 				object {cyl_box(<+09,-1,-15,> * Scale, <+15,city_grass_height+1,-09,> * Scale)}
 			}
-			texture {stone_texture}
+			texture {stone_tex}
 		}
 	}
 	// building and grass
@@ -1240,8 +1267,13 @@
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local wall_tex		= texture {};
+			#local grass_tex	= texture {};
+			#local glass_mat	= material {};
+		#break
 		#case (-1)
-			#local wall_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local wall_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
 		#break
@@ -1250,7 +1282,7 @@
 			{
 				pigment {grass_pigment_3}
 			}
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<0,1/16,0>)}
 			}
@@ -1269,7 +1301,7 @@
 				normal	{wrinkles}
 				scale Meters
 			}
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<0,1/16,0>)}
 				normal {bumps 0.01 scale 0.01}
@@ -1294,7 +1326,7 @@
 				normal	{wrinkles}
 				scale Meters
 			}
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<0,1/16,0>)}
 				normal {bumps 0.01 scale 0.01}
@@ -1330,7 +1362,7 @@
 					cyl_macro(<0,city_radius,-33 * Scale.x>, <0,city_radius,+33 * Scale.x>, city_radius - Level_Count * city_storey_height - Meters/8)
 //					bounded_by {}
 				}
-				texture {wall_texture}
+				texture {wall_tex}
 //				bounded_by {}
 			}
 		#end
@@ -1375,7 +1407,7 @@
 				cyl_macro(<0,city_radius,-32 * Scale.x>, <0,city_radius,+32 * Scale.x>, city_radius - city_storey_height)
 //				bounded_by {}
 			}
-			texture {wall_texture}
+			texture {wall_tex}
 //			bounded_by {}
 		}
 		// grass
@@ -1439,6 +1471,11 @@
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local main_tex		= texture {};
+			#local grass_tex	= texture {};
+			#local glass_mat	= material {};
+		#break
 		#case (-1)
 			#local main_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
@@ -1883,8 +1920,13 @@
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local wall_tex		= texture {};
+			#local grass_tex	= texture {};
+			#local glass_mat	= material {};
+		#break
 		#case (-1)
-			#local wall_texture	= texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local wall_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local glass_mat	= material {texture {pigment {lowqual_pig(_CT_rand5)}}};
 		#break
@@ -1893,7 +1935,7 @@
 			{
 				pigment {grass_pigment_3}
 			}
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<0/16,1/16,1/16>)}
 			}
@@ -1912,7 +1954,7 @@
 				normal	{wrinkles}
 				scale Meters
 			}
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<0/16,1/16,1/16>)}
 				normal {bumps 0.01 		scale 0.01}
@@ -1937,7 +1979,7 @@
 				normal	{wrinkles}
 				scale Meters
 			}
-			#local wall_texture = texture
+			#local wall_tex = texture
 			{
 				pigment {gamma_color_adjust(<0/16,1/16,1/16>)}
 				normal {bumps 0.01 		scale 0.01}
@@ -2173,14 +2215,14 @@
 //					bounded_by {}
 				}
 			#end
-			texture {wall_texture}
+			texture {wall_tex}
 		}
 		// center post
 		intersection
 		{
 			object {Post_Shell}
 			cyl_box(<-32 * Scale.x,0,-32 * Scale.z>, <+32 * Scale.x,Level_Total * city_storey_height - 1/32,+32 * Scale.z>)
-			texture {wall_texture}
+			texture {wall_tex}
 //			bounded_by {}
 		}
 		// grass
@@ -2208,7 +2250,7 @@
 				cylinder
 				{
 					pos_point(support_point + Translate), +y * 0, 1/4 * ScaleRad
-					texture {wall_texture}
+					texture {wall_tex}
 				}
 			#end
 		}

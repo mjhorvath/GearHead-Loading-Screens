@@ -100,8 +100,8 @@
 #declare dock_radius_inner		= dock_radius_outer/2;		// float, name is backwards
 #declare dock_depth				= Meters * 48;				// float
 #declare dock_thick				= Meters * 4;				// float
-#declare nozzle_radius			= Meters * 56;				// float
-#declare nozzle_z_scale_factor	= 2;						// float
+#declare nozzle_radius			= Meters * 16;				// float
+#declare nozzle_z_scale_factor	= 4;						// float
 #declare nozzle_length			= nozzle_radius * nozzle_z_scale_factor;				// float
 #declare exhaust_radius			= nozzle_radius * 3/4;			// float
 #declare exhaust_z_scale_factor	= 1.5;						// float

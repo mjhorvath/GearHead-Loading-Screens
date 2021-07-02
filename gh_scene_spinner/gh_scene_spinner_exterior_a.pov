@@ -1,21 +1,21 @@
-// Title: Spinner exterior scene with high settings
+// Caption: Spinner exterior scene with high settings
 // Authors: Michael Horvath
 // Website: http://isometricland.net
 // Created: 2017-04-08
-// Updated: 2017-04-12
+// Updated: 2021-06-18
 // This file is licensed under the terms of the CC-LGPL.
 // http://www.gnu.org/licenses/lgpl-2.1.html
 //
 // Dependencies that don't fall under the CC-LGPL license
-// 1. CITY GENERATOR INCLUDE FILE, by Chris Colefax, which I have heavily modified, and is already included with these files
-// 2. Rune's particle system
-// 3. GALAXY INCLUDE FILE FOR PERSISTENCE OF VISION, by Chris Colefax
-// 4. Meshmerizing Mesh Maker Macros
-// 5. Lightsys IV, http://www.ignorancia.org/en/index.php?page=Lightsys
-// 6. Truss Generator include by Theran Cochran
-// 7. SPACESHP.POV by Theran Cochran
-// 8. sphere.inc by Shuhei Kawachi
-// 9. grasspatch.inc by Josh English
+//  1. CITY GENERATOR INCLUDE FILE, by Chris Colefax, which I have heavily modified, and is already included with these files
+//  2. Rune's particle system
+//  3. GALAXY INCLUDE FILE FOR PERSISTENCE OF VISION, by Chris Colefax
+//  4. Meshmerizing Mesh Maker Macros
+//  5. Lightsys IV, http://www.ignorancia.org/en/index.php?page=Lightsys
+//  6. Truss Generator include by Theran Cochran
+//  7. SPACESHP.POV by Theran Cochran
+//  8. sphere.inc by Shuhei Kawachi
+//  9. grasspatch.inc by Josh English
 // 10. SPACE AGE TrueType font
 // 11. mecha models by Joseph Hewitt, myself and TurboSquid
 // 12. Raumschiff5.inc, Horus.inc by Frank Bruder
@@ -54,8 +54,7 @@
 #declare pov_version		= 1;					// integer, 0 = 3.6 or earlier; 1 = 3.7 or later; 3.7 also has gamma adjustments in INI file
 #declare Seed				= seed(8829464);		// seed for random number generator
 #declare Included			= 1;					// boolean, tells any included files that they are being included.
-#declare TexQual			= 2;					// integer, -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
-#declare Minimal			= 0;					// boolean, a minimalist render with lots of features turned off
+#declare Minimal			= 0;					// boolean, a minimalist render with lots of features turned off, needs to be obsoleted in favor of Scene_Mode
 #declare Meters				= 1;					// float, 1 meter
 #declare Subdivision		= 0;					// boolean, only needed for some mecha, and only works in an unofficial build of POV-Ray 3.6
 #declare Camera_Inside		= 0;					// boolean
@@ -64,101 +63,156 @@
 #declare Tiles				= 1;					// integer, the default size of the scene, measured in tiles. Use this to zoom in/out.
 #declare Sprite_Height		= 128;					// float, still used? changes the camera's position. 0 for mecha, 1 for walls & terrain.
 #declare Width				= 8;					// float, the default width of a tile.
+#declare Scene_Mode			= 0;					// integer, 0 = regular, 1 = minimal, 2 = depth map
 
-#if (!Minimal)
-	// toggles
-	#declare NoRadiosity	= 0;//					// boolean, very slowwwww!!!
-	#declare NoColors		= 0;					// boolean, use grayscale colors for ships/mecha
-	#declare NoSky			= 0;					// boolean
-	#declare NoGalaxy		= 1;					// boolean, Chris Colefax's galaxy include
-	#declare NoPlanet		= 1;//					// boolean, planet Mars or Jupiter, not used currently
-	#declare NoEarth		= 0;					// boolean, special Earth model
-	#declare NoLensFlare	= 1;//					// boolean, lens flare at sun position, usually not visible anyway
-	#declare NoMainShip		= 0;					// boolean, hide the entire ship
-	#declare NoOuterShips	= 0;//					// boolean, hide other smaller ships nearby
-	#declare NoHabitat		= 0;					// boolean, toggle outer shell, spokes and endcaps
-	#declare NoHabRotate	= 1;//					// boolean, should the habitat sections be rotated around the central axis a little?
-	#declare NoLampObject	= 0;					// boolean
-	#declare NoLampLight	= 0;					// boolean, very slowwwww!!!
-	#declare NoSpindle		= 1;//					// boolean, obsoleted
-	#declare NoAtmos		= 1;					// boolean, very slowwwww!!!
-	#declare NoCity			= 0;					// boolean
-	#declare NoBuildings	= 0;					// boolean, render maglev and cars only
-	#declare NoStreet		= 0;					// boolean
-	#declare NoCars			= 0;					// boolean
-	#declare NoStreetDeco	= 0;					// boolean
-	#declare NoPedestrians	= 0;					// boolean
-	#declare NoReactor		= 0;					// boolean
-	#declare NoDock			= 0;					// boolean
-	#declare NoDockShips	= 0;					// boolean
-	#declare NoNoseCone		= 0;					// boolean
-	#declare NoNoseGrid		= 0;					// boolean
-	#declare NoEngines		= 0;					// boolean
-	#declare NoArray		= 0;					// boolean
-	#declare NoPanels		= 0;					// boolean
-	#declare NoDomes		= 0;					// boolean
-	#declare NoElse			= 0;					// boolean
-	#declare NoStruts		= 0;					// boolean, everything not already disabled
-	#declare NoGreebles		= 0;					// boolean, blinkies, tanks, thrusters
-	#declare NoMeasure		= 0;//					// boolean, the distance measurement image map
-	#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
-	#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
-	#declare ShowWhole		= 1;					// boolean, show the entire outer shell, not finished
-	#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
-	#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
-	#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
-	#declare debug_progress	= 0;//					// boolean, used by CityGen, see CityGen docs
-	#declare GlassColor		= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
-	#declare NoseMode		= 1;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower but looks a little better)
-	#declare SimpleLamp		= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
-	#declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
-#else
-	// toggles
-	#declare NoRadiosity	= 1;//					// boolean, very slowwwww!!!
-	#declare NoColors		= 0;					// boolean, use grayscale colors for ships/mecha
-	#declare NoSky			= 1;					// boolean
-	#declare NoGalaxy		= 1;//					// boolean, Chris Colefax's galaxy include, doesn't look very good
-	#declare NoPlanet		= 1;					// boolean, planet Jupiter
-	#declare NoEarth		= 1;					// boolean, special Earth model
-	#declare NoLensFlare	= 1;//					// boolean, lens flare at sun position, usually not visible anyway
-	#declare NoMainShip		= 0;					// boolean, hide the entire ship
-	#declare NoOuterShips	= 1;//					// boolean
-	#declare NoHabitat		= 0;					// boolean, toggle outer shell, spokes and endcaps
-	#declare NoHabRotate	= 0;					// boolean, should the habitat sections be rotated around the central axis a little?
-	#declare NoLampObject	= 1;					// boolean
-	#declare NoLampLight	= 1;					// boolean, very slowwwww!!!
-	#declare NoSpindle		= 1;//					// boolean, obsoleted
-	#declare NoAtmos		= 1;					// boolean, very slowwwww!!!
-	#declare NoCity			= 1;					// boolean
-	#declare NoBuildings	= 1;					// boolean, render maglev and cars only
-	#declare NoStreet		= 1;					// boolean
-	#declare NoCars			= 1;					// boolean
-	#declare NoStreetDeco	= 1;					// boolean
-	#declare NoPedestrians	= 1;					// boolean
-	#declare NoReactor		= 0;					// boolean
-	#declare NoDock			= 0;					// boolean
-	#declare NoDockShips	= 0;					// boolean
-	#declare NoNoseCone		= 0;					// boolean
-	#declare NoNoseGrid		= 0;					// boolean
-	#declare NoEngines		= 0;					// boolean
-	#declare NoArray		= 1;					// boolean
-	#declare NoPanels		= 1;					// boolean
-	#declare NoDomes		= 1;					// boolean
-	#declare NoElse			= 0;					// boolean
-	#declare NoStruts		= 0;					// boolean, everything not already disabled
-	#declare NoGreebles		= 1;					// boolean, blinkies, tanks, thrusters
-	#declare NoMeasure		= 0;//					// boolean, the distance measurement image map
-	#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
-	#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
-	#declare ShowWhole		= 0;					// boolean, show the entire outer shell, not finished
-	#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
-	#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
-	#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
-	#declare debug_progress	= 0;//					// boolean, used by CityGen, see CityGen docs
-	#declare GlassColor		= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
-	#declare NoseMode		= 1;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower)
-	#declare SimpleLamp		= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
-	#declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
+#switch (Scene_Mode)
+	#case (0)
+		#declare NoRadiosity	= 0;//					// boolean, very slowwwww!!!
+		#declare NoColors		= 0;					// boolean, use grayscale colors for ships/mecha
+		#declare NoSky			= 0;					// boolean
+		#declare NoGalaxy		= 1;					// boolean, Chris Colefax's galaxy include
+		#declare NoPlanet		= 1;//					// boolean, planet Mars or Jupiter, not used currently
+		#declare NoEarth		= 0;					// boolean, special Earth model
+		#declare NoLensFlare	= 1;//					// boolean, lens flare at sun position, usually not visible anyway
+		#declare NoMainShip		= 0;					// boolean, hide the entire ship
+		#declare NoOuterShips	= 1;//					// boolean, hide other smaller ships nearby
+		#declare NoHabitat		= 0;					// boolean, toggle outer shell, spokes and endcaps
+		#declare NoHabRotate	= 1;//					// boolean, should the habitat sections be rotated around the central axis a little?
+		#declare NoLampObject	= 0;					// boolean
+		#declare NoLampLight	= 0;					// boolean, very slowwwww!!!
+		#declare NoSpindle		= 1;//					// boolean, obsoleted
+		#declare NoAtmos		= 1;					// boolean, very slowwwww!!!
+		#declare NoCity			= 0;					// boolean
+		#declare NoBuildings	= 0;					// boolean, render maglev and cars only
+		#declare NoStreet		= 0;					// boolean
+		#declare NoCars			= 0;					// boolean
+		#declare NoStreetDeco	= 0;					// boolean
+		#declare NoPedestrians	= 0;					// boolean
+		#declare NoReactor		= 0;					// boolean
+		#declare NoDock			= 0;					// boolean
+		#declare NoDockShips	= 1;					// boolean
+		#declare NoNoseCone		= 0;					// boolean
+		#declare NoNoseGrid		= 0;					// boolean
+		#declare NoEngines		= 0;					// boolean
+		#declare NoArray		= 0;					// boolean
+		#declare NoPanels		= 0;					// boolean
+		#declare NoDomes		= 0;					// boolean
+		#declare NoElse			= 0;					// boolean
+		#declare NoStruts		= 0;					// boolean, everything not already disabled
+		#declare NoGreebles		= 0;					// boolean, blinkies, tanks, thrusters
+		#declare NoBlinky		= 0;
+		#declare NoMeasure		= 1;//					// boolean, the distance measurement image map
+		#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
+		#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
+		#declare ShowWhole		= 1;					// boolean, show the entire outer shell, not finished
+		#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
+		#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
+		#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
+		#declare debug_progress	= 0;//					// boolean, used by CityGen, see CityGen docs
+		#declare GlassColor		= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
+		#declare NoseMode		= 1;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower but looks a little better)
+		#declare SimpleLamp		= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
+		#declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
+		#declare TexQual		= 2;					// integer, -2 = nothing, depth map; -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
+	#break
+	#case (1)
+		#declare NoRadiosity	= 1;//					// boolean, very slowwwww!!!
+		#declare NoColors		= 0;					// boolean, use grayscale colors for ships/mecha
+		#declare NoSky			= 1;					// boolean
+		#declare NoGalaxy		= 1;//					// boolean, Chris Colefax's galaxy include, doesn't look very good
+		#declare NoPlanet		= 1;					// boolean, planet Jupiter
+		#declare NoEarth		= 1;					// boolean, special Earth model
+		#declare NoLensFlare	= 1;//					// boolean, lens flare at sun position, usually not visible anyway
+		#declare NoMainShip		= 0;					// boolean, hide the entire ship
+		#declare NoOuterShips	= 1;//					// boolean
+		#declare NoHabitat		= 0;					// boolean, toggle outer shell, spokes and endcaps
+		#declare NoHabRotate	= 0;					// boolean, should the habitat sections be rotated around the central axis a little?
+		#declare NoLampObject	= 1;					// boolean
+		#declare NoLampLight	= 1;					// boolean, very slowwwww!!!
+		#declare NoSpindle		= 1;//					// boolean, obsoleted
+		#declare NoAtmos		= 1;					// boolean, very slowwwww!!!
+		#declare NoCity			= 1;					// boolean
+		#declare NoBuildings	= 1;					// boolean, render maglev and cars only
+		#declare NoStreet		= 1;					// boolean
+		#declare NoCars			= 1;					// boolean
+		#declare NoStreetDeco	= 1;					// boolean
+		#declare NoPedestrians	= 1;					// boolean
+		#declare NoReactor		= 0;					// boolean
+		#declare NoDock			= 0;					// boolean
+		#declare NoDockShips	= 0;					// boolean
+		#declare NoNoseCone		= 0;					// boolean
+		#declare NoNoseGrid		= 0;					// boolean
+		#declare NoEngines		= 0;					// boolean
+		#declare NoArray		= 1;					// boolean
+		#declare NoPanels		= 1;					// boolean
+		#declare NoDomes		= 1;					// boolean
+		#declare NoElse			= 0;					// boolean
+		#declare NoStruts		= 0;					// boolean, everything not already disabled
+		#declare NoGreebles		= 1;					// boolean, blinkies, tanks, thrusters
+		#declare NoBlinky		= 1;
+		#declare NoMeasure		= 0;//					// boolean, the distance measurement image map
+		#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
+		#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
+		#declare ShowWhole		= 0;					// boolean, show the entire outer shell, not finished
+		#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
+		#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
+		#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
+		#declare debug_progress	= 0;//					// boolean, used by CityGen, see CityGen docs
+		#declare GlassColor		= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
+		#declare NoseMode		= 1;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower)
+		#declare SimpleLamp		= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
+		#declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
+		#declare TexQual		= 1;					// integer, -2 = nothing, depth map; -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
+	#break
+	#case (2)
+		#declare NoRadiosity	= 0;//					// boolean, very slowwwww!!!
+		#declare NoColors		= 0;					// boolean, use grayscale colors for ships/mecha
+		#declare NoSky			= 0;					// boolean
+		#declare NoGalaxy		= 1;					// boolean, Chris Colefax's galaxy include
+		#declare NoPlanet		= 1;//					// boolean, planet Mars or Jupiter, not used currently
+		#declare NoEarth		= 1;					// boolean, special Earth model
+		#declare NoLensFlare	= 1;//					// boolean, lens flare at sun position, usually not visible anyway
+		#declare NoMainShip		= 0;					// boolean, hide the entire ship
+		#declare NoOuterShips	= 1;//					// boolean, hide other smaller ships nearby
+		#declare NoHabitat		= 0;					// boolean, toggle outer shell, spokes and endcaps
+		#declare NoHabRotate	= 1;//					// boolean, should the habitat sections be rotated around the central axis a little?
+		#declare NoLampObject	= 0;					// boolean
+		#declare NoLampLight	= 0;					// boolean, very slowwwww!!!
+		#declare NoSpindle		= 1;//					// boolean, obsoleted
+		#declare NoAtmos		= 1;					// boolean, very slowwwww!!!
+		#declare NoCity			= 1;					// boolean
+		#declare NoBuildings	= 1;					// boolean, render maglev and cars only
+		#declare NoStreet		= 1;					// boolean
+		#declare NoCars			= 1;					// boolean
+		#declare NoStreetDeco	= 1;					// boolean
+		#declare NoPedestrians	= 1;					// boolean
+		#declare NoReactor		= 0;					// boolean
+		#declare NoDock			= 0;					// boolean
+		#declare NoDockShips	= 1;					// boolean
+		#declare NoNoseCone		= 0;					// boolean
+		#declare NoNoseGrid		= 0;					// boolean
+		#declare NoEngines		= 0;					// boolean
+		#declare NoArray		= 0;					// boolean
+		#declare NoPanels		= 0;					// boolean
+		#declare NoDomes		= 0;					// boolean
+		#declare NoElse			= 0;					// boolean
+		#declare NoStruts		= 0;					// boolean, everything not already disabled
+		#declare NoGreebles		= 0;					// boolean, blinkies, tanks, thrusters
+		#declare NoBlinky		= 1;
+		#declare NoMeasure		= 1;//					// boolean, the distance measurement image map
+		#declare NoWeapons		= 1;//					// boolean, still used? mecha only?
+		#declare NewTrain		= 1;//					// boolean, use maglev instead of streetcars
+		#declare ShowWhole		= 1;					// boolean, show the entire outer shell, not finished
+		#declare glass_hollow	= 0;//					// boolean, used by CityGen, does this render faster or slower?
+		#declare glass_thin		= 1;//					// boolean, used by CityGen, should not be mutually exclusive with glass_hollow, not all buildings' glass has an ior value, need to double check
+		#declare bound_fit		= 0;//					// boolean, used by CityGen, should bounding boxes be rotated and closer fit but not parallel to coordinate axes? otherwise, bounding boxes are parallel to coordinate axes but larger and less fit
+		#declare debug_progress	= 0;//					// boolean, used by CityGen, see CityGen docs
+		#declare GlassColor		= 0;//					// integer, dome glass color, 0 = gold, 1 = clear white. need to deprecate this
+		#declare NoseMode		= 1;//					// integer, 0 for textured paraboloid, 1 for web of connected cylinders (textured version is slower but looks a little better)
+		#declare SimpleLamp		= 0;//					// boolean, type of light at center of each habitat section, 0 = area light, 1 = single point light
+		#declare BothHabitats	= 1;//					// boolean, render both habitats or just one, should normally never be disabled
+		#declare TexQual		= -2;					// integer, -2 = nothing, depth map; -1 = random colors, no finishes, no normals, no interiors; 0 = no finishes, no normals, no interiors; 1 = no interiors; 2 = everything
+	#break
 #end
 
 
@@ -186,6 +240,7 @@ global_settings
 	#else
 	#end
 	#switch (TexQual)
+		#case (-2)
 		#case (-1)
 			max_trace_level 0
 		#break
@@ -225,7 +280,21 @@ global_settings
 	#include "gh_camera.inc"
 #end
 
+#declare CAMERAPOS    = Camera_Location;
+#declare CAMERALOOKAT = Camera_LookAt;
+#declare CAMERADIST   = VDist(CAMERALOOKAT, CAMERAPOS);
+#declare CAMERAFRONT  = vnormalize(CAMERALOOKAT - CAMERAPOS);
+#declare CAMERAFRONTX = CAMERAFRONT.x;
+#declare CAMERAFRONTY = CAMERAFRONT.y;
+#declare CAMERAFRONTZ = CAMERAFRONT.z;
+#declare DEPTHMIN     = CAMERADIST - 2048;
+#declare DEPTHMAX     = CAMERADIST + 2048;
 
+// http://paulbourke.net/reconstruction/depthmap2/
+#declare clipped_scaled_gradient = function(x, y, z, gradx, grady, gradz, gradmin, gradmax)
+{
+	clip(((x * gradx + y * grady + z * gradz) - gradmin) / (gradmax - gradmin), 0, 1)
+}
 
 
 //------------------------------------------------------------------------------Coordinate axes
@@ -276,9 +345,10 @@ cylinder
 #macro blinky_sphere(in_rad)
 	#local blinky_material = material
 	{
-		// check TexQual here?
-		texture {pigment {color srgbt 1}}
-		interior {media {emission x/in_rad*10}}
+		#if (NoBlinky = false)
+			texture {pigment {color srgbt 1}}
+			interior {media {emission x/in_rad*10}}
+		#end
 	}
 	sphere
 	{
@@ -388,6 +458,29 @@ union
 	#if (!Camera_Inside)
 		rotate		<0,-135,0>
 		rotate		<-30,0,0>
+	#end
+
+	#if (Scene_Mode = 2)
+		material
+		{
+			texture
+			{
+				pigment
+				{
+					function
+					{
+						clipped_scaled_gradient(x, y, z, CAMERAFRONTX, CAMERAFRONTY, CAMERAFRONTZ, DEPTHMIN, DEPTHMAX)
+					}
+					color_map
+					{
+						[0 color rgb <1,1,1>]
+						[1 color rgb <0,0,0>]
+					}
+					translate CAMERAPOS
+				}
+				finish {diffuse 0 emission 1 ambient 0 specular 0}
+			}
+		}
 	#end
 }
 

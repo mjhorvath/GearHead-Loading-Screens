@@ -8,14 +8,8 @@ difference
 		#local dock_labels = polygon
 		{
 			4, <0,0>,<0,1>,<1,1>,<1,0>
-			texture {gray_metal_texture}
-			texture
-			{
-				pigment
-				{
-					image_map {png "spinner_lot_text.png"}
-				}
-			}
+			gray_metal_texture()
+			parking_texture()
 			translate <-1/2,-1/2,0>
 			scale <dock_length*7/8,dock_radius_outer*2,1>
 			rotate y * 90
@@ -66,7 +60,7 @@ difference
 		object {cutaway_object1}
 	#end
 	bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_outer}}
-	texture {white_metal_texture}
+	white_metal_texture()
 	translate -z * (dock_start + dock_length/2)
 }
 
@@ -155,7 +149,7 @@ difference
 		object {cutaway_object1}
 	#end
 	bounded_by {cylinder {<0,0,+dock_length/2>, <0,0,-dock_length/2>, dock_radius_outer}}
-	texture {white_metal_texture}
+	white_metal_texture()
 	translate -z * (dock_start + dock_length/2)
 }
 
@@ -319,7 +313,7 @@ difference
 			translate -y * dock_depth
 			translate +y * Meters						// why is this necessary?
 			translate -x * dock_radius_outer*9/12
-			texture {yellow_metal_texture}
+			yellow_metal_texture()
 		}
 		// each of the six docking areas needs these
 		#for (i, 0, 5)
@@ -561,7 +555,7 @@ difference
 						translate -x*((dock_radius_outer-dock_radius_inner)/2 + dock_radius_inner)
 						translate -z*(dock_start+dock_thick)
 					}
-					texture {yellow_metal_texture}
+					yellow_metal_texture()
 				}
 				rotate		-z*i*60
 			}

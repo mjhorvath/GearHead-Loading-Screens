@@ -60,23 +60,27 @@ verbose_include("Horus.inc", 0)
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local stone_tex = texture {};
+			#local grass_tex = texture {};
+		#break
 		#case (-1)
-			#local stone_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
-			#local grass_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local stone_tex = texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local grass_tex = texture {pigment {lowqual_pig(_CT_rand5)}};
 		#break
 		#case (0)
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 			}
 		#break
 		#case (1)
 		#case (2)
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 				finish
@@ -87,7 +91,7 @@ verbose_include("Horus.inc", 0)
 				}
 				scale Meters
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 				normal	{wrinkles}
@@ -104,13 +108,13 @@ verbose_include("Horus.inc", 0)
 			object {cyl_box(<-15,-1,-15,> * Scale, <+15,+2,+15,> * Scale)}
 			// bounding may not help here
 			bounded_by {cyl_box_bound(<-16,+0,-16,> * Scale, <+16,base_height,+16,> * Scale)}
-			texture {stone_texture}
+			texture {stone_tex}
 		}
 		// grass
 		object
 		{
 			cyl_box(<-15,0,-15,> * Scale, <+15,base_height,+15,> * Scale)
-			texture {grass_texture}
+			texture {grass_tex}
 		}
 		bounded_by {cyl_box_bound(<-16,+0,-16,> * Scale, <+16,base_height + city_tree_height,+16,> * Scale)}
 	}
@@ -169,28 +173,33 @@ verbose_include("Horus.inc", 0)
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local metal_tex = texture {};
+			#local stone_tex = texture {};
+			#local grass_tex = texture {};
+		#break
 		#case (-1)
-			#local metal_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
-			#local stone_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
-			#local grass_texture = texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local metal_tex = texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local stone_tex = texture {pigment {lowqual_pig(_CT_rand5)}};
+			#local grass_tex = texture {pigment {lowqual_pig(_CT_rand5)}};
 		#break
 		#case (0)
-			#local metal_texture = texture
+			#local metal_tex = texture
 			{	
 				pigment {gamma_color_adjust(<0.8,0.8,0.8>)}
 			}
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 			}
 		#break
 		#case (1)
 		#case (2)
-			#local metal_texture = texture
+			#local metal_tex = texture
 			{	
 				pigment {gamma_color_adjust(<0.8,0.8,0.8>)}
 				finish
@@ -202,7 +211,7 @@ verbose_include("Horus.inc", 0)
 				}
 				scale Meters
 			}
-			#local stone_texture = texture
+			#local stone_tex = texture
 			{
 				pigment {gamma_color_adjust(<1,1,1>)}
 				finish
@@ -213,7 +222,7 @@ verbose_include("Horus.inc", 0)
 				}
 				scale Meters
 			}
-			#local grass_texture = texture
+			#local grass_tex = texture
 			{
 				pigment {grass_pigment_3}
 				normal	{wrinkles}
@@ -250,7 +259,7 @@ verbose_include("Horus.inc", 0)
 					#end
 					bounded_by {cylinder {<0,0,0>, <0,arch_radis/2,0>, arch_radis}}
 					scale Scale
-					texture {metal_texture}
+					texture {metal_tex}
 				}
 			#break
 			#case (2)
@@ -283,7 +292,7 @@ verbose_include("Horus.inc", 0)
 					bounded_by {cylinder {<0,0,0>, <0,arch_radis,0>, arch_radis}}
 					translate <0,base_height,0>
 					scale Scale
-					texture {metal_texture}
+					texture {metal_tex}
 				}
 			#break
 			#case (3)
@@ -310,7 +319,7 @@ verbose_include("Horus.inc", 0)
 						scale Scale
 					}
 					object {cyl_box(<-16,0,-16> * Scale, <+16,+arch_radis,+16> * Scale)}
-					texture {metal_texture}
+					texture {metal_tex}
 				}
 			#break
 			#case (4)
@@ -391,7 +400,7 @@ verbose_include("Horus.inc", 0)
 					object {cyl_box(<-13.0,-0,-13.0,> * Scale, < -3.0,+base_height*2,+13.0,> * Scale)}
 					object {cyl_box(< +4.5,-0, +4.5,> * Scale, <+11.5,+base_height*2,+11.5,> * Scale)}
 					object {cyl_box(< +4.5,-0,-12.5,> * Scale, <+11.5,+base_height*2, -3.5,> * Scale)}
-					texture {stone_texture}
+					texture {stone_tex}
 				}
 				object {jupiter_object translate <0,3,0> * Scale}
 				object {eagle_object translate <-8,base_height,+0> * Scale}
@@ -441,7 +450,7 @@ verbose_include("Horus.inc", 0)
 				object
 				{
 					cyl_box(<-12.0,-0,-12.0,> * Scale, <+12.0,+base_height*2,+12.0,> * Scale)
-					texture {stone_texture}
+					texture {stone_tex}
 				}
 				object {sign_poly_1 translate <8,1,-14> * Scale}
 				object {raums_object translate <+0,base_height,-2> * Scale}
@@ -454,13 +463,13 @@ verbose_include("Horus.inc", 0)
 			object {cyl_box(<-15,-1,-15,> * Scale, <+15,+2,+15,> * Scale)}
 			// bounding may not help here
 //			bounded_by {cyl_box_bound(<-16,+0,-16,> * Scale, <+16,base_height,+16,> * Scale)}
-			texture {stone_texture}
+			texture {stone_tex}
 		}
 		// grass
 		object
 		{
 			cyl_box(<-15,0,-15,> * Scale, <+15,base_height,+15,> * Scale)
-			texture {grass_texture}
+			texture {grass_tex}
 		}
 	}
 	#declare park_deco_number = park_deco_number - 1;
@@ -517,6 +526,11 @@ verbose_include("Horus.inc", 0)
 		}
 	}
 	#switch (TexQual)
+		#case (-2)
+			#local main_tex		= texture {};
+			#local grass_tex	= texture {};
+			#local glass_mat	= material {};
+		#break
 		#case (-1)
 			#local main_tex		= texture {pigment {lowqual_pig(_CT_rand5)}};
 			#local grass_tex	= texture {pigment {lowqual_pig(_CT_rand5)}};
